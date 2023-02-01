@@ -21,7 +21,7 @@ class LoginFragment: BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    requireActivity().window.statusBarColor = requireContext().getColor(R.color.primary_color_dark)
+    requireActivity().window.statusBarColor = requireContext().getColor(R.color.secondary_color)
 
     viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
     binding = LoginFragmentBinding.inflate(layoutInflater)

@@ -20,7 +20,7 @@ class SignUpFragment : BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    requireActivity().window.statusBarColor = requireContext().getColor(R.color.primary_color_dark)
+    requireActivity().window.statusBarColor = requireContext().getColor(R.color.secondary_color)
 
     viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
     binding = SingUpFragmentBinding.inflate(layoutInflater)
@@ -32,11 +32,4 @@ class SignUpFragment : BaseFragment() {
     }
     return binding.root
   }
-
-
-  /*fun goRegistration() {
-    val s =
-      "${viewModel.email.value} : ${viewModel.password.value} : ${viewModel.fullName.value} : ${viewModel.passwordRepeat.value} | ${viewModel.isSpecialist.value}"
-    Log.d("goRegistration", s)
-  }*/
 }

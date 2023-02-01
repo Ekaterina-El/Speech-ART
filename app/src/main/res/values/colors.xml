@@ -10,12 +10,12 @@
 
   <color name="bg">@color/on_primary_color</color>
 
-  <color name="primary_color">#00A08F</color>
-  <color name="primary_color_dark">#0A7CA2</color>
+  <color name="primary_color">#05779C</color>
+  <color name="primary_color_dark">#104050</color>
   <color name="on_primary_color">#ffffff</color>
 
   <color name="secondary_color">#FFA45B</color>
-  <color name="secondary_color_dark">#FF5F3C</color>
+  <color name="secondary_color_dark">#FF4F29</color>
   <color name="on_secondary_color">@color/primary_color_dark</color>
 
   <color name="grey">#9E9E9E</color>

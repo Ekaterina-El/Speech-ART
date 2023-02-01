@@ -4,20 +4,20 @@
     <shape
       android:shape="rectangle">
 
-      <corners android:radius="30dp" />
+      <corners android:radius="10dp" />
       <gradient
-        android:endColor="@color/primary_color"
-        android:startColor="@color/secondary_color_dark" />
+        android:endColor="@color/primary_color_dark"
+        android:startColor="@color/primary_color_dark" />
     </shape>
   </item>
 
   <item android:state_enabled="false">
     <shape
       android:shape="rectangle">
-      <corners android:radius="30dp" />
+      <corners android:radius="10dp" />
       <gradient
-        android:endColor="@color/light_grey"
-        android:startColor="@color/grey" />
+        android:endColor="@color/primary_color_dark"
+        android:startColor="@color/primary_color_dark" />
     </shape>
   </item>
 
@@ -25,9 +25,9 @@
     <shape
       android:shape="rectangle">
 
-      <corners android:radius="30dp" />
+      <corners android:radius="10dp" />
       <gradient
-        android:endColor="@color/primary_color"
+        android:endColor="@color/primary_color_dark"
         android:startColor="@color/primary_color_dark" />
     </shape>
   </item>
