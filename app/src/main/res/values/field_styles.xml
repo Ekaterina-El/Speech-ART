@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="FieldContent">
+    <item name="android:maxLines">1</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/on_primary_color</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:fontFamily">@font/montserrat_regular</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+  <style name="FieldContent.contrast" parent="FieldContent">
+    <item name="android:textColor">@color/secondary_color</item>
+  </style>
+
+  <style name="FieldWrapper" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="boxStrokeColor">@color/box_color</item>
+    <item name="hintTextColor">@color/white</item>
+    <item name="errorIconDrawable">@null</item>
+    <item name="startIconTint">@color/white</item>
+    <item name="android:textColorHint">@color/white</item>
+    <item name="errorEnabled">true</item>
+  </style>
+
+  <style name="FieldWrapper.contrast" parent="FieldWrapper">
+    <item name="boxStrokeColor">@color/box_color_contrast</item>
+    <item name="hintTextColor">@color/secondary_color</item>
+    <item name="startIconTint">@color/secondary_color</item>
+    <item name="android:textColorHint">@color/secondary_color</item>
+  </style>
+</resources>

@@ -17,5 +17,14 @@
     android:id="@+id/welcomeFragment"
     tools:layout="@layout/welcome_fragment"
     android:name="el.ka.speechart.view.ui.auth.WelcomeFragment"
-    android:label="WelcomeFragment" />
+    android:label="WelcomeFragment" >
+    <action
+      android:id="@+id/action_welcomeFragment_to_loginFragment"
+      app:destination="@id/loginFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/loginFragment"
+    tools:layout="@layout/login_fragment"
+    android:name="el.ka.speechart.view.ui.auth.LoginFragment"
+    android:label="LoginFragment" />
 </navigation>

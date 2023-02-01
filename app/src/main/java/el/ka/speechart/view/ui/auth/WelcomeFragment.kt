@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.WelcomeFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
@@ -22,6 +23,7 @@ class WelcomeFragment: BaseFragment() {
     binding.apply {
       master = this@WelcomeFragment
       lifecycleOwner = viewLifecycleOwner
+
     }
     return binding.root
   }
@@ -31,6 +33,6 @@ class WelcomeFragment: BaseFragment() {
   }
 
   fun goLogIn() {
-
+    findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
   }
 }
