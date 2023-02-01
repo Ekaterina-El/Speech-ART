@@ -11,12 +11,13 @@
   <color name="bg">@color/on_primary_color</color>
 
   <color name="primary_color">#00A08F</color>
-  <color name="primary_color_dark">#1C4755</color>
+  <color name="primary_color_dark">#0A7CA2</color>
   <color name="on_primary_color">#ffffff</color>
 
-  <color name="secondary_color">#FF9F52</color>
-  <color name="secondary_color_dark">#F66747</color>
+  <color name="secondary_color">#FFA45B</color>
+  <color name="secondary_color_dark">#FF5F3C</color>
   <color name="on_secondary_color">@color/primary_color_dark</color>
 
   <color name="grey">#9E9E9E</color>
+  <color name="light_grey">#D0D0D0</color>
 </resources>

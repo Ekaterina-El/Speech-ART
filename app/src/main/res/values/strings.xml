@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">Speech Art</string>
+  <string name="tagline">Anywhere for Everyone!</string>
+  <string name="welcomeText">Для работы с сервисом необходимо авторизоваться</string>
+  <string name="login">Авторизовация</string>
+  <string name="register">Регистрация</string>
 </resources>

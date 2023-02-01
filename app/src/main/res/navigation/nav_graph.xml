@@ -8,5 +8,14 @@
     android:id="@+id/splashFragment"
     tools:layout="@layout/splash_fragment"
     android:name="el.ka.speechart.view.ui.spash.SplashFragment"
-    android:label="SplashFragment" />
+    android:label="SplashFragment" >
+    <action
+      android:id="@+id/action_splashFragment_to_welcomeFragment"
+      app:destination="@id/welcomeFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/welcomeFragment"
+    tools:layout="@layout/welcome_fragment"
+    android:name="el.ka.speechart.view.ui.auth.WelcomeFragment"
+    android:label="WelcomeFragment" />
 </navigation>
