@@ -11,4 +11,6 @@
   <string name="user_name">ФИО</string>
   <string name="passwordRepeat">Повтор пароля</string>
   <string name="i_am_specialist">Я специалист</string>
+  <string name="unknown_error">Упс...что-то пошло не так</string>
+  <string name="network_error">Проблема с соединением к сети Интернет</string>
 </resources>

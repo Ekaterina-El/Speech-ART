@@ -127,17 +127,14 @@
         android:layout_height="wrap_content"
         android:onCheckedChanged="@{(button, bool) -> viewModel.setIsSpecialist(bool)}"
         android:text="@string/i_am_specialist" />
-
-
     </LinearLayout>
-
 
     <Button
       android:id="@+id/buttonLogin"
       style="@style/button.fill"
       android:layout_marginHorizontal="@dimen/app_padding"
       android:layout_marginBottom="20dp"
-      android:onClick="@{() -> master.goRegistration()}"
+      android:onClick="@{() -> viewModel.goRegistration()}"
       android:text="@string/continue_text"
       app:backgroundTint="@null"
       app:layout_constraintBottom_toBottomOf="parent"

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77756170369",
+    "project_id": "speechart-f6da7",
+    "storage_bucket": "speechart-f6da7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77756170369:android:c67a2cb66918775fce8d80",
+        "android_client_info": {
+          "package_name": "el.ka.speechart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77756170369-0p74b24315vrk21q07i0k0519j3ucans.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm6R56fg0eEs4fPsbgTdkyH66Hzglrx4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77756170369-0p74b24315vrk21q07i0k0519j3ucans.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

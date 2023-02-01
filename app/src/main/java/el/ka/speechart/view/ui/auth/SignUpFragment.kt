@@ -34,9 +34,9 @@ class SignUpFragment : BaseFragment() {
   }
 
 
-  fun goRegistration() {
+  /*fun goRegistration() {
     val s =
       "${viewModel.email.value} : ${viewModel.password.value} : ${viewModel.fullName.value} : ${viewModel.passwordRepeat.value} | ${viewModel.isSpecialist.value}"
     Log.d("goRegistration", s)
-  }
+  }*/
 }
