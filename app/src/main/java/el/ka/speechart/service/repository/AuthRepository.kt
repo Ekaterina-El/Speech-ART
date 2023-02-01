@@ -1,6 +1,8 @@
 package el.ka.speechart.service.repository
 
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import el.ka.speechart.other.ErrorApp
@@ -17,7 +19,12 @@ object AuthRepository {
     UsersRepository.addUser(user)
   } catch (e: FirebaseNetworkException) {
     Errors.network
-  } catch (e: Exception) {
+  } catch (e: FirebaseAuthWeakPasswordException) {
+    Errors.weakPassword
+  } catch (e: FirebaseAuthUserCollisionException) {
+    Errors.userCollision
+  }
+  catch (e: Exception) {
     Errors.unknown
   }
 

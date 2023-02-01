@@ -32,4 +32,16 @@ class SignUpFragment : BaseFragment() {
     }
     return binding.root
   }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.work.observe(viewLifecycleOwner, workObserver)
+    viewModel.error.observe(viewLifecycleOwner, errorObserver)
+  }
+
+  override fun onStop() {
+    super.onStop()
+    viewModel.work.removeObserver(workObserver)
+    viewModel.error.removeObserver(errorObserver)
+  }
 }

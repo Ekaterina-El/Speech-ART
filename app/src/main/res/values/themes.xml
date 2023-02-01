@@ -10,7 +10,7 @@
     <item name="colorSecondaryVariant">@color/secondary_color_dark</item>
     <item name="colorOnSecondary">@color/on_secondary_color</item>
     <!-- Status bar color. -->
-    <item name="android:statusBarColor">@color/on_primary_color</item>
+    <item name="android:statusBarColor">@color/secondary_color</item>
     <!-- Customize your theme here. -->
 
     <item name="android:windowIsFloating">false</item>
@@ -18,5 +18,19 @@
 
     <item name="android:textViewStyle">@style/text</item>
     <item name="android:autofilledHighlight">@android:color/transparent</item>
+  </style>
+
+  <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <item name="colorPrimaryDark">@color/primary_color_dark</item>
+    <item name="colorAccent">@color/on_secondary_color</item>
+    <item name="colorPrimary">@color/primary_color</item>
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:windowBackground">@color/white</item>
+    <item name="actionMenuTextColor">@color/on_primary_color</item>
+  </style>
+
+  <style name="Slide">
+    <item name="android:windowEnterAnimation">@anim/slide_up</item>
+    <item name="android:windowExitAnimation">@anim/slide_down</item>
   </style>
 </resources>
