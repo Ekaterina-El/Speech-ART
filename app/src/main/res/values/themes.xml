@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Base application theme. -->
+  <style name="Theme.SpeechArt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Primary brand color. -->
+    <item name="colorPrimary">@color/primary_color</item>
+    <item name="colorPrimaryVariant">@color/primary_color_dark</item>
+    <item name="colorOnPrimary">@color/on_primary_color</item>
+    <!-- Secondary brand color. -->
+    <item name="colorSecondary">@color/secondary_color</item>
+    <item name="colorSecondaryVariant">@color/secondary_color_dark</item>
+    <item name="colorOnSecondary">@color/on_secondary_color</item>
+    <!-- Status bar color. -->
+    <item name="android:statusBarColor">@color/on_primary_color</item>
+    <!-- Customize your theme here. -->
+
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:windowBackground">@color/bg</item>
+
+    <item name="android:textViewStyle">@style/text</item>
+    <item name="android:autofilledHighlight">@android:color/transparent</item>
+  </style>
+</resources>
