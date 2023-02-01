@@ -21,10 +21,18 @@
     <action
       android:id="@+id/action_welcomeFragment_to_loginFragment"
       app:destination="@id/loginFragment" />
+    <action
+      android:id="@+id/action_welcomeFragment_to_signUpFragment"
+      app:destination="@id/signUpFragment" />
   </fragment>
   <fragment
     android:id="@+id/loginFragment"
     tools:layout="@layout/login_fragment"
     android:name="el.ka.speechart.view.ui.auth.LoginFragment"
     android:label="LoginFragment" />
+  <fragment
+    android:id="@+id/signUpFragment"
+    tools:layout="@layout/sing_up_fragment"
+    android:name="el.ka.speechart.view.ui.auth.SignUpFragment"
+    android:label="SignUpFragment" />
 </navigation>

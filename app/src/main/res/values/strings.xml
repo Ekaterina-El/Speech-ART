@@ -8,4 +8,6 @@
   <string name="password">Пароль</string>
   <string name="forgot_your_password">Восстановить доступ</string>
   <string name="continue_text">Продолжить</string>
+  <string name="user_name">ФИО</string>
+  <string name="passwordRepeat">Повтор пароля</string>
 </resources>

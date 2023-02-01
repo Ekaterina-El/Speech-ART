@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.auth.SignUpFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.SignUpViewModel" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+      android:id="@+id/imageBg"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/bg"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+      android:id="@+id/logo"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_marginTop="30dp"
+      android:src="@drawable/logo"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toTopOf="@id/buttonLogin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/logo">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutUserName"
+        style="@style/FieldWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/user_name"
+        app:startIconDrawable="@drawable/ic_user">
+
+        <com.google.android.material.textfield.TextInputEditText
+          style="@style/FieldContent"
+          android:autofillHints="username"
+          android:imeOptions="actionNext"
+          android:inputType="textPersonName"
+          android:text="@={viewModel.fullName}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEmail"
+        style="@style/FieldWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        app:startIconDrawable="@drawable/ic_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+          style="@style/FieldContent"
+          android:autofillHints="emailAddress"
+          android:imeOptions="actionNext"
+          android:inputType="textEmailAddress"
+          android:text="@={viewModel.email}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutPassword"
+        style="@style/FieldWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/on_primary_color"
+        android:hint="@string/password"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+          style="@style/FieldContent"
+          android:autofillHints="password"
+          android:imeOptions="actionSend"
+          android:inputType="textPassword"
+          android:text="@={viewModel.password}" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutPasswordRepeat"
+        style="@style/FieldWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/on_primary_color"
+        android:hint="@string/passwordRepeat"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+          style="@style/FieldContent"
+          android:autofillHints="password"
+          android:imeOptions="actionSend"
+          android:inputType="textPassword"
+          android:text="@={viewModel.passwordRepeat}" />
+      </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+
+    <Button
+      android:id="@+id/buttonLogin"
+      style="@style/button.fill"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_marginBottom="20dp"
+      android:onClick="@{() -> master.goRegistration()}"
+      android:text="@string/continue_text"
+      app:backgroundTint="@null"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

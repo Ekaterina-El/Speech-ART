@@ -29,7 +29,7 @@ class WelcomeFragment: BaseFragment() {
   }
 
   fun goSignUp() {
-
+    findNavController().navigate(R.id.action_welcomeFragment_to_signUpFragment)
   }
 
   fun goLogIn() {
