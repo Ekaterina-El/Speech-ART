@@ -118,6 +118,17 @@
           android:inputType="textPassword"
           android:text="@={viewModel.passwordRepeat}" />
       </com.google.android.material.textfield.TextInputLayout>
+
+      <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch1"
+        style="@style/text"
+        android:textColor="@color/on_primary_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onCheckedChanged="@{(button, bool) -> viewModel.setIsSpecialist(bool)}"
+        android:text="@string/i_am_specialist" />
+
+
     </LinearLayout>
 
 

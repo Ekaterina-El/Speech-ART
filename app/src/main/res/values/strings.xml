@@ -10,4 +10,5 @@
   <string name="continue_text">Продолжить</string>
   <string name="user_name">ФИО</string>
   <string name="passwordRepeat">Повтор пароля</string>
+  <string name="i_am_specialist">Я специалист</string>
 </resources>

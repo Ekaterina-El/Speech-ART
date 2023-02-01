@@ -8,4 +8,9 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
   val email = MutableLiveData("")
   val password = MutableLiveData("")
   val passwordRepeat = MutableLiveData("")
+
+  val isSpecialist = MutableLiveData(false)
+  fun setIsSpecialist(value: Boolean) {
+    isSpecialist.value = value
+  }
 }

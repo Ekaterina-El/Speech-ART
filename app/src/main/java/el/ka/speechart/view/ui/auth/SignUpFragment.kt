@@ -5,17 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import el.ka.speechart.R
-import el.ka.speechart.databinding.LoginFragmentBinding
 import el.ka.speechart.databinding.SingUpFragmentBinding
-import el.ka.speechart.databinding.WelcomeFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
-import el.ka.speechart.viewModel.LoginViewModel
 import el.ka.speechart.viewModel.SignUpViewModel
 
-class SignUpFragment: BaseFragment() {
+class SignUpFragment : BaseFragment() {
   private lateinit var viewModel: SignUpViewModel
   private lateinit var binding: SingUpFragmentBinding
 
@@ -39,7 +35,8 @@ class SignUpFragment: BaseFragment() {
 
 
   fun goRegistration() {
-    val s = "${viewModel.email.value} : ${viewModel.password.value} : ${viewModel.fullName.value} : ${viewModel.passwordRepeat.value}"
+    val s =
+      "${viewModel.email.value} : ${viewModel.password.value} : ${viewModel.fullName.value} : ${viewModel.passwordRepeat.value} | ${viewModel.isSpecialist.value}"
     Log.d("goRegistration", s)
   }
 }
