@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import el.ka.speechart.other.UserRole
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.service.repository.AuthRepository
@@ -35,6 +36,5 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
         _user.postValue(null)
       }
     }
-
   }
 }
