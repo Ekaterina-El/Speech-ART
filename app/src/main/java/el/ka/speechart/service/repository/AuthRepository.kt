@@ -1,6 +1,5 @@
 package el.ka.speechart.service.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -26,8 +25,7 @@ object AuthRepository {
     Errors.weakPassword
   } catch (e: FirebaseAuthUserCollisionException) {
     Errors.userCollision
-  }
-  catch (e: Exception) {
+  } catch (e: Exception) {
     Errors.unknown
   }
 
@@ -43,5 +41,8 @@ object AuthRepository {
   } catch (e: Exception) {
     Errors.unknown
   }
+
+  val currentUid: String?
+    get() = auth.currentUser?.uid
 
 }

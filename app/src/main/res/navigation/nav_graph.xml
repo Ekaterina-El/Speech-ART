@@ -12,7 +12,11 @@
     <action
       android:id="@+id/action_splashFragment_to_welcomeFragment"
       app:destination="@id/welcomeFragment" />
+    <action
+      android:id="@+id/action_splashFragment_to_studyMainFragment"
+      app:destination="@id/studyMainFragment" />
   </fragment>
+
   <fragment
     android:id="@+id/welcomeFragment"
     tools:layout="@layout/welcome_fragment"
@@ -25,11 +29,13 @@
       android:id="@+id/action_welcomeFragment_to_signUpFragment"
       app:destination="@id/signUpFragment" />
   </fragment>
+
   <fragment
     android:id="@+id/loginFragment"
     tools:layout="@layout/login_fragment"
     android:name="el.ka.speechart.view.ui.auth.LoginFragment"
     android:label="LoginFragment" />
+
   <fragment
     android:id="@+id/signUpFragment"
     tools:layout="@layout/sing_up_fragment"
@@ -39,4 +45,10 @@
       android:id="@+id/action_signUpFragment_to_loginFragment"
       app:destination="@id/loginFragment" />
   </fragment>
+
+  <fragment
+    android:id="@+id/studyMainFragment"
+    tools:layout="@layout/study_main_fragment"
+    android:name="el.ka.speechart.view.ui.study.StudyMainFragment"
+    android:label="StudyMainFragment" />
 </navigation>
