@@ -24,9 +24,6 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
     isSpecialist.value = value
   }
 
-  private val _error = MutableLiveData<ErrorApp?>(null)
-  val error: LiveData<ErrorApp?> = _error
-
   private val _fieldErrors = MutableLiveData<List<FieldError>>(listOf())
   val fieldErrors: LiveData<List<FieldError>> get() = _fieldErrors
   private suspend fun checkFields() {

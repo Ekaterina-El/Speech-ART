@@ -28,25 +28,6 @@ class SignUpFragment : BaseFragment() {
     showErrors(it)
   }
 
-  private fun showErrors(errors: List<FieldError>?) {
-    binding.layoutEmail.error = ""
-    binding.layoutUserName.error = ""
-    binding.layoutPassword.error = ""
-
-    if (errors == null) return
-
-    errors.forEach {
-      val field = when(it.field) {
-        Field.EMAIL -> binding.layoutEmail
-        Field.NAME -> binding.layoutUserName
-        Field.PASSWORD -> binding.layoutPassword
-        else -> return
-      }
-
-      field.error = getString(it.errorType!!.messageRes)
-    }
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -79,5 +60,24 @@ class SignUpFragment : BaseFragment() {
     viewModel.error.removeObserver(errorObserver)
     viewModel.externalAction.removeObserver(externalActionObserver)
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
+  }
+
+  private fun showErrors(errors: List<FieldError>?) {
+    binding.layoutEmail.error = ""
+    binding.layoutUserName.error = ""
+    binding.layoutPassword.error = ""
+
+    if (errors == null) return
+
+    errors.forEach {
+      val field = when(it.field) {
+        Field.EMAIL -> binding.layoutEmail
+        Field.NAME -> binding.layoutUserName
+        Field.PASSWORD -> binding.layoutPassword
+        else -> return
+      }
+
+      field.error = getString(it.errorType!!.messageRes)
+    }
   }
 }

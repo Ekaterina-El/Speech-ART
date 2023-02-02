@@ -5,11 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import el.ka.speechart.other.Action
+import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Work
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
   protected val _externalAction = MutableLiveData<Action?>(null)
   val externalAction: LiveData<Action?> = _externalAction
+
+  protected val _error = MutableLiveData<ErrorApp?>(null)
+  val error: LiveData<ErrorApp?> = _error
 
   private val workStack = MutableLiveData<List<Work>>(listOf())
   val work: LiveData<List<Work>> get() = workStack

@@ -103,7 +103,7 @@
       style="@style/button.fill"
       android:layout_marginHorizontal="@dimen/app_padding"
       android:layout_marginBottom="20dp"
-      android:onClick="@{() -> master.goLogIn()}"
+      android:onClick="@{() -> viewModel.goLogin()}"
       android:text="@string/continue_text"
       app:backgroundTint="@null"
       app:layout_constraintBottom_toBottomOf="parent"

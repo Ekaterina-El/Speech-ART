@@ -1,5 +1,6 @@
 package el.ka.speechart.service.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -26,6 +27,10 @@ object AuthRepository {
   }
   catch (e: Exception) {
     Errors.unknown
+  }
+
+  suspend fun login(email: String, password: String): ErrorApp? {
+    return null
   }
 
 }
