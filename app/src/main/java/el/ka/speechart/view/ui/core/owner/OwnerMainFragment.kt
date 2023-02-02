@@ -1,16 +1,17 @@
-package el.ka.speechart.view.ui.study
+package el.ka.speechart.view.ui.core.owner
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import el.ka.speechart.databinding.StudyMainFragmentBinding
+import el.ka.speechart.databinding.AdminMainFragmentBinding
+import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
-class StudyMainFragment: BaseFragment() {
-  private lateinit var binding: StudyMainFragmentBinding
+class OwnerMainFragment: BaseFragment() {
+  private lateinit var binding: OwnerMainFragmentBinding
   private val userViewModel by activityViewModels<UserViewModel>()
 
   override fun onCreateView(
@@ -18,16 +19,11 @@ class StudyMainFragment: BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    binding = StudyMainFragmentBinding.inflate(layoutInflater)
+    binding = OwnerMainFragmentBinding.inflate(layoutInflater)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
     }
     return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    binding.textViewRole.text = userViewModel.user.value!!.role.toString()
   }
 
 }

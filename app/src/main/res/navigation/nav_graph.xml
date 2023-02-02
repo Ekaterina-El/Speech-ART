@@ -13,6 +13,15 @@
       android:id="@+id/action_splashFragment_to_welcomeFragment"
       app:destination="@id/welcomeFragment" />
     <action
+      android:id="@+id/action_splashFragment_to_specialistMainFragment"
+      app:destination="@id/specialistMainFragment" />
+    <action
+      android:id="@+id/action_splashFragment_to_adminMainFragment"
+      app:destination="@id/adminMainFragment" />
+    <action
+      android:id="@+id/action_splashFragment_to_ownerMainFragment"
+      app:destination="@id/ownerMainFragment" />
+    <action
       android:id="@+id/action_splashFragment_to_studyMainFragment"
       app:destination="@id/studyMainFragment" />
   </fragment>
@@ -36,6 +45,15 @@
     android:name="el.ka.speechart.view.ui.auth.LoginFragment"
     android:label="LoginFragment" >
     <action
+      android:id="@+id/action_loginFragment_to_ownerMainFragment"
+      app:destination="@id/ownerMainFragment" />
+    <action
+      android:id="@+id/action_loginFragment_to_adminMainFragment"
+      app:destination="@id/adminMainFragment" />
+    <action
+      android:id="@+id/action_loginFragment_to_specialistMainFragment"
+      app:destination="@id/specialistMainFragment" />
+    <action
       android:id="@+id/action_loginFragment_to_studyMainFragment"
       app:destination="@id/studyMainFragment" />
   </fragment>
@@ -51,8 +69,19 @@
   </fragment>
 
   <fragment
+    android:id="@+id/ownerMainFragment"
+    android:name="el.ka.speechart.view.ui.core.owner.OwnerMainFragment"
+    android:label="OwnerMainFragment" />
+  <fragment
+    android:id="@+id/specialistMainFragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistMainFragment"
+    android:label="SpecialistMainFragment" />
+  <fragment
+    android:id="@+id/adminMainFragment"
+    android:name="el.ka.speechart.view.ui.core.admin.AdminMainFragment"
+    android:label="AdminMainFragment" />
+  <fragment
     android:id="@+id/studyMainFragment"
-    tools:layout="@layout/study_main_fragment"
-    android:name="el.ka.speechart.view.ui.study.StudyMainFragment"
+    android:name="el.ka.speechart.view.ui.core.study.StudyMainFragment"
     android:label="StudyMainFragment" />
 </navigation>

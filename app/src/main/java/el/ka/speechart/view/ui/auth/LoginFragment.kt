@@ -15,6 +15,7 @@ import el.ka.speechart.databinding.WelcomeFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.Field
 import el.ka.speechart.other.FieldError
+import el.ka.speechart.other.actionFromLogin
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.LoginViewModel
@@ -33,8 +34,9 @@ class LoginFragment: BaseFragment() {
   }
 
   private val userObserver = Observer<User?> {
-    if (userViewModel.userLoaded && userViewModel.user.value != null) {
-      findNavController().navigate(R.id.action_loginFragment_to_studyMainFragment)
+    val user = userViewModel.user.value
+    if (userViewModel.userLoaded && user != null) {
+      findNavController().navigate(user.role.actionFromLogin)
     }
   }
 

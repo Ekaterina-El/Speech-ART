@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SplashFragmentBinding
 import el.ka.speechart.other.Constants
+import el.ka.speechart.other.actionFromSplash
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.UserViewModel
@@ -22,8 +23,11 @@ class SplashFragment : BaseFragment() {
 
   private val userObserver = Observer<User?> {
     if (userViewModel.userLoaded) {
-      if (it == null) findNavController().navigate(R.id.action_splashFragment_to_welcomeFragment)
-      else findNavController().navigate(R.id.action_splashFragment_to_studyMainFragment)
+      val action = when (it) {
+        null -> R.id.action_splashFragment_to_welcomeFragment
+        else -> it.role.actionFromSplash
+      }
+      findNavController().navigate(action)
     }
   }
 
