@@ -3,9 +3,12 @@ package el.ka.speechart.viewModel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import el.ka.speechart.other.UserRole
+import androidx.lifecycle.viewModelScope
+import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.service.repository.AuthRepository
+import el.ka.speechart.service.repository.UsersRepository
+import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application) : BaseViewModel(application) {
   private val _user = MutableLiveData<User?>(null)
@@ -17,12 +20,20 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
   private val isLoggedIn: Boolean get() = AuthRepository.currentUid != null
 
   fun loadCurrentUser() {
-    _userLoaded = true
+    val work = Work.LOAD_USER
+    addWork(work)
 
-    if (isLoggedIn) {
-      _user.value = User("123", UserRole.STUDY)
-    } else {
-      _user.value = null
+    viewModelScope.launch {
+      val uid = AuthRepository.currentUid
+      if (isLoggedIn && uid != null) {
+        _error.value = UsersRepository.loadUser(uid) {
+          _userLoaded = true
+          _user.value = it
+        }
+      } else {
+        _userLoaded = true
+        _user.postValue(null)
+      }
     }
 
   }

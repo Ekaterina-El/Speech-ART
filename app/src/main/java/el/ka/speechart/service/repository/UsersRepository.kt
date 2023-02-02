@@ -16,4 +16,17 @@ object UsersRepository {
     Errors.unknown
   }
 
+  suspend fun loadUser(currentUid: String, onSuccess: (User) -> Unit): ErrorApp? = try {
+    val doc = FirebaseService.usersCollection.document(currentUid).get().await()
+    val user = doc.toObject(User::class.java)!!
+    user.uid = doc.id
+    onSuccess(user)
+
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
 }
