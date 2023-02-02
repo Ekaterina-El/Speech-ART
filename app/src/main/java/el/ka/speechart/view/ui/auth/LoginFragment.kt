@@ -5,23 +5,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.LoginFragmentBinding
 import el.ka.speechart.databinding.WelcomeFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.Field
 import el.ka.speechart.other.FieldError
+import el.ka.speechart.service.model.User
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.LoginViewModel
+import el.ka.speechart.viewModel.UserViewModel
 
 class LoginFragment: BaseFragment() {
   private lateinit var viewModel: LoginViewModel
+  private val userViewModel by activityViewModels<UserViewModel>()
+
   private lateinit var binding: LoginFragmentBinding
 
   private val externalActionObserver = Observer<Action?> {
-    if (it == Action.GO_NEXT) Toast.makeText(requireContext(), "You`re logined", Toast.LENGTH_SHORT).show()
+    if (it == Action.GO_NEXT) {
+      userViewModel.loadCurrentUser()
+    }
+  }
+
+  private val userObserver = Observer<User?> {
+    if (userViewModel.userLoaded && userViewModel.user.value != null) {
+      findNavController().navigate(R.id.action_loginFragment_to_studyMainFragment)
+    }
   }
 
   private val fieldErrorsObserver = Observer<List<FieldError>> {
@@ -56,6 +70,9 @@ class LoginFragment: BaseFragment() {
     viewModel.work.observe(viewLifecycleOwner, workObserver)
     viewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
     viewModel.fieldErrors.observe(viewLifecycleOwner, fieldErrorsObserver)
+
+    userViewModel.work.observe(viewLifecycleOwner, workObserver)
+    userViewModel.user.observe(viewLifecycleOwner, userObserver)
   }
 
   override fun onStop() {
@@ -64,6 +81,9 @@ class LoginFragment: BaseFragment() {
     viewModel.work.removeObserver(workObserver)
     viewModel.externalAction.removeObserver(externalActionObserver)
     viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
+
+    userViewModel.work.removeObserver(workObserver)
+    userViewModel.user.removeObserver(userObserver)
   }
 
   private fun showErrors(errors: List<FieldError>?) {

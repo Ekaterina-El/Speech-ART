@@ -34,7 +34,11 @@
     android:id="@+id/loginFragment"
     tools:layout="@layout/login_fragment"
     android:name="el.ka.speechart.view.ui.auth.LoginFragment"
-    android:label="LoginFragment" />
+    android:label="LoginFragment" >
+    <action
+      android:id="@+id/action_loginFragment_to_studyMainFragment"
+      app:destination="@id/studyMainFragment" />
+  </fragment>
 
   <fragment
     android:id="@+id/signUpFragment"
