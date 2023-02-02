@@ -42,7 +42,7 @@ open class BaseFragment : Fragment() {
       ConstraintLayout.LayoutParams.MATCH_PARENT,
       ConstraintLayout.LayoutParams.MATCH_PARENT,
     )
-    loadingDialog.window!!.setWindowAnimations(R.style.Slide)
+//    loadingDialog.window!!.setWindowAnimations(R.style.Slide)
     loadingDialog.setCancelable(false)
 
     val activity = requireActivity() as MainActivity

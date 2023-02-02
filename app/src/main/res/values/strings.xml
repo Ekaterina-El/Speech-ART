@@ -22,4 +22,6 @@
   <string name="password_repeat_no_equal">Пароли не совпадают</string>
   <string name="is_no_email">Введенное значение не является адрессом эл.почты</string>
   <string name="invalid_email_password">Неверная почта или пароль</string>
+  <string name="search_hint">Поиск</string>
+  <string name="admins_title">Администраторы</string>
 </resources>

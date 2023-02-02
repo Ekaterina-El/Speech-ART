@@ -1,25 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
   </data>
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="15dp">
 
     <TextView
-      android:id="@+id/textViewRole"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      style="@style/text.header1.bold"
-      android:text="Owner"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+      android:layout_gravity="center"
+      android:text="@string/admins_title"
+      style="@style/text.header2"
+      android:layout_marginBottom="15dp" />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:gravity="center"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:orientation="horizontal">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/field_wrapper"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <EditText
+          style="@style/text.header3"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="10dp"
+          android:layout_weight="1"
+          android:background="@null"
+          android:ellipsize="end"
+          android:hint="@string/search_hint"
+          android:maxLines="1"
+          tools:ignore="NestedWeights" />
+
+        <ImageView
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_search"
+          app:tint="@color/light_grey" />
+
+      </LinearLayout>
+
+      <androidx.cardview.widget.CardView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/secondary_color"
+        app:cardCornerRadius="5dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:src="@drawable/ic_add"
+            app:tint="@color/on_primary_color"
+            android:contentDescription="@null" />
+
+        </RelativeLayout>
+      </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_marginVertical="10dp"
+      android:layout_weight="1" />
+
+  </LinearLayout>
 </layout>

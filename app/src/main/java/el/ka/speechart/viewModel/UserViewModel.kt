@@ -35,6 +35,7 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
         _userLoaded = true
         _user.postValue(null)
       }
+      removeWork(work)
     }
   }
 }

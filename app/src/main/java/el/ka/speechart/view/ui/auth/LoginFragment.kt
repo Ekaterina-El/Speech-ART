@@ -12,10 +12,7 @@ import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.LoginFragmentBinding
 import el.ka.speechart.databinding.WelcomeFragmentBinding
-import el.ka.speechart.other.Action
-import el.ka.speechart.other.Field
-import el.ka.speechart.other.FieldError
-import el.ka.speechart.other.actionFromLogin
+import el.ka.speechart.other.*
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.LoginViewModel
