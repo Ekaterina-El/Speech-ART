@@ -94,7 +94,7 @@
         android:onClick="@{() -> master.forgetPassword()}"
         android:paddingVertical="10dp"
         android:text="@string/forgot_your_password"
-        android:textColor="@color/on_primary_color" />
+        android:textColor="@color/primary_color_dark" />
     </LinearLayout>
 
 

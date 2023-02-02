@@ -2,6 +2,8 @@ package el.ka.speechart.service.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.ktx.auth
@@ -29,8 +31,17 @@ object AuthRepository {
     Errors.unknown
   }
 
-  suspend fun login(email: String, password: String): ErrorApp? {
-    return null
+  suspend fun login(email: String, password: String): ErrorApp? = try {
+    auth.signInWithEmailAndPassword(email, password).await().user!!.uid
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: FirebaseAuthInvalidCredentialsException) {
+    Errors.invalidEmailPassword
+  } catch (e: FirebaseAuthInvalidUserException) {
+    Errors.invalidEmailPassword
+  } catch (e: Exception) {
+    Errors.unknown
   }
 
 }
