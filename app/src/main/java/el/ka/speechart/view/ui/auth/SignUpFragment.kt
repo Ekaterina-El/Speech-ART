@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SingUpFragmentBinding
 import el.ka.speechart.other.Action
+import el.ka.speechart.other.Field
+import el.ka.speechart.other.FieldError
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.SignUpViewModel
 
@@ -20,6 +22,29 @@ class SignUpFragment : BaseFragment() {
 
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.GO_NEXT) findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+  }
+
+  private val fieldErrorsObserver = Observer<List<FieldError>> {
+    showErrors(it)
+  }
+
+  private fun showErrors(errors: List<FieldError>?) {
+    binding.layoutEmail.error = ""
+    binding.layoutUserName.error = ""
+    binding.layoutPassword.error = ""
+
+    if (errors == null) return
+
+    errors.forEach {
+      val field = when(it.field) {
+        Field.EMAIL -> binding.layoutEmail
+        Field.NAME -> binding.layoutUserName
+        Field.PASSWORD -> binding.layoutPassword
+        else -> return
+      }
+
+      field.error = getString(it.errorType!!.messageRes)
+    }
   }
 
   override fun onCreateView(
@@ -45,6 +70,7 @@ class SignUpFragment : BaseFragment() {
     viewModel.work.observe(viewLifecycleOwner, workObserver)
     viewModel.error.observe(viewLifecycleOwner, errorObserver)
     viewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
+    viewModel.fieldErrors.observe(viewLifecycleOwner, fieldErrorsObserver)
   }
 
   override fun onStop() {
@@ -52,5 +78,6 @@ class SignUpFragment : BaseFragment() {
     viewModel.work.removeObserver(workObserver)
     viewModel.error.removeObserver(errorObserver)
     viewModel.externalAction.removeObserver(externalActionObserver)
+    viewModel.fieldErrors.removeObserver(fieldErrorsObserver)
   }
 }

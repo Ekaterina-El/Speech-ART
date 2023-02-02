@@ -21,6 +21,7 @@
     <item name="startIconTint">@color/white</item>
     <item name="android:textColorHint">@color/white</item>
     <item name="errorEnabled">true</item>
+    <item name="errorTextColor">@color/attention</item>
   </style>
 
   <style name="FieldWrapper.contrast" parent="FieldWrapper">

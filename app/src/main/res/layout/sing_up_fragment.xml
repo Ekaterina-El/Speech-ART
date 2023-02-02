@@ -58,9 +58,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
           style="@style/FieldContent"
-          android:autofillHints="username"
           android:imeOptions="actionNext"
-          android:inputType="textPersonName"
+          android:inputType="text"
           android:text="@={viewModel.fullName}" />
       </com.google.android.material.textfield.TextInputLayout>
 

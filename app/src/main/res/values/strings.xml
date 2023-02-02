@@ -2,7 +2,7 @@
   <string name="app_name">Speech Art</string>
   <string name="tagline">Anywhere for Everyone!</string>
   <string name="welcomeText">Для работы с сервисом необходимо авторизоваться</string>
-  <string name="login">Авторизовация</string>
+  <string name="login">Авторизация</string>
   <string name="register">Регистрация</string>
   <string name="email">Почта</string>
   <string name="password">Пароль</string>
@@ -17,4 +17,8 @@
   <string name="ok">ОК</string>
   <string name="weak_password">Слабый пароль</string>
   <string name="user_collision">Введенный адресс эл. почты уже используется</string>
+  <string name="value_short">Не достигнута минимальная длина</string>
+  <string name="is_require">Обязательное поле</string>
+  <string name="password_repeat_no_equal">Пароли не совпадают</string>
+  <string name="is_no_email">Введенное значение не является адрессом эл.почты</string>
 </resources>
