@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.service.model.User
+import el.ka.speechart.view.adapter.list.admin.AdminAdapter
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
@@ -18,8 +19,10 @@ class OwnerMainFragment: BaseFragment() {
   private val userViewModel by activityViewModels<UserViewModel>()
   private val adminViewModel by activityViewModels<AdminViewModel>()
 
+  private lateinit var adminAdapter: AdminAdapter
+
   private val adminsObserver = Observer<List<User>> {
-    val admins = it
+    adminAdapter.setItems(it)
   }
 
   override fun onCreateView(
@@ -27,9 +30,12 @@ class OwnerMainFragment: BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
+    adminAdapter = AdminAdapter()
+
     binding = OwnerMainFragmentBinding.inflate(layoutInflater)
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
+      adminAdapter = this@OwnerMainFragment.adminAdapter
     }
     return binding.root
   }
