@@ -43,6 +43,11 @@ object AuthRepository {
     Errors.unknown
   }
 
+  fun logout(after: () -> Unit) {
+    auth.signOut()
+    after()
+  }
+
   val currentUid: String?
     get() = auth.currentUser?.uid
 

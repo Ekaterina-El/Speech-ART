@@ -24,4 +24,10 @@
   <string name="invalid_email_password">Неверная почта или пароль</string>
   <string name="search_hint">Поиск</string>
   <string name="admins_title">Администраторы</string>
+  <string name="users_no_found">Пользователи не найдены</string>
+  <string name="exit">exit</string>
+  <string name="are_you_sure">Вы уверены?</string>
+  <string name="exit_message">Вы уверены, что хотите выйти из аккаунта?</string>
+  <string name="cancel">Отмена</string>
+  <string name="yes">Да</string>
 </resources>
