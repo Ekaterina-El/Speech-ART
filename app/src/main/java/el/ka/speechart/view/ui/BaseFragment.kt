@@ -14,7 +14,7 @@ import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.dialog.ErrorDialog
 
 open class BaseFragment : Fragment() {
-  val workObserver = Observer<List<Work>> {
+  open val workObserver = Observer<List<Work>> {
     if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
   }
 
@@ -28,12 +28,12 @@ open class BaseFragment : Fragment() {
     return activity.loadingDialog!!
   }
 
-  private fun showLoadingDialog() {
+  fun showLoadingDialog() {
     val dialog = getLoadingDialog()
     if (!dialog.isShowing) dialog.show()
   }
 
-  private fun hideLoadingDialog() {
+  fun hideLoadingDialog() {
     val dialog = getLoadingDialog()
     dialog.dismiss()
   }

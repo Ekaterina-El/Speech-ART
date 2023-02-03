@@ -1,5 +1,6 @@
 package el.ka.speechart.view.ui.core.owner
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.AdapterDeleter
+import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.admin.AdminAdapter
 import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
@@ -36,8 +38,16 @@ class OwnerMainFragment: BaseFragment() {
     adminViewModel.afterNotifyAboutUserDeleter()
   }
 
+  override val workObserver = Observer<List<Work>> {
+    if (!it.contains(Work.LOAD_ADMINS)) {
+      if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
+    }
+  }
+
   private val adminsObserver = Observer<List<User>> {
     adminAdapter.setItems(it)
+    binding.swipeRefreshLayout.isRefreshing = false
+    binding.swipeRefreshLayout2.isRefreshing = false
   }
 
   private val adminAdapterCallback = AdapterDeleter {
@@ -68,13 +78,28 @@ class OwnerMainFragment: BaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    adminViewModel.loadAdmins()
+    loadAdmins()
+    initUI()
+  }
 
+  private fun initUI() {
     val helper = ItemTouchHelper(adminAdapterCallback)
     helper.attachToRecyclerView(binding.recyclerViewAdmin)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewAdmin.addItemDecoration(decorator)
+
+    binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout.setOnRefreshListener { loadAdmins() }
+
+    binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout2.setOnRefreshListener { loadAdmins() }
+  }
+
+  private fun loadAdmins() {
+    adminViewModel.loadAdmins()
+    binding.swipeRefreshLayout.isRefreshing = true
+    binding.swipeRefreshLayout2.isRefreshing = true
   }
 
   override fun onResume() {

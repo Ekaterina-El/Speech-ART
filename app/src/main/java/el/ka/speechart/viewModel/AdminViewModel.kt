@@ -38,10 +38,12 @@ class AdminViewModel(application: Application) : BaseViewModel(application) {
     val search = search.value!!
     val admins = _admins.value!!
 
-    _filteredAdmins.value = when {
-      search.isEmpty() -> admins
-      else -> admins.filterByFullNameAndEmail(search)
-    }
+    _filteredAdmins.postValue(
+      when {
+        search.isEmpty() -> admins
+        else -> admins.filterByFullNameAndEmail(search)
+      }
+    )
   }
 
   fun clearSearch() {
