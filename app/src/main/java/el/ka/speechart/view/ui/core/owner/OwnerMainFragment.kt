@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.service.model.User
@@ -36,6 +38,8 @@ class OwnerMainFragment: BaseFragment() {
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
       adminAdapter = this@OwnerMainFragment.adminAdapter
+      master = this@OwnerMainFragment
+      viewModel = this@OwnerMainFragment.adminViewModel
     }
     return binding.root
   }
@@ -43,20 +47,27 @@ class OwnerMainFragment: BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     adminViewModel.loadAdmins()
+
+    val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+    binding.recyclerViewAdmin.addItemDecoration(decorator)
   }
 
   override fun onResume() {
     super.onResume()
-    adminViewModel.admins.observe(viewLifecycleOwner, adminsObserver)
+    adminViewModel.filteredAdmins.observe(viewLifecycleOwner, adminsObserver)
     adminViewModel.error.observe(viewLifecycleOwner, errorObserver)
     adminViewModel.work.observe(viewLifecycleOwner, workObserver)
   }
 
   override fun onStop() {
     super.onStop()
-    adminViewModel.admins.removeObserver(adminsObserver)
+    adminViewModel.filteredAdmins.removeObserver(adminsObserver)
     adminViewModel.error.removeObserver(errorObserver)
     adminViewModel.work.removeObserver(workObserver)
+  }
+
+  fun showDialogForAddAdmin() {
+    Toast.makeText(requireContext(), "${adminViewModel.search.value}", Toast.LENGTH_SHORT).show()
   }
 
 }

@@ -5,6 +5,16 @@
 
   <data>
 
+    <import type="android.view.View" />
+
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.owner.OwnerMainFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.AdminViewModel" />
+
     <variable
       name="adminAdapter"
       type="el.ka.speechart.view.adapter.list.admin.AdminAdapter" />
@@ -22,7 +32,7 @@
       android:paddingVertical="12dp">
 
       <TextView
-        style="@style/text.header2.bold"
+        style="@style/text.header1.bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -33,9 +43,9 @@
 
     <View
       android:layout_width="match_parent"
-      android:layout_height="3dp"
-      android:background="@drawable/shadow_line"
-      android:layout_marginBottom="10dp" />
+      android:layout_height="5dp"
+      android:layout_marginBottom="10dp"
+      android:background="@drawable/shadow_line" />
 
 
     <LinearLayout
@@ -61,17 +71,25 @@
           android:layout_height="match_parent"
           android:layout_marginEnd="10dp"
           android:layout_weight="1"
+          android:afterTextChanged="@{() -> viewModel.filterAdmins()}"
           android:background="@null"
           android:ellipsize="end"
           android:hint="@string/search_hint"
           android:maxLines="1"
+          android:text="@={viewModel.search}"
           tools:ignore="NestedWeights" />
 
         <ImageView
-          android:layout_width="24dp"
-          android:layout_height="24dp"
+          style="@style/icon"
           android:src="@drawable/ic_search"
-          app:tint="@color/light_grey" />
+          android:visibility="@{viewModel.search.isEmpty() ? View.VISIBLE : View.GONE }" />
+
+        <ImageView
+          style="@style/icon"
+          android:onClick="@{() -> viewModel.clearSearch()}"
+          android:src="@drawable/ic_close"
+          android:visibility="@{viewModel.search.isEmpty() ? View.GONE : View.VISIBLE }" />
+
 
       </LinearLayout>
 
@@ -82,6 +100,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> master.showDialogForAddAdmin()}"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp">
 
@@ -102,6 +121,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerViewAdmin"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_marginVertical="10dp"

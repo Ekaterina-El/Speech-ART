@@ -16,3 +16,8 @@ data class User(
   val resultsOfCompleted: List<String> = listOf(),
   val score: Int = 0,
 )
+
+fun List<User>.filterByFullNameAndEmail(filter: String) = this.filter {
+  it.fullName.contains(filter, ignoreCase = true) ||
+      it.email.contains(filter, ignoreCase = true)
+}
