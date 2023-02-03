@@ -47,4 +47,14 @@ object UsersRepository {
     Errors.unknown
   }
 
+  suspend fun deleteUser(user: User, onSuccess: () -> Unit): ErrorApp? = try {
+    FirebaseService.usersCollection.document(user.uid).delete().await()
+    onSuccess()
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
 }

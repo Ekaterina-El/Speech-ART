@@ -50,4 +50,25 @@ class AdminViewModel(application: Application) : BaseViewModel(application) {
   }
   // endregion
 
+  // region Edit admin list
+  private val _deletedUser = MutableLiveData<User?>(null)
+  val deletedUser: LiveData<User?> get() = _deletedUser
+
+  fun deleteAdmin(admin: User) {
+    val work = Work.DELETE_ADMIN
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UsersRepository.deleteUser(admin) {
+        _deletedUser.postValue(admin)
+      }
+      removeWork(work)
+    }
+  }
+
+  fun afterNotifyAboutUserDeleter() {
+    _deletedUser.value = null
+  }
+  // endregion
+
 }

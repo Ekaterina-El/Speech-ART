@@ -8,4 +8,5 @@ enum class Work {
   LOAD_ADMINS,
   LOAD_SPECIALIST,
   LOAD_STUDIES,
+  DELETE_ADMIN,
 }
