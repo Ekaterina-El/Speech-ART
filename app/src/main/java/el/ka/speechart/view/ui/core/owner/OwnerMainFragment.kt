@@ -1,7 +1,7 @@
 package el.ka.speechart.view.ui.core.owner
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import el.ka.speechart.R
-import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.AdapterDeleter
@@ -20,15 +18,25 @@ import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.admin.AdminAdapter
 import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
+import el.ka.speechart.view.dialog.AddAdminDialog
 import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class OwnerMainFragment: BaseFragment() {
+class OwnerMainFragment : BaseFragment() {
   private lateinit var binding: OwnerMainFragmentBinding
   private val userViewModel by activityViewModels<UserViewModel>()
   private val adminViewModel by activityViewModels<AdminViewModel>()
+
+  private val addAdminDialogListener by lazy {
+    object: AddAdminDialog.Companion.ConfirmListener {
+      override fun onContinue(user: User) {
+        adminViewModel.addAdmin(user, getCredentials()!!)
+      }
+    }
+  }
+  private val addAdminDeleter by lazy { AddAdminDialog(requireContext(), addAdminDialogListener) }
 
   private lateinit var adminAdapter: AdminAdapter
 
@@ -39,9 +47,10 @@ class OwnerMainFragment: BaseFragment() {
   }
 
   override val workObserver = Observer<List<Work>> {
+    Log.d("workObserver", it.joinToString(", "))
     if (!it.contains(Work.LOAD_ADMINS)) {
       if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
-    }
+    } else if (it.isEmpty()) hideLoadingDialog()
   }
 
   private val adminsObserver = Observer<List<User>> {
@@ -56,7 +65,10 @@ class OwnerMainFragment: BaseFragment() {
   }
 
   private val externalActionObserver = Observer<Action?> {
-    if (it == Action.RESTART) restartApp()
+    if (it == Action.RESTART) {
+      setCredentials(null)
+      restartApp()
+    }
   }
 
   override fun onCreateView(
@@ -124,11 +136,11 @@ class OwnerMainFragment: BaseFragment() {
   }
 
   fun showDialogForAddAdmin() {
-    Toast.makeText(requireContext(), "${adminViewModel.search.value}", Toast.LENGTH_SHORT).show()
+    addAdminDeleter.openConfirmDialog()
   }
 
   private val exitDialogListener by lazy {
-    object: ConfirmDialog.Companion.ConfirmListener {
+    object : ConfirmDialog.Companion.ConfirmListener {
       override fun onAgree(value: Any?) {
         userViewModel.logout()
         closeConfirmDialog()

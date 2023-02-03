@@ -33,6 +33,6 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
       Action.REMOVE -> works.remove(work)
       else -> {}
     }
-    workStack.value = works
+    workStack.postValue(works)
   }
 }

@@ -1,13 +1,14 @@
 package el.ka.speechart.service.repository
 
+import android.util.Log
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.User
@@ -16,10 +17,16 @@ import kotlinx.coroutines.tasks.await
 object AuthRepository {
   private val auth = Firebase.auth
 
-  suspend fun createAccount(user: User, password: String): ErrorApp? = try {
+  suspend fun createAccount(
+    user: User,
+    password: String,
+//    currentUserCredentials: Credentials? = null,
+    onSuccess: (suspend (User) -> Unit) = {},
+  ): ErrorApp? = try {
     val uid = auth.createUserWithEmailAndPassword(user.email, password).await().user!!.uid
+
     user.uid = uid
-    UsersRepository.addUser(user)
+    UsersRepository.addUser(user, onSuccess)
   } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: FirebaseAuthWeakPasswordException) {
@@ -31,7 +38,7 @@ object AuthRepository {
   }
 
   suspend fun login(email: String, password: String): ErrorApp? = try {
-    auth.signInWithEmailAndPassword(email, password).await().user!!.uid
+    val uid = auth.signInWithEmailAndPassword(email, password).await().user!!.uid
     null
   } catch (e: FirebaseNetworkException) {
     Errors.network
@@ -48,7 +55,5 @@ object AuthRepository {
     after()
   }
 
-  val currentUid: String?
-    get() = auth.currentUser?.uid
-
+  val currentUid: String? get() = auth.currentUser?.uid
 }

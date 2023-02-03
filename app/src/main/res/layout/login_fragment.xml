@@ -97,13 +97,12 @@
         android:textColor="@color/primary_color_dark" />
     </LinearLayout>
 
-
     <Button
       android:id="@+id/buttonLogin"
       style="@style/button.fill"
       android:layout_marginHorizontal="@dimen/app_padding"
       android:layout_marginBottom="20dp"
-      android:onClick="@{() -> viewModel.goLogin()}"
+      android:onClick="@{() -> master.goLogin()}"
       android:text="@string/continue_text"
       app:backgroundTint="@null"
       app:layout_constraintBottom_toBottomOf="parent"

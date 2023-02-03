@@ -1,6 +1,7 @@
 package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
@@ -9,8 +10,9 @@ import el.ka.speechart.service.model.User
 import kotlinx.coroutines.tasks.await
 
 object UsersRepository {
-  suspend fun addUser(user: User): ErrorApp? = try {
+  suspend fun addUser(user: User, onSuccess: suspend (User) -> Unit): ErrorApp? = try {
     FirebaseService.usersCollection.document(user.uid).set(user).await()
+    onSuccess(user)
     null
   } catch (e: NetworkErrorException) {
     Errors.network

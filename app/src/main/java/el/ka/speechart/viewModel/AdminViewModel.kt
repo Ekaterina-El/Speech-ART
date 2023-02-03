@@ -1,13 +1,17 @@
 package el.ka.speechart.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import el.ka.speechart.other.Credentials
+import el.ka.speechart.other.Generator
 import el.ka.speechart.other.UserRole
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.service.model.filterByFullNameAndEmail
+import el.ka.speechart.service.repository.AuthRepository
 import el.ka.speechart.service.repository.UsersRepository
 import kotlinx.coroutines.launch
 
@@ -70,6 +74,27 @@ class AdminViewModel(application: Application) : BaseViewModel(application) {
 
   fun afterNotifyAboutUserDeleter() {
     _deletedUser.value = null
+  }
+
+  fun addAdmin(user: User, credentials: Credentials) {
+    val work = Work.ADD_ADMIN
+    addWork(work)
+
+    viewModelScope.launch {
+      val password = Generator.genPassword()
+      _error.value = AuthRepository.createAccount(user, password) {
+        addAdminToLocal(it)
+      }
+      removeWork(work)
+      _error.value = AuthRepository.login(credentials.email, credentials.password)
+    }
+  }
+
+  private fun addAdminToLocal(user: User) {
+    val admins = _admins.value!!.toMutableList()
+    admins.add(0, user)
+    _admins.value = admins
+    clearSearch()
   }
   // endregion
 

@@ -30,4 +30,6 @@
   <string name="exit_message">Вы уверены, что хотите выйти из аккаунта?</string>
   <string name="cancel">Отмена</string>
   <string name="yes">Да</string>
+  <string name="add_admin">Добавление администратора</string>
+  <string name="for_add_admin">Для создания аккаунта администратора сервиса необходимо указать ФИО и адресс эл. почты</string>
 </resources>

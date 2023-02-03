@@ -19,15 +19,13 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
   private var _userLoaded = false
   val userLoaded: Boolean get() = _userLoaded
 
-  private val isLoggedIn: Boolean get() = AuthRepository.currentUid != null
-
   fun loadCurrentUser() {
     val work = Work.LOAD_USER
     addWork(work)
 
     viewModelScope.launch {
       val uid = AuthRepository.currentUid
-      if (isLoggedIn && uid != null) {
+      if (uid != null) {
         _error.value = UsersRepository.loadUser(uid) {
           _userLoaded = true
           _user.value = it

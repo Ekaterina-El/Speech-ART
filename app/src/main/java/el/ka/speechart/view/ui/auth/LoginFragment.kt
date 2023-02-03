@@ -31,9 +31,9 @@ class LoginFragment: BaseFragment() {
   }
 
   private val userObserver = Observer<User?> {
-    val user = userViewModel.user.value
-    if (userViewModel.userLoaded && user != null) {
-      findNavController().navigate(user.role.actionFromLogin)
+//    val user = userViewModel.user.value
+    if (userViewModel.userLoaded && it != null) {
+      findNavController().navigate(it.role.actionFromLogin)
     }
   }
 
@@ -83,6 +83,12 @@ class LoginFragment: BaseFragment() {
 
     userViewModel.work.removeObserver(workObserver)
     userViewModel.user.removeObserver(userObserver)
+  }
+
+  fun goLogin() {
+    viewModel.goLogin { credentials ->
+      setCredentials(credentials)
+    }
   }
 
   private fun showErrors(errors: List<FieldError>?) {

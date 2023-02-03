@@ -11,7 +11,7 @@
   </style>
 
   <style name="FieldContent.contrast" parent="FieldContent">
-    <item name="android:textColor">@color/secondary_color</item>
+    <item name="android:textColor">@color/text_color</item>
   </style>
 
   <style name="FieldWrapper" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -26,8 +26,8 @@
 
   <style name="FieldWrapper.contrast" parent="FieldWrapper">
     <item name="boxStrokeColor">@color/box_color_contrast</item>
-    <item name="hintTextColor">@color/secondary_color</item>
+    <item name="hintTextColor">@color/text_color</item>
     <item name="startIconTint">@color/secondary_color</item>
-    <item name="android:textColorHint">@color/secondary_color</item>
+    <item name="android:textColorHint">@color/text_color</item>
   </style>
 </resources>

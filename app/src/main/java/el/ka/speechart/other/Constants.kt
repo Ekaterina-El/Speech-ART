@@ -4,6 +4,10 @@ object Constants {
   const val FIELD_ROLE = "role"
   const val LOAD_DELAY = 2000L
   const val USERS_COLLECTION = "users"
+
+  const val SEPARATOR = ":"
+  const val CREDENTIALS = "credentials"
+  const val SP_NAME = "SpeechApp"
 }
 
 // Owner
