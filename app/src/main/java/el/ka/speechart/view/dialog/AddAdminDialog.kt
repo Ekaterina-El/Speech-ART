@@ -48,7 +48,7 @@ class AddAdminDialog(context: Context, private val confirmListener: ConfirmListe
     return errors.isEmpty()
   }
 
-  fun closeConfirmDialog() {
+  fun close() {
     binding.fullName.setText("")
     binding.email.setText("")
     showErrors(null)

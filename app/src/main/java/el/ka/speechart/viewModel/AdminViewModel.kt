@@ -76,6 +76,12 @@ class AdminViewModel(application: Application) : BaseViewModel(application) {
     _deletedUser.value = null
   }
 
+  private val _newUserCredentials = MutableLiveData<Credentials?>()
+  val newUserCredentials: LiveData<Credentials?> get() = _newUserCredentials
+  fun afterNotifyAddedUser() {
+    _newUserCredentials.value = null
+  }
+
   fun addAdmin(user: User, credentials: Credentials) {
     val work = Work.ADD_ADMIN
     addWork(work)
@@ -83,6 +89,7 @@ class AdminViewModel(application: Application) : BaseViewModel(application) {
     viewModelScope.launch {
       val password = Generator.genPassword()
       _error.value = AuthRepository.createAccount(user, password) {
+        _newUserCredentials.value = Credentials(user.email, password)
         addAdminToLocal(it)
       }
       removeWork(work)

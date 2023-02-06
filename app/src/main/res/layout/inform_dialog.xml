@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="25dp"
+    android:background="@drawable/bg_dialog"
+    android:gravity="center"
+    android:paddingHorizontal="15dp"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/title"
+      style="@style/text.header3"
+      android:layout_width="match_parent"
+      android:gravity="center"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      tools:text="@string/error_dialog_title"
+      android:textStyle="bold" />
+
+
+    <TextView
+      android:id="@+id/textMessage"
+      android:layout_marginTop="20dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      style="@style/text"
+      tools:text="Network error" />
+
+    <TextView
+      android:id="@+id/textWarning"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      style="@style/text.hint.small"
+      android:layout_marginTop="5dp"
+      android:textColor="@color/secondary_color_dark"
+      tools:text="Network error" />
+
+    <View
+      android:layout_marginTop="20dp"
+      android:layout_width="match_parent"
+      android:layout_height="0.1dp"
+      android:background="@color/light_grey" />
+
+    <TextView
+      android:id="@+id/buttonOk"
+      android:layout_width="match_parent"
+      android:gravity="center"
+      android:foreground="?android:attr/selectableItemBackground"
+      android:layout_height="wrap_content"
+      style="@style/text.clickable"
+      android:paddingVertical="15dp"
+      android:text="@string/ok" />
+
+  </LinearLayout>
+</layout>

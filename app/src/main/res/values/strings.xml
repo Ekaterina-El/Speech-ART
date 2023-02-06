@@ -32,4 +32,8 @@
   <string name="yes">Да</string>
   <string name="add_admin">Добавление администратора</string>
   <string name="for_add_admin">Для создания аккаунта администратора сервиса необходимо указать ФИО и адресс эл. почты</string>
+  <string name="login_password_new_admin">Авторизационные данные для нового администратора</string>
+  <string name="data_copied">Данные скопированы!</string>
+  <string name="new_admin_warning">Обязательно скопируйте авторизационные данные администратора. Вы больше не сможете их увидеть!</string>
+  <string name="login_password_new_admin_credentials">Email: %1$s\nПароль: %2$s</string>
 </resources>

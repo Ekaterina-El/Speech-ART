@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +13,7 @@ import el.ka.speechart.R
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.AdapterDeleter
+import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.admin.AdminAdapter
@@ -30,13 +30,36 @@ class OwnerMainFragment : BaseFragment() {
   private val adminViewModel by activityViewModels<AdminViewModel>()
 
   private val addAdminDialogListener by lazy {
-    object: AddAdminDialog.Companion.ConfirmListener {
+    object : AddAdminDialog.Companion.ConfirmListener {
       override fun onContinue(user: User) {
         adminViewModel.addAdmin(user, getCredentials()!!)
       }
     }
   }
-  private val addAdminDeleter by lazy { AddAdminDialog(requireContext(), addAdminDialogListener) }
+  private val addAdminDialog by lazy { AddAdminDialog(requireContext(), addAdminDialogListener) }
+
+  private val newUserCredentialsObserver = Observer<Credentials?> {
+    if (it == null) return@Observer
+
+    showNewAdminCredentials(it)
+    addAdminDialog.close()
+    adminViewModel.afterNotifyAddedUser()
+  }
+
+  private fun showNewAdminCredentials(credentials: Credentials) {
+
+    val title = getString(R.string.login_password_new_admin)
+    val message = getString(
+      R.string.login_password_new_admin_credentials,
+      credentials.email,
+      credentials.password
+    )
+    val warningText = getString(R.string.new_admin_warning)
+
+    showInformDialog(title, message, warningText) {
+       copyToClipboard(message)
+    }
+  }
 
   private lateinit var adminAdapter: AdminAdapter
 
@@ -120,6 +143,7 @@ class OwnerMainFragment : BaseFragment() {
     adminViewModel.error.observe(viewLifecycleOwner, errorObserver)
     adminViewModel.work.observe(viewLifecycleOwner, workObserver)
     adminViewModel.deletedUser.observe(viewLifecycleOwner, deletedUserObserver)
+    adminViewModel.newUserCredentials.observe(viewLifecycleOwner, newUserCredentialsObserver)
 
     userViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
   }
@@ -130,13 +154,13 @@ class OwnerMainFragment : BaseFragment() {
     adminViewModel.error.removeObserver(errorObserver)
     adminViewModel.work.removeObserver(workObserver)
     adminViewModel.deletedUser.removeObserver(deletedUserObserver)
+    adminViewModel.newUserCredentials.removeObserver(newUserCredentialsObserver)
 
     userViewModel.externalAction.removeObserver(externalActionObserver)
-
   }
 
   fun showDialogForAddAdmin() {
-    addAdminDeleter.openConfirmDialog()
+    addAdminDialog.openConfirmDialog()
   }
 
   private val exitDialogListener by lazy {

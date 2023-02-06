@@ -1,10 +1,12 @@
 package el.ka.speechart.view.ui
 
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -16,7 +18,7 @@ import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Work
 import el.ka.speechart.view.dialog.ConfirmDialog
-import el.ka.speechart.view.dialog.ErrorDialog
+import el.ka.speechart.view.dialog.InformDialog
 
 open class BaseFragment : Fragment() {
   open val workObserver = Observer<List<Work>> {
@@ -26,6 +28,8 @@ open class BaseFragment : Fragment() {
   val errorObserver = Observer<ErrorApp?> {
     if (it != null) showErrorDialog(it)
   }
+
+
 
   private fun getLoadingDialog(): Dialog {
     val activity = requireActivity() as MainActivity
@@ -57,12 +61,17 @@ open class BaseFragment : Fragment() {
     activity.loadingDialog = loadingDialog
   }
 
-  // region Error dialog
-  private val errorDialog by lazy { ErrorDialog(requireContext()) }
+  // region Inform dialog
+  private val informDialog by lazy { InformDialog(requireContext()) }
 
   private fun showErrorDialog(error: ErrorApp) {
+    val title = getString(R.string.error_dialog_title)
     val message = getString(error.messageRes)
-    errorDialog.openConfirmDialog(message)
+    informDialog.open(title, message)
+  }
+
+  fun showInformDialog(title: String, message: String, warningText: String? = null, onClickText: () -> Unit) {
+    informDialog.open(title, message, warningText, onClickText)
   }
   // endregion
 
@@ -114,4 +123,12 @@ open class BaseFragment : Fragment() {
   }
   // endregion
 
+  fun copyToClipboard(text: String) {
+    val label = getString(R.string.data_copied)
+    val clipboard = mainActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(label, text)
+    clipboard.setPrimaryClip(clip)
+    
+    Toast.makeText(requireContext(), label, Toast.LENGTH_SHORT).show()
+  }
 }

@@ -12,16 +12,17 @@ object Constants {
 
 // Owner
 /*
-* Add admin
-* Remove admin
-* View list of admins
+* Add admin +
+* Remove admin +
+* View list of admins +
 *
 *  Sections: admins
 */
 
 // Admin
 /*
-* Add specialists
+* Agree/disagree request for create specialists
+* View list of request to create specialist
 * Remove specialists
 * View list of specialist
 *
