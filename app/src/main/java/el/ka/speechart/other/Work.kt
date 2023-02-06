@@ -5,8 +5,8 @@ enum class Work {
   CHECK_FIELDS,
   SIGN_UP,
   LOAD_USER,
-  DELETE_ADMIN,
   ADD_ADMIN,
   LOAD_USERS,
   LOAD_REQUESTS,
+  DELETE_USER,
 }

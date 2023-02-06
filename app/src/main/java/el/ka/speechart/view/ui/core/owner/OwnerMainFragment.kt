@@ -83,7 +83,7 @@ class OwnerMainFragment : UserBaseFragment() {
 
   private val adminAdapterCallback = AdapterDeleter {
     val admin = (it as AdminViewHolder).binding.user
-    if (admin != null) ownerViewModel.deleteAdmin(admin)
+    if (admin != null) ownerViewModel.deleteUser(admin)
   }
 
   private val externalActionObserver = Observer<Action?> {
