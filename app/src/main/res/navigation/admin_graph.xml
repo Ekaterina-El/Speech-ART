@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/android_graph"
+  app:startDestination="@id/adminSpecialistsFragment">
+
+  <fragment
+    android:id="@+id/adminRequestsFragment"
+    tools:layout="@layout/admin_requests_fragment"
+    android:name="el.ka.speechart.view.ui.core.admin.AdminRequestsFragment"
+    android:label="AdminRequestsFragment" />
+  <fragment
+    android:id="@+id/adminSpecialistsFragment"
+    tools:layout="@layout/admin_specialists_fragment"
+    android:name="el.ka.speechart.view.ui.core.admin.AdminSpecialistsFragment"
+    android:label="AdminSpecialistsFragment" />
+</navigation>

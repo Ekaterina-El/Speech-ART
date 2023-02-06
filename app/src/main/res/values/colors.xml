@@ -10,8 +10,8 @@
 
   <color name="bg">@color/on_primary_color</color>
 
-  <color name="primary_color">#05779C</color>
-  <color name="primary_color_dark">#104050</color>
+  <color name="primary_color">#FFA45B</color>
+  <color name="primary_color_dark">#FF4F29</color>
   <color name="on_primary_color">#ffffff</color>
   <color name="text_color">#333333</color>
 

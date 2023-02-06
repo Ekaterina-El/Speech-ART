@@ -8,11 +8,12 @@ import androidx.fragment.app.activityViewModels
 import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.databinding.SpecialistMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
+import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistMainFragment: BaseFragment() {
+class SpecialistMainFragment: UserBaseFragment() {
   private lateinit var binding: SpecialistMainFragmentBinding
-  private val userViewModel by activityViewModels<UserViewModel>()
+  override val userViewModel by activityViewModels<UserViewModel>()
 
   override fun onCreateView(
     inflater: LayoutInflater,

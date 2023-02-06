@@ -19,20 +19,19 @@ import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.admin.AdminAdapter
 import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
 import el.ka.speechart.view.dialog.AddAdminDialog
-import el.ka.speechart.view.dialog.ConfirmDialog
-import el.ka.speechart.view.ui.BaseFragment
-import el.ka.speechart.viewModel.AdminViewModel
+import el.ka.speechart.view.ui.UserBaseFragment
+import el.ka.speechart.viewModel.OwnerViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class OwnerMainFragment : BaseFragment() {
+class OwnerMainFragment : UserBaseFragment() {
   private lateinit var binding: OwnerMainFragmentBinding
-  private val userViewModel by activityViewModels<UserViewModel>()
-  private val adminViewModel by activityViewModels<AdminViewModel>()
+  override val userViewModel by activityViewModels<UserViewModel>()
+  private val ownerViewModel by activityViewModels<OwnerViewModel>()
 
   private val addAdminDialogListener by lazy {
     object : AddAdminDialog.Companion.ConfirmListener {
       override fun onContinue(user: User) {
-        adminViewModel.addAdmin(user, getCredentials()!!)
+        ownerViewModel.addAdmin(user, getCredentials()!!)
       }
     }
   }
@@ -43,7 +42,7 @@ class OwnerMainFragment : BaseFragment() {
 
     showNewAdminCredentials(it)
     addAdminDialog.close()
-    adminViewModel.afterNotifyAddedUser()
+    ownerViewModel.afterNotifyAddedUser()
   }
 
   private fun showNewAdminCredentials(credentials: Credentials) {
@@ -57,7 +56,7 @@ class OwnerMainFragment : BaseFragment() {
     val warningText = getString(R.string.new_admin_warning)
 
     showInformDialog(title, message, warningText) {
-       copyToClipboard(message)
+      copyToClipboard(message)
     }
   }
 
@@ -66,12 +65,12 @@ class OwnerMainFragment : BaseFragment() {
   private val deletedUserObserver = Observer<User?> {
     if (it == null) return@Observer
     adminAdapter.removeItem(it)
-    adminViewModel.afterNotifyAboutUserDeleter()
+    ownerViewModel.afterNotifyAboutUserDeleter()
   }
 
   override val workObserver = Observer<List<Work>> {
     Log.d("workObserver", it.joinToString(", "))
-    if (!it.contains(Work.LOAD_ADMINS)) {
+    if (!it.contains(Work.LOAD_USERS)) {
       if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
     } else if (it.isEmpty()) hideLoadingDialog()
   }
@@ -84,7 +83,7 @@ class OwnerMainFragment : BaseFragment() {
 
   private val adminAdapterCallback = AdapterDeleter {
     val admin = (it as AdminViewHolder).binding.user
-    if (admin != null) adminViewModel.deleteAdmin(admin)
+    if (admin != null) ownerViewModel.deleteAdmin(admin)
   }
 
   private val externalActionObserver = Observer<Action?> {
@@ -106,7 +105,7 @@ class OwnerMainFragment : BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       adminAdapter = this@OwnerMainFragment.adminAdapter
       master = this@OwnerMainFragment
-      viewModel = this@OwnerMainFragment.adminViewModel
+      viewModel = this@OwnerMainFragment.ownerViewModel
     }
     return binding.root
   }
@@ -132,29 +131,29 @@ class OwnerMainFragment : BaseFragment() {
   }
 
   private fun loadAdmins() {
-    adminViewModel.loadAdmins()
+    ownerViewModel.loadUsers()
     binding.swipeRefreshLayout.isRefreshing = true
     binding.swipeRefreshLayout2.isRefreshing = true
   }
 
   override fun onResume() {
     super.onResume()
-    adminViewModel.filteredAdmins.observe(viewLifecycleOwner, adminsObserver)
-    adminViewModel.error.observe(viewLifecycleOwner, errorObserver)
-    adminViewModel.work.observe(viewLifecycleOwner, workObserver)
-    adminViewModel.deletedUser.observe(viewLifecycleOwner, deletedUserObserver)
-    adminViewModel.newUserCredentials.observe(viewLifecycleOwner, newUserCredentialsObserver)
+    ownerViewModel.filteredUsers.observe(viewLifecycleOwner, adminsObserver)
+    ownerViewModel.error.observe(viewLifecycleOwner, errorObserver)
+    ownerViewModel.work.observe(viewLifecycleOwner, workObserver)
+    ownerViewModel.deletedUser.observe(viewLifecycleOwner, deletedUserObserver)
+    ownerViewModel.newUserCredentials.observe(viewLifecycleOwner, newUserCredentialsObserver)
 
     userViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
   }
 
   override fun onStop() {
     super.onStop()
-    adminViewModel.filteredAdmins.removeObserver(adminsObserver)
-    adminViewModel.error.removeObserver(errorObserver)
-    adminViewModel.work.removeObserver(workObserver)
-    adminViewModel.deletedUser.removeObserver(deletedUserObserver)
-    adminViewModel.newUserCredentials.removeObserver(newUserCredentialsObserver)
+    ownerViewModel.filteredUsers.removeObserver(adminsObserver)
+    ownerViewModel.error.removeObserver(errorObserver)
+    ownerViewModel.work.removeObserver(workObserver)
+    ownerViewModel.deletedUser.removeObserver(deletedUserObserver)
+    ownerViewModel.newUserCredentials.removeObserver(newUserCredentialsObserver)
 
     userViewModel.externalAction.removeObserver(externalActionObserver)
   }
@@ -162,23 +161,4 @@ class OwnerMainFragment : BaseFragment() {
   fun showDialogForAddAdmin() {
     addAdminDialog.openConfirmDialog()
   }
-
-  private val exitDialogListener by lazy {
-    object : ConfirmDialog.Companion.ConfirmListener {
-      override fun onAgree(value: Any?) {
-        userViewModel.logout()
-        closeConfirmDialog()
-      }
-
-      override fun onDisagree() {
-        closeConfirmDialog()
-      }
-
-    }
-  }
-
-  fun showExitDialog() {
-    openConfirmDialog(getString(R.string.exit_message), exitDialogListener)
-  }
-
 }

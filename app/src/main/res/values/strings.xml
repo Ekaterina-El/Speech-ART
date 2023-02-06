@@ -36,4 +36,7 @@
   <string name="data_copied">Данные скопированы!</string>
   <string name="new_admin_warning">Обязательно скопируйте авторизационные данные администратора. Вы больше не сможете их увидеть!</string>
   <string name="login_password_new_admin_credentials">Email: %1$s\nПароль: %2$s</string>
+  <string name="specialists">Специалисты</string>
+  <string name="requests">Запросы</string>
+  <string name="specialists_title">Специалисты</string>
 </resources>

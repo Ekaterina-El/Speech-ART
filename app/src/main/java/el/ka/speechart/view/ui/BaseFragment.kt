@@ -29,8 +29,6 @@ open class BaseFragment : Fragment() {
     if (it != null) showErrorDialog(it)
   }
 
-
-
   private fun getLoadingDialog(): Dialog {
     val activity = requireActivity() as MainActivity
     if (activity.loadingDialog == null) createLoadingDialog()
@@ -128,7 +126,7 @@ open class BaseFragment : Fragment() {
     val clipboard = mainActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
-    
+
     Toast.makeText(requireContext(), label, Toast.LENGTH_SHORT).show()
   }
 }

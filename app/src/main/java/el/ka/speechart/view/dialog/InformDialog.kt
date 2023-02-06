@@ -9,7 +9,7 @@ import el.ka.speechart.R
 import el.ka.speechart.databinding.InformDialogBinding
 
 class InformDialog(context: Context) : Dialog(context) {
-  private lateinit var binding: InformDialogBinding
+  private var binding: InformDialogBinding
 
   init {
     binding = InformDialogBinding.inflate(LayoutInflater.from(context))
