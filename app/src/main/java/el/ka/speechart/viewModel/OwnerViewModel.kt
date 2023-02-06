@@ -15,8 +15,6 @@ import el.ka.speechart.service.repository.UsersRepository
 import kotlinx.coroutines.launch
 
 class OwnerViewModel(application: Application) : ViewModelWithSearchUsers(application, UserRole.ADMIN) {
-
-
   private val _newUserCredentials = MutableLiveData<Credentials?>()
   val newUserCredentials: LiveData<Credentials?> get() = _newUserCredentials
   fun afterNotifyAddedUser() {

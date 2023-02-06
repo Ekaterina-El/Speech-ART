@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import el.ka.speechart.R
 import el.ka.speechart.databinding.AdminSpecialistsFragmentBinding
+import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.service.model.User
+import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
+import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
 import el.ka.speechart.view.adapter.list.specialist.SpecialistsAdapter
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
@@ -26,6 +30,11 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     specialistsAdapter.setItems(it)
     binding.swipeRefreshLayout.isRefreshing = false
     binding.swipeRefreshLayout2.isRefreshing = false
+  }
+
+  private val specialistsAdapterCallback = AdapterDeleter {
+    val user = (it as SpecialistViewHolder).binding.user
+    if (user != null) adminViewModel.deleteUser(user)
   }
 
   override fun onCreateView(
@@ -52,11 +61,15 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     loadSpecialists()
 
+
     binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
     binding.swipeRefreshLayout.setOnRefreshListener { loadSpecialists() }
 
     binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
     binding.swipeRefreshLayout2.setOnRefreshListener { loadSpecialists() }
+
+    val helper = ItemTouchHelper(specialistsAdapterCallback)
+    helper.attachToRecyclerView(binding.recyclerViewSpecialists)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewSpecialists.addItemDecoration(decorator)
