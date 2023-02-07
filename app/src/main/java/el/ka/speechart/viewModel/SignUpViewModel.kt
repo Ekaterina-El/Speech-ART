@@ -4,12 +4,17 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import el.ka.speechart.other.*
+import el.ka.speechart.other.Action
+import el.ka.speechart.other.FieldError
+import el.ka.speechart.other.UserRole
 import el.ka.speechart.other.Validator.checkEmailField
 import el.ka.speechart.other.Validator.checkPasswordField
 import el.ka.speechart.other.Validator.checkUserNameField
+import el.ka.speechart.other.Work
+import el.ka.speechart.service.model.RequestToRegSpecialist
 import el.ka.speechart.service.model.User
 import el.ka.speechart.service.repository.AuthRepository
+import el.ka.speechart.service.repository.RequestsRepository
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(application: Application) : BaseViewModel(application) {
@@ -51,7 +56,10 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
 
     viewModelScope.launch {
       checkFields()
-      if (_fieldErrors.value!!.isEmpty()) registration()
+      if (_fieldErrors.value!!.isEmpty()) {
+        registration()
+        clearFields()
+      }
       removeWork(work)
     }
   }
@@ -60,14 +68,30 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
     val work = Work.CREATE_ACCOUNT
     addWork(work)
 
-    if (isSpecialist.value == true) {
-      // send request
-    } else {
-      // create study account
+    val password = password.value!!
+    val request =
+      if (isSpecialist.value == true) RequestToRegSpecialist("", userData, password) else null
+    _error.value = when (request) {
+      null -> AuthRepository.createAccount(userData, password)                  // send request
+      else -> RequestsRepository.addRequestToRegistrationSpecialist(request)    // create study account
+
     }
 
-    _error.value = AuthRepository.createAccount(userData, password.value!!)
-    if (_error.value == null) _externalAction.value = Action.GO_NEXT
+    if (_error.value == null) {
+      _externalAction.value = when (request) {
+        null -> Action.GO_NEXT
+        else -> Action.REQUEST_TO_REGISTRATION_ADDED
+      }
+    }
+
     removeWork(work)
+  }
+
+  private fun clearFields() {
+    fullName.value = ""
+    email.value = ""
+    password.value = ""
+    passwordRepeat.value = ""
+    isSpecialist.value = false
   }
 }

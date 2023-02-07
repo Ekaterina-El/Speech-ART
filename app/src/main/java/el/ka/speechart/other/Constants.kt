@@ -3,7 +3,9 @@ package el.ka.speechart.other
 object Constants {
   const val FIELD_ROLE = "role"
   const val LOAD_DELAY = 2000L
+
   const val USERS_COLLECTION = "users"
+  const val REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION = "requests_to_reg_specialist"
 
   const val SEPARATOR = ":"
   const val CREDENTIALS = "credentials"

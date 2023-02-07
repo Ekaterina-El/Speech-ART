@@ -115,7 +115,6 @@ open class BaseFragment : Fragment() {
       null -> ""
       else -> "${credentials.email}${Constants.SEPARATOR}${credentials.password}"
     }
-    Log.d("setCredentials", s)
     edit.putString(Constants.CREDENTIALS, s)
     edit.apply()
   }
@@ -127,6 +126,10 @@ open class BaseFragment : Fragment() {
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
 
-    Toast.makeText(requireContext(), label, Toast.LENGTH_SHORT).show()
+    toast(label)
+  }
+
+  fun toast(text: String) {
+    Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
   }
 }

@@ -1,7 +1,6 @@
 package el.ka.speechart.view.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,11 @@ class SignUpFragment : BaseFragment() {
   private lateinit var binding: SingUpFragmentBinding
 
   private val externalActionObserver = Observer<Action?> {
-    if (it == Action.GO_NEXT) findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+    when (it) {
+      Action.GO_NEXT -> findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+      Action.REQUEST_TO_REGISTRATION_ADDED -> toast(getString(R.string.requests_to_specialist_added))
+      else -> Unit
+    }
   }
 
   private val fieldErrorsObserver = Observer<List<FieldError>> {
@@ -70,7 +73,7 @@ class SignUpFragment : BaseFragment() {
     if (errors == null) return
 
     errors.forEach {
-      val field = when(it.field) {
+      val field = when (it.field) {
         Field.EMAIL -> binding.layoutEmail
         Field.NAME -> binding.layoutUserName
         Field.PASSWORD -> binding.layoutPassword
