@@ -21,10 +21,11 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
   val password = MutableLiveData("")
   val passwordRepeat = MutableLiveData("")
 
-  private val isSpecialist = MutableLiveData(false)
+  private val _isSpecialist = MutableLiveData(false)
+  val isSpecialist: LiveData<Boolean> get() = _isSpecialist
 
   fun setIsSpecialist(value: Boolean) {
-    isSpecialist.value = value
+    _isSpecialist.value = value
   }
 
   private val _fieldErrors = MutableLiveData<List<FieldError>>(listOf())
@@ -43,7 +44,7 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
 
   private val userData: User
     get() = User(
-      role = if (isSpecialist.value!!) UserRole.SPECIALIST else UserRole.STUDY,
+      role = if (_isSpecialist.value!!) UserRole.SPECIALIST else UserRole.STUDY,
       email = email.value!!,
       fullName = fullName.value!!,
     )
@@ -74,7 +75,7 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
 
     val password = password.value!!
     val request =
-      if (isSpecialist.value == true) RequestToRegSpecialist(
+      if (_isSpecialist.value == true) RequestToRegSpecialist(
         "",
         userData,
         password,
@@ -108,6 +109,6 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
     email.value = ""
     password.value = ""
     passwordRepeat.value = ""
-    isSpecialist.value = false
+    _isSpecialist.value = false
   }
 }
