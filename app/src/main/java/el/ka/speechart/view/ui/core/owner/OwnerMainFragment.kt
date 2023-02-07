@@ -87,13 +87,6 @@ class OwnerMainFragment : UserBaseFragment() {
     if (admin != null) ownerViewModel.deleteUser(admin)
   })
 
-  private val externalActionObserver = Observer<Action?> {
-    if (it == Action.RESTART) {
-      setCredentials(null)
-      restartApp()
-    }
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -146,8 +139,6 @@ class OwnerMainFragment : UserBaseFragment() {
     ownerViewModel.work.observe(viewLifecycleOwner, workObserver)
     ownerViewModel.deletedUser.observe(viewLifecycleOwner, deletedUserObserver)
     ownerViewModel.newUserCredentials.observe(viewLifecycleOwner, newUserCredentialsObserver)
-
-    userViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
   }
 
   override fun onStop() {
@@ -157,8 +148,6 @@ class OwnerMainFragment : UserBaseFragment() {
     ownerViewModel.work.removeObserver(workObserver)
     ownerViewModel.deletedUser.removeObserver(deletedUserObserver)
     ownerViewModel.newUserCredentials.removeObserver(newUserCredentialsObserver)
-
-    userViewModel.externalAction.removeObserver(externalActionObserver)
   }
 
   fun showDialogForAddAdmin() {

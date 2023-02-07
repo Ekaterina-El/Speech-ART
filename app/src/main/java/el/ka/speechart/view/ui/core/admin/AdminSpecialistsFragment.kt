@@ -26,6 +26,7 @@ class AdminSpecialistsFragment : UserBaseFragment() {
 
   private lateinit var specialistsAdapter: SpecialistsAdapter
 
+
   private val specialistsObserver = Observer<List<User>> {
     specialistsAdapter.setItems(it)
     binding.swipeRefreshLayout.isRefreshing = false
