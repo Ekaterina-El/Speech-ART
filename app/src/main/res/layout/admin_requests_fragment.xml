@@ -115,6 +115,9 @@
       android:layout_weight="1"
       android:visibility="@{viewModel.filteredRequestsToRegSpecialist.size() == 0 ? View.VISIBLE : View.GONE}">
       <include
+        android:id="@+id/no_found"
+        android:paddingStart="@dimen/app_padding"
+        android:paddingEnd="@dimen/app_padding"
         layout="@layout/users_no_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

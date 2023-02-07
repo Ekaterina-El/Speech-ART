@@ -40,10 +40,9 @@ object RequestsRepository {
     Errors.unknown
   }
 
-  suspend fun agreeRequest(request: RequestToRegSpecialist, onSuccess: (RequestToRegSpecialist) -> Unit): ErrorApp? = try {
-    val doc = FirebaseService.requestsToRegSpecialigsCollection.add(request).await()
-    request.id = doc.id
-    onSuccess(request)
+  suspend fun agreeRequest(request: RequestToRegSpecialist, onSuccess: () -> Unit): ErrorApp? = try {
+    AuthRepository.createAccount(request.userData, request.password)
+    onSuccess()
     null
   } catch (e: NetworkErrorException) {
     Errors.network

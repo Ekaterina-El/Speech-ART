@@ -42,4 +42,7 @@
   <string name="requests_to_specialist_added">Заявка на регистрацию нового специалиста отправлена! Администраторы рассмотрят её в ближайшее время.</string>
   <string name="request_sent">Заявка отправлена!</string>
   <string name="requests_title">Запросы</string>
+  <string name="requests_no_found">Запросы на регистрацию специалистов не найдены</string>
+  <string name="specialists_no_found">Специалисты не найдены</string>
+  <string name="admins_no_found">Администраторы не найдены</string>
 </resources>

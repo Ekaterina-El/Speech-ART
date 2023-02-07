@@ -20,11 +20,9 @@ object AuthRepository {
   suspend fun createAccount(
     user: User,
     password: String,
-//    currentUserCredentials: Credentials? = null,
     onSuccess: (suspend (User) -> Unit) = {},
   ): ErrorApp? = try {
     val uid = auth.createUserWithEmailAndPassword(user.email, password).await().user!!.uid
-
     user.uid = uid
     UsersRepository.addUser(user, onSuccess)
   } catch (e: FirebaseNetworkException) {

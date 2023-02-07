@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -128,6 +129,8 @@ class OwnerMainFragment : UserBaseFragment() {
 
     binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
     binding.swipeRefreshLayout2.setOnRefreshListener { loadAdmins() }
+
+    binding.noFound.findViewById<TextView>(R.id.message).text = getString(R.string.admins_no_found)
   }
 
   private fun loadAdmins() {

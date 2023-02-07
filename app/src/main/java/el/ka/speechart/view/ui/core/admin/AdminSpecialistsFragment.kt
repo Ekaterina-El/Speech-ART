@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -74,6 +75,8 @@ class AdminSpecialistsFragment : UserBaseFragment() {
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewSpecialists.addItemDecoration(decorator)
+
+    binding.noFound.findViewById<TextView>(R.id.message).text = getString(R.string.specialists_no_found)
   }
 
   override fun onResume() {

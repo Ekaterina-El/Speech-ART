@@ -75,7 +75,7 @@ class AdminViewModel(application: Application) :
     addWork(work)
     viewModelScope.launch {
       _error.value = RequestsRepository.agreeRequest(request) {
-        editRequestList(request, isAdd = true)
+        editRequestList(request, isAdd = false)
       }
       removeWork(work)
     }
