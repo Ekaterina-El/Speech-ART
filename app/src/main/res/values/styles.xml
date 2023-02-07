@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="ratingBar">
+      <item name="colorControlNormal">@color/primary_color</item>
+      <item name="colorControlActivated">@color/primary_color</item>
+  </style>
+</resources>

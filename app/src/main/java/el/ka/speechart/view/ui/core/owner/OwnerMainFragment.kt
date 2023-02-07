@@ -117,10 +117,10 @@ class OwnerMainFragment : UserBaseFragment() {
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewAdmin.addItemDecoration(decorator)
 
-    binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout.setOnRefreshListener { loadAdmins() }
 
-    binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout2.setOnRefreshListener { loadAdmins() }
 
     binding.noFound.findViewById<TextView>(R.id.message).text = getString(R.string.admins_no_found)

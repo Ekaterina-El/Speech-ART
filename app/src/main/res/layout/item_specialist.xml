@@ -15,15 +15,26 @@
     android:paddingVertical="10dp"
     android:layout_height="wrap_content">
 
+
+      <RatingBar
+        android:theme="@style/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="@{user.rating}"
+        android:isIndicator="true"
+        />
+
     <TextView
+      android:layout_marginTop="8dp"
       style="@style/text.header3"
       android:text="@{user.fullName}"
       tools:text="Большаков Роман Станиславович" />
 
     <TextView
-      android:layout_marginTop="5dp"
       style="@style/text.hint"
       android:text="@{user.email}"
       tools:text="reuwappiheje-3869@yopmail.com" />
-  </LinearLayout>
+    </LinearLayout>
 </layout>

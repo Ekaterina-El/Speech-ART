@@ -78,11 +78,11 @@ class AdminRequestsFragment : UserBaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     adminViewModel.loadRequestsToRegSpecialist()
 
-    val secondaryColor = requireContext().getColor(R.color.secondary_color)
-    binding.swipeRefreshLayout.setColorSchemeColors(secondaryColor)
+    val color = requireContext().getColor(R.color.primary_color)
+    binding.swipeRefreshLayout.setColorSchemeColors(color)
     binding.swipeRefreshLayout.setOnRefreshListener { adminViewModel.loadRequestsToRegSpecialist() }
 
-    binding.swipeRefreshLayout2.setColorSchemeColors(secondaryColor)
+    binding.swipeRefreshLayout2.setColorSchemeColors(color)
     binding.swipeRefreshLayout2.setOnRefreshListener { adminViewModel.loadRequestsToRegSpecialist() }
 
     val helper = ItemTouchHelper(requestsAdapterCallback)

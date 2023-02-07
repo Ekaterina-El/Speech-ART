@@ -64,10 +64,10 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     loadSpecialists()
 
-    binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout.setOnRefreshListener { loadSpecialists() }
 
-    binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
+    binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout2.setOnRefreshListener { loadSpecialists() }
 
     val helper = ItemTouchHelper(specialistsAdapterCallback)
