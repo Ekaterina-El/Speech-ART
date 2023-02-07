@@ -51,7 +51,33 @@ class AdminViewModel(application: Application) :
 
 
 
-  fun deleteRequest(request: RequestToRegSpecialist) {
+  fun disagreeRequest(request: RequestToRegSpecialist) {
+     val work = Work.AGREE_REQUEST
+    addWork(work)
+    viewModelScope.launch {
+      _error.value = RequestsRepository.disagreeRequest(request) {
+        editRequestList(request, isAdd = false)
+      }
+      removeWork(work)
+    }
+  }
 
+  private fun editRequestList(request: RequestToRegSpecialist, isAdd: Boolean) {
+    val requests = requestsToRegSpecialists.value!!.toMutableList()
+    if (isAdd) requests.add(request) else requests.remove(request)
+
+    requestsToRegSpecialists.value = requests
+    clearSearchRequest()
+  }
+
+  fun agreeRequest(request: RequestToRegSpecialist) {
+    val work = Work.DISAGREE_REQUEST
+    addWork(work)
+    viewModelScope.launch {
+      _error.value = RequestsRepository.agreeRequest(request) {
+        editRequestList(request, isAdd = true)
+      }
+      removeWork(work)
+    }
   }
 }

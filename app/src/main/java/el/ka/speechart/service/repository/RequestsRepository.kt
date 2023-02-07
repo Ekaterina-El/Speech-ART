@@ -29,4 +29,25 @@ object RequestsRepository {
   } catch (e: Exception) {
     Errors.unknown
   }
+
+  suspend fun disagreeRequest(request: RequestToRegSpecialist, onSuccess: () -> Unit): ErrorApp? = try {
+    FirebaseService.requestsToRegSpecialigsCollection.document(request.id).delete().await()
+    onSuccess()
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun agreeRequest(request: RequestToRegSpecialist, onSuccess: (RequestToRegSpecialist) -> Unit): ErrorApp? = try {
+    val doc = FirebaseService.requestsToRegSpecialigsCollection.add(request).await()
+    request.id = doc.id
+    onSuccess(request)
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
 }

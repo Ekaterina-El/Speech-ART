@@ -12,7 +12,6 @@ import el.ka.speechart.R
 import el.ka.speechart.databinding.AdminSpecialistsFragmentBinding
 import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.service.model.User
-import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
 import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
 import el.ka.speechart.view.adapter.list.specialist.SpecialistsAdapter
 import el.ka.speechart.view.ui.UserBaseFragment
@@ -32,10 +31,12 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     binding.swipeRefreshLayout2.isRefreshing = false
   }
 
-  private val specialistsAdapterCallback = AdapterDeleter {
-    val user = (it as SpecialistViewHolder).binding.user
-    if (user != null) adminViewModel.deleteUser(user)
-  }
+  private val specialistsAdapterCallback = AdapterDeleter(
+    onLeft = {
+      val user = (it as SpecialistViewHolder).binding.user
+      if (user != null) adminViewModel.deleteUser(user)
+    }
+  )
 
   override fun onCreateView(
     inflater: LayoutInflater,

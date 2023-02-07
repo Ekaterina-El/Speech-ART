@@ -81,10 +81,10 @@ class OwnerMainFragment : UserBaseFragment() {
     binding.swipeRefreshLayout2.isRefreshing = false
   }
 
-  private val adminAdapterCallback = AdapterDeleter {
+  private val adminAdapterCallback = AdapterDeleter(onLeft = {
     val admin = (it as AdminViewHolder).binding.user
     if (admin != null) ownerViewModel.deleteUser(admin)
-  }
+  })
 
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.RESTART) {

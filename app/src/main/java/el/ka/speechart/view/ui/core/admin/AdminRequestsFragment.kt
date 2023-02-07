@@ -10,19 +10,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import el.ka.speechart.R
 import el.ka.speechart.databinding.AdminRequestsFragmentBinding
-import el.ka.speechart.databinding.AdminSpecialistsFragmentBinding
 import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.RequestToRegSpecialist
 import el.ka.speechart.view.adapter.list.requests.RequestToRegSpecialistAdapter
 import el.ka.speechart.view.adapter.list.requests.RequestViewHolder
-import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
-import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class AdminRequestsFragment: UserBaseFragment() {
+class AdminRequestsFragment : UserBaseFragment() {
   private lateinit var binding: AdminRequestsFragmentBinding
   private lateinit var requestsAdapter: RequestToRegSpecialistAdapter
 
@@ -33,13 +30,27 @@ class AdminRequestsFragment: UserBaseFragment() {
     requestsAdapter.setItems(it)
   }
 
-  private val requestsAdapterCallback = AdapterDeleter {
-    val request = (it as RequestViewHolder).binding.request
-    if (request != null) adminViewModel.deleteRequest(request)
-  }
+  private val requestsAdapterCallback = AdapterDeleter(
+    onLeft = {
+      val request = (it as RequestViewHolder).binding.request
+      if (request != null) adminViewModel.disagreeRequest(request)
+    },
+    onRight = {
+      val request = (it as RequestViewHolder).binding.request
+      if (request != null) adminViewModel.agreeRequest(request)
+    }
+  )
+
+  val list = listOf(Work.LOAD_USERS, Work.LOAD_REQUESTS, Work.AGREE_REQUEST, Work.DISAGREE_REQUEST)
+
 
   override val workObserver = Observer<List<Work>> {
-    val isLoad = it.contains(Work.LOAD_USERS) || it.contains(Work.LOAD_REQUESTS)
+
+    val isLoad =
+      when {
+        it.isEmpty() -> false
+        else -> it.map { item -> if (list.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
+      }
     binding.swipeRefreshLayout.isRefreshing = isLoad
     binding.swipeRefreshLayout2.isRefreshing = isLoad
   }
@@ -50,7 +61,8 @@ class AdminRequestsFragment: UserBaseFragment() {
     savedInstanceState: Bundle?
   ): View {
     requestsAdapter = RequestToRegSpecialistAdapter()
-    binding = AdminRequestsFragmentBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+    binding =
+      AdminRequestsFragmentBinding.inflate(LayoutInflater.from(requireContext()), container, false)
 
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
