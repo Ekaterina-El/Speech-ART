@@ -1,23 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
 
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.admin.AdminRequestsFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.AdminViewModel" />
+
+    <variable
+      name="requestsAdapter"
+      type="el.ka.speechart.view.adapter.list.requests.RequestToRegSpecialistAdapter" />
   </data>
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-      android:id="@+id/textView"
-      android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:background="@color/secondary_color"
+      android:paddingHorizontal="@dimen/app_padding">
+
+      <ImageView
+        android:id="@+id/icon_edit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:clickable="true"
+        android:contentDescription="@string/exit"
+        android:onClick="@{() -> master.showExitDialog()}"
+        android:src="@drawable/ic_exit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/on_secondary_color" />
+
+
+      <TextView
+        style="@style/text.header1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:text="@string/requests_title"
+        android:textColor="@color/on_secondary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="5dp"
+      android:layout_marginBottom="10dp"
+      android:background="@drawable/shadow_line" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/requests"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/field_wrapper"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <EditText
+          style="@style/text.header3"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="10dp"
+          android:layout_weight="1"
+          android:afterTextChanged="@{() -> viewModel.filterRequests()}"
+          android:background="@null"
+          android:ellipsize="end"
+          android:hint="@string/search_hint"
+          android:maxLines="1"
+          android:text="@={viewModel.searchRequests}"
+          tools:ignore="NestedWeights" />
+
+        <ImageView
+          style="@style/icon"
+          android:src="@drawable/ic_search"
+          android:visibility="@{viewModel.searchRequests.isEmpty() ? View.VISIBLE : View.GONE }" />
+
+        <ImageView
+          style="@style/icon"
+          android:onClick="@{() -> viewModel.clearSearchRequest()}"
+          android:src="@drawable/ic_close"
+          android:visibility="@{viewModel.searchRequests.isEmpty() ? View.GONE : View.VISIBLE }" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginVertical="10dp"
+      android:layout_weight="1"
+      android:visibility="@{viewModel.filteredRequestsToRegSpecialist.size() == 0 ? View.VISIBLE : View.GONE}">
+      <include
+        layout="@layout/users_no_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout2"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginVertical="10dp"
+      android:layout_weight="1"
+      android:visibility="@{viewModel.filteredRequestsToRegSpecialist.size() == 0 ? View.GONE : View.VISIBLE}">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRequests"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adapter="@{requestsAdapter}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_specialist" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  </LinearLayout>
 </layout>

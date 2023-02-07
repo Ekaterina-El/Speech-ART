@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.speechart.databinding.ItemAdminBinding
 import el.ka.speechart.service.model.User
-import el.ka.speechart.view.adapter.list.UserAdapter
+import el.ka.speechart.view.adapter.list.BaseAdapter
 
-class AdminAdapter: UserAdapter<AdminViewHolder>() {
+class AdminAdapter: BaseAdapter<User>() {
   override val items = mutableListOf<User>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminViewHolder {

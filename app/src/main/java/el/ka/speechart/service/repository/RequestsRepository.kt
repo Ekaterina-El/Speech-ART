@@ -15,4 +15,18 @@ object RequestsRepository {
   } catch (e: Exception) {
     Errors.unknown
   }
+
+  suspend fun loadRequests(onSuccess: (List<RequestToRegSpecialist>) -> Unit): ErrorApp? = try {
+    val requests =  FirebaseService.requestsToRegSpecialigsCollection.get().await().mapNotNull {
+      val request = it.toObject(RequestToRegSpecialist::class.java)
+      request.id = it.id
+      return@mapNotNull request
+    }
+    onSuccess(requests)
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
 }

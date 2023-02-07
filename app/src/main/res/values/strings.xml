@@ -41,4 +41,5 @@
   <string name="specialists_title">Специалисты</string>
   <string name="requests_to_specialist_added">Заявка на регистрацию нового специалиста отправлена! Администраторы рассмотрят её в ближайшее время.</string>
   <string name="request_sent">Заявка отправлена!</string>
+  <string name="requests_title">Запросы</string>
 </resources>

@@ -1,26 +1,25 @@
 package el.ka.speechart.view.adapter.list
 
 import androidx.recyclerview.widget.RecyclerView
-import el.ka.speechart.service.model.User
 
-abstract class UserAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
-  protected open val items = mutableListOf<User>()
+abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+  protected open val items = mutableListOf<T>()
 
   override fun getItemCount() = items.size
 
-  fun setItems(newItems: List<User>) {
+  fun setItems(newItems: List<T>) {
     if (items == newItems) return
     clear()
     newItems.forEach { setItem(it) }
   }
 
-  fun addItem(user: User, position: Int? = null) {
+  fun addItem(user: T, position: Int? = null) {
     val pos = if (position == null || position < 0) items.size else position
     items.add(pos, user)
     notifyItemInserted(pos)
   }
 
-  fun removeItem(user: User) {
+  fun removeItem(user: T) {
     val idx = items.indexOf(user)
     if (idx == -1) return
 
@@ -28,7 +27,7 @@ abstract class UserAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     notifyItemRemoved(idx)
   }
 
-  private fun setItem(item: User) {
+  private fun setItem(item: T) {
     items.add(item)
     notifyItemInserted(items.size)
   }
