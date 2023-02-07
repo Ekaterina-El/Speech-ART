@@ -36,7 +36,6 @@ class SplashFragment : BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    requireActivity().window.statusBarColor = requireContext().getColor(R.color.secondary_color)
 
     binding = SplashFragmentBinding.inflate(layoutInflater)
     binding.apply {

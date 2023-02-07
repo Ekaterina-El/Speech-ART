@@ -64,7 +64,6 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     loadSpecialists()
 
-
     binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.secondary_color))
     binding.swipeRefreshLayout.setOnRefreshListener { loadSpecialists() }
 

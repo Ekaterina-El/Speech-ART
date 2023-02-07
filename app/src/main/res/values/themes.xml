@@ -10,7 +10,7 @@
     <item name="colorSecondaryVariant">@color/secondary_color_dark</item>
     <item name="colorOnSecondary">@color/on_secondary_color</item>
     <!-- Status bar color. -->
-    <item name="android:statusBarColor">@color/secondary_color</item>
+    <item name="android:statusBarColor">@color/primary_color</item>
     <!-- Customize your theme here. -->
 
     <item name="android:windowIsFloating">false</item>
@@ -26,11 +26,13 @@
     <item name="colorPrimary">@color/primary_color</item>
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@color/white</item>
+    <item name="android:statusBarColor">@color/primary_color</item>
     <item name="actionMenuTextColor">@color/on_primary_color</item>
   </style>
 
   <style name="Slide">
     <item name="android:windowEnterAnimation">@anim/slide_up</item>
     <item name="android:windowExitAnimation">@anim/slide_down</item>
+    <item name="android:statusBarColor">@color/primary_color</item>
   </style>
 </resources>

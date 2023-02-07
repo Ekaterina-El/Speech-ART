@@ -16,6 +16,6 @@
 
   <style name="button.outline" parent="button">
     <item name="android:background">@drawable/button_wrapper</item>
-    <item name="android:textColor">@color/primary_color_dark</item>
+    <item name="android:textColor">@color/secondary_color_dark</item>
   </style>
 </resources>

@@ -28,7 +28,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="56dp"
-      android:background="@color/secondary_color"
+      android:background="@color/primary_color_dark"
       android:paddingHorizontal="@dimen/app_padding">
 
       <ImageView
@@ -113,7 +113,7 @@
       <androidx.cardview.widget.CardView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:backgroundTint="@color/secondary_color"
+        android:backgroundTint="@color/primary_color"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"

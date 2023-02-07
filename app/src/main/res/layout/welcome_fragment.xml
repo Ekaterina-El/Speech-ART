@@ -58,7 +58,7 @@
 
     <Button
       android:id="@+id/buttonLogin"
-      style="@style/button.fill"
+      style="@style/button.outline"
       android:layout_marginHorizontal="@dimen/app_padding"
       android:layout_marginBottom="10dp"
       android:onClick="@{() -> master.goLogIn()}"

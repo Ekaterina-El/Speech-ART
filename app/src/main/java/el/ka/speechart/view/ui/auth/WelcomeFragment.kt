@@ -17,7 +17,6 @@ class WelcomeFragment: BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    requireActivity().window.statusBarColor = requireContext().getColor(R.color.secondary_color)
 
     binding = WelcomeFragmentBinding.inflate(layoutInflater)
     binding.apply {

@@ -27,7 +27,7 @@
   <style name="FieldWrapper.contrast" parent="FieldWrapper">
     <item name="boxStrokeColor">@color/box_color_contrast</item>
     <item name="hintTextColor">@color/text_color</item>
-    <item name="startIconTint">@color/secondary_color</item>
+    <item name="startIconTint">@color/primary_color</item>
     <item name="android:textColorHint">@color/text_color</item>
   </style>
 </resources>
