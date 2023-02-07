@@ -68,7 +68,7 @@ open class BaseFragment : Fragment() {
     informDialog.open(title, message)
   }
 
-  fun showInformDialog(title: String, message: String, warningText: String? = null, onClickText: () -> Unit) {
+  fun showInformDialog(title: String, message: String, warningText: String? = null, onClickText: () -> Unit = {}) {
     informDialog.open(title, message, warningText, onClickText)
   }
   // endregion

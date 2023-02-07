@@ -22,9 +22,15 @@ class SignUpFragment : BaseFragment() {
   private val externalActionObserver = Observer<Action?> {
     when (it) {
       Action.GO_NEXT -> findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-      Action.REQUEST_TO_REGISTRATION_ADDED -> toast(getString(R.string.requests_to_specialist_added))
+      Action.REQUEST_TO_REGISTRATION_ADDED -> notifyAboutAddedRequestToRegistration()
       else -> Unit
     }
+  }
+
+  private fun notifyAboutAddedRequestToRegistration() {
+    val title = getString(R.string.request_sent)
+    val message = getString(R.string.requests_to_specialist_added)
+    showInformDialog(title, message)
   }
 
   private val fieldErrorsObserver = Observer<List<FieldError>> {
