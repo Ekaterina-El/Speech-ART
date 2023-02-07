@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class AdminViewModel(application: Application) :
   ViewModelWithSearchUsers(application, UserRole.SPECIALIST) {
   private val requestsToRegSpecialists = MutableLiveData<List<RequestToRegSpecialist>>(listOf())
+  val countOfLoadedRequests: Int get() = requestsToRegSpecialists.value!!.size
 
   private val _filteredRequestsToRegSpecialist =
     MutableLiveData<List<RequestToRegSpecialist>>(listOf())

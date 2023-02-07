@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 abstract class ViewModelWithSearchUsers(application: Application, private val usersRoleForDownload: UserRole) : BaseViewModel(application) {
   protected val users = MutableLiveData<List<User>>(listOf())
+  val countOfLoadedUsers: Int get() = users.value!!.size
   val search = MutableLiveData("")
 
   fun loadUsers() {

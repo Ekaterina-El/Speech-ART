@@ -1,6 +1,7 @@
 package el.ka.speechart.view.ui.core.admin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,7 @@ class AdminSpecialistsFragment : UserBaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    loadSpecialists()
+    if (adminViewModel.countOfLoadedUsers == 0) loadSpecialists()
 
     binding.swipeRefreshLayout.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout.setOnRefreshListener { loadSpecialists() }

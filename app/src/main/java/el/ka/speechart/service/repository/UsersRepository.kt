@@ -20,6 +20,22 @@ object UsersRepository {
     Errors.unknown
   }
 
+  suspend fun isUniqueEmail(email: String): Boolean {
+    // check requests
+    val equalRequest =
+      FirebaseService.requestsToRegSpecialigsCollection.whereEqualTo(Constants.FIELD_EMAIL, email)
+        .limit(1).get().await().count()
+
+    if (equalRequest > 0) return false
+
+    // check users
+    val equalUsers =
+      FirebaseService.usersCollection.whereEqualTo(Constants.FIELD_EMAIL, email)
+        .limit(1).get().await().count()
+
+    return equalUsers <= 0
+  }
+
   suspend fun loadUser(currentUid: String, onSuccess: (User) -> Unit): ErrorApp? = try {
     val doc = FirebaseService.usersCollection.document(currentUid).get().await()
     val user = doc.toObject(User::class.java)!!
