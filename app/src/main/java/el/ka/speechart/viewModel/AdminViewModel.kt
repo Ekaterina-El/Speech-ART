@@ -49,8 +49,6 @@ class AdminViewModel(application: Application) :
     }
   }
 
-
-
   fun disagreeRequest(request: RequestToRegSpecialist) {
      val work = Work.AGREE_REQUEST
     addWork(work)

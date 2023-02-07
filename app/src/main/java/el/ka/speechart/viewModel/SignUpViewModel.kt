@@ -76,13 +76,16 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
       else -> RequestsRepository.addRequestToRegistrationSpecialist(request)    // create study account
 
     }
+    AuthRepository.logout {}
 
-    if (_error.value == null) {
+
+      if (_error.value == null) {
       _externalAction.value = when (request) {
         null -> Action.GO_NEXT
         else -> Action.REQUEST_TO_REGISTRATION_ADDED
       }
     }
+
 
     removeWork(work)
   }
