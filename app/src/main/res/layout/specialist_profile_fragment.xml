@@ -107,11 +107,10 @@
             app:hideIfEmpty="@{viewModel.user.fullName}"
             app:imageUrl="@{viewModel.user.profileUrl}" />
 
-
-
           <TextView
             style="@style/text"
             android:layout_marginTop="25dp"
+            android:onClick="@{() -> master.showChangeDescriptionDialog()}"
             tools:text="Коррекционно-логопедическая деятельность:\n\n – Диагностика речевых нарушений\n – Коррекция фонетико-фонематического недоразвития речи\n – Коррекция общего недоразвития речи\n – Коррекция мелодико-интонационной стороны речи\n –   Коррекционно-логопедическая работа со взрослыми (нарушения звукопроизношения, дизартрия)"
             android:layout_marginHorizontal="@dimen/app_padding"
             app:text="@{viewModel.user.description.isEmpty() ? @string/description_no_set : viewModel.user.description}" />

@@ -12,6 +12,7 @@ import el.ka.speechart.other.CropOptions
 import el.ka.speechart.other.ImageChanger
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User
+import el.ka.speechart.view.dialog.ChangeDescriptionDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.SpecialistViewModel
 import el.ka.speechart.viewModel.UserViewModel
@@ -81,8 +82,31 @@ class SpecialistProfileFragment : UserBaseFragment() {
   // region Change profile image
   private lateinit var imageChanger: ImageChanger
 
-  fun changeProfileImage() = imageChanger.change(CropOptions.rectCropImageOptions) { uri ->
-    userViewModel.updateProfileImage(uri)
+  private val hasLoad: Boolean get() = userViewModel.work.value!!.isNotEmpty()
+  private val user: User? get() = userViewModel.user.value
+
+  fun changeProfileImage() {
+    if (user == null || hasLoad) return
+
+    imageChanger.change(CropOptions.rectCropImageOptions) { uri ->
+      userViewModel.updateProfileImage(uri)
+    }
   }
   // endregion
+
+  private val changeDescriptionDialogListener by lazy {
+    object : ChangeDescriptionDialog.Companion.Listener {
+      override fun onSave(description: String) {
+        userViewModel.updateDescription(description)
+      }
+    }
+  }
+  private val changeDescriptionDialog by lazy {
+    ChangeDescriptionDialog(requireContext(), changeDescriptionDialogListener)
+  }
+
+  fun showChangeDescriptionDialog() {
+    if (user == null || hasLoad) return
+    changeDescriptionDialog.open(user!!.description)
+  }
 }

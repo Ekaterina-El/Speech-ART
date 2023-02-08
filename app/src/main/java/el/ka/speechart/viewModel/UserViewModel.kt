@@ -58,4 +58,18 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
       removeWork(work)
     }
   }
+
+  fun updateDescription(newDescription: String) {
+    val work = Work.UPDATE_USER
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UsersRepository.updateUserDescription(newDescription) {
+        val user = _user.value!!
+        user.description = newDescription
+        _user.postValue(user)
+      }
+      removeWork(work)
+    }
+  }
 }

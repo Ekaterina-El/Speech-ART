@@ -50,4 +50,7 @@
   <string name="profile">Профиль</string>
   <string name="exercises">Упражнения</string>
   <string name="description_no_set">Описание не установленно</string>
+  <string name="edit_description">Редактирование описания</string>
+  <string name="edit_description_subtext">Укажите информацию об образовании, оконченых курсах, тренингах; опыт работы; приведите методы, которые используйте в своей работе и так далее.</string>
+  <string name="description">Описание</string>
 </resources>

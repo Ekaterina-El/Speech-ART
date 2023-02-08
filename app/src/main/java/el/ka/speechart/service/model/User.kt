@@ -12,7 +12,7 @@ data class User(
   // for Specialist
   val rating: Float = 0f,
   val reviews: List<String> = listOf(),
-  val description: String = "",
+  var description: String = "",
 
   // for Study
   val resultsOfCompleted: List<String> = listOf(),

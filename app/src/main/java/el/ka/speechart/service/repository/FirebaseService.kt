@@ -1,10 +1,9 @@
 package el.ka.speechart.service.repository
 
 import android.net.Uri
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import el.ka.speechart.other.Constants
 import kotlinx.coroutines.tasks.await
@@ -13,6 +12,9 @@ import java.util.*
 object FirebaseService {
   private val storage = Firebase.storage
 
+  suspend fun updateDocumentField(collection: CollectionReference, field: String, uid: String, value: Any) {
+    collection.document(uid).update(field, value).await()
+  }
 
   suspend fun uploadToStorage(uri: Uri, prefPath: String): String {
     val time = Calendar.getInstance().time
@@ -26,6 +28,10 @@ object FirebaseService {
     storage.getReferenceFromUrl(url).delete().await()
   }
 
+  suspend fun updateUsersField(uid: String, field: String, value: Any) {
+    updateDocumentField(usersCollection, field, uid, value)
+  }
+
   val usersCollection by lazy { Firebase.firestore.collection(Constants.USERS_COLLECTION) }
-  val  requestsToRegSpecialigsCollection by lazy { Firebase.firestore.collection(Constants.REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION) }
+  val  requestsToRegSpecialistsCollection by lazy { Firebase.firestore.collection(Constants.REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION) }
 }

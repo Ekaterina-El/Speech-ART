@@ -2,8 +2,6 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
-import android.util.Log
-import com.google.rpc.context.AttributeContext.Auth
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
@@ -25,7 +23,7 @@ object UsersRepository {
   suspend fun isUniqueEmail(email: String): Boolean {
     // check requests
     val equalRequest =
-      FirebaseService.requestsToRegSpecialigsCollection.whereEqualTo(Constants.FIELD_EMAIL, email)
+      FirebaseService.requestsToRegSpecialistsCollection.whereEqualTo(Constants.FIELD_EMAIL, email)
         .limit(1).get().await().count()
 
     if (equalRequest > 0) return false
@@ -84,9 +82,19 @@ object UsersRepository {
     if (oldProfileUrl != "") FirebaseService.deleteByUrl(oldProfileUrl)
 
     val url = FirebaseService.uploadToStorage(uri, "users/profiles/")
-    FirebaseService.usersCollection.document(uid).update(Constants.FIELD_PROFILE_URL, url).await()
+    FirebaseService.updateUsersField(uid, Constants.FIELD_PROFILE_URL, url)
     onSuccess(url)
 
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun updateUserDescription(newDescription: String, onSuccess: () -> Unit): ErrorApp? = try {
+    FirebaseService.updateUsersField(AuthRepository.currentUid!!, Constants.FIELD_DESCRIPTION, newDescription)
+    onSuccess()
     null
   } catch (e: NetworkErrorException) {
     Errors.network
