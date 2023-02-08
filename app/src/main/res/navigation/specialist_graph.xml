@@ -13,7 +13,7 @@
   <fragment
     android:id="@+id/specialistExerciseFragment"
     tools:layout="@layout/specialist_list_of_exercises_fragment"
-    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistListOfExercisesFragment"
     android:label="SpecialistExerciseFragment" />
   <fragment
     android:id="@+id/specialistRequestsToCheckFragment"
