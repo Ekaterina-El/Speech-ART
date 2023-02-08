@@ -159,7 +159,7 @@
       android:visibility="@{viewModel.filteredExercises.size() == 0 ? View.GONE : View.VISIBLE}">
 
       <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAdmin"
+        android:id="@+id/recyclerViewExercises"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adapter="@{exercisesAdapter}"

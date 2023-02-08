@@ -12,7 +12,12 @@ import java.util.*
 object FirebaseService {
   private val storage = Firebase.storage
 
-  suspend fun updateDocumentField(collection: CollectionReference, field: String, uid: String, value: Any) {
+  suspend fun updateDocumentField(
+    collection: CollectionReference,
+    field: String,
+    uid: String,
+    value: Any
+  ) {
     collection.document(uid).update(field, value).await()
   }
 
@@ -33,5 +38,6 @@ object FirebaseService {
   }
 
   val usersCollection by lazy { Firebase.firestore.collection(Constants.USERS_COLLECTION) }
-  val  requestsToRegSpecialistsCollection by lazy { Firebase.firestore.collection(Constants.REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION) }
+  val exercisesRepository by lazy { Firebase.firestore.collection(Constants.EXERCISES_COLLECTION) }
+  val requestsToRegSpecialistsCollection by lazy { Firebase.firestore.collection(Constants.REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION) }
 }

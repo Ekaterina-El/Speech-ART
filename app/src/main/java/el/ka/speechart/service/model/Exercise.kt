@@ -3,7 +3,7 @@ package el.ka.speechart.service.model
 import el.ka.speechart.other.LevelOfDifficulty
 
 data class Exercise(
-  val id: String = "",
+  var id: String = "",
   val levelOfDifficulty: LevelOfDifficulty = LevelOfDifficulty.EASY,
   val referencePronunciationFileUrl: String = "",
   val name: String = "",
