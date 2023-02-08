@@ -46,4 +46,7 @@
   <string name="requests_no_found">Запросы на регистрацию специалистов не найдены</string>
   <string name="specialists_no_found">Специалисты не найдены</string>
   <string name="admins_no_found">Администраторы не найдены</string>
+  <string name="requests_to_check">Выполненые</string>
+  <string name="profile">Профиль</string>
+  <string name="exercises">Упражнения</string>
 </resources>

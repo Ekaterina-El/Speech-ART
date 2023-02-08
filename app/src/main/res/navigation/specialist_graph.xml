@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/specialist_graph"
+  app:startDestination="@id/specialistProfileFragment">
+
+  <fragment
+    android:id="@+id/specialistProfileFragment"
+    tools:layout="@layout/specialist_profile_fragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistProfileFragment"
+    android:label="SpecialistProfileFragment" />
+  <fragment
+    android:id="@+id/specialistExerciseFragment"
+    tools:layout="@layout/specialist_list_of_exercises_fragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment"
+    android:label="SpecialistExerciseFragment" />
+  <fragment
+    android:id="@+id/specialistRequestsToCheckFragment"
+    tools:layout="@layout/specialist_list_of_requests_to_check_fragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistRequestsToCheckFragment"
+    android:label="SpecialistRequestsToCheckFragment" />
+</navigation>

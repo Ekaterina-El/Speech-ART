@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import el.ka.speechart.databinding.AdminMainFragmentBinding
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistMainFragmentBinding
-import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistMainFragment: UserBaseFragment() {
+class SpecialistMainFragment : UserBaseFragment() {
   private lateinit var binding: SpecialistMainFragmentBinding
   override val userViewModel by activityViewModels<UserViewModel>()
 
@@ -25,6 +26,14 @@ class SpecialistMainFragment: UserBaseFragment() {
       lifecycleOwner = viewLifecycleOwner
     }
     return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    val navController =
+      (childFragmentManager.findFragmentById(R.id.fragmentContainerViewSpecialist) as NavHostFragment).navController
+    binding.bottomNavigationView.setupWithNavController(navController)
   }
 
 }
