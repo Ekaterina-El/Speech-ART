@@ -23,4 +23,5 @@
   <color name="light_grey">#D0D0D0</color>
   <color name="dark_grey">#484848</color>
   <color name="attention">#971E00</color>
+  <color name="loader_color">@color/primary_color</color>
 </resources>

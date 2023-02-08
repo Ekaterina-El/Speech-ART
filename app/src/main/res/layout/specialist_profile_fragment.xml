@@ -74,13 +74,7 @@
           android:layout_height="match_parent"
           android:orientation="vertical">
 
-          <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginTop="20dp"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_gravity="center"
-            tools:src="@drawable/placeholder_image"
-            app:imageUrl="@{viewModel.profile.profileUrl}" />
+
 
           <RatingBar
             android:theme="@style/ratingBar"
@@ -88,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
+            app:hideIfEmpty="@{viewModel.profile.fullName}"
             tools:rating="3.7"
             android:layout_marginTop="15dp"
             android:layout_gravity="center"
@@ -100,7 +95,16 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/app_padding"
             tools:text="Курчагин Юрий Дмитриевич"
-            android:text="@{viewModel.profile.fullName}" />
+            app:text="@{viewModel.profile.fullName}" />
+
+          <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="20dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/placeholder_image"
+            app:hideIfEmpty="@{viewModel.profile.fullName}"
+            app:imageUrl="@{viewModel.profile.profileUrl}" />
 
 
 
@@ -109,7 +113,7 @@
             android:layout_marginTop="25dp"
             tools:text="Коррекционно-логопедическая деятельность:\n\n – Диагностика речевых нарушений\n – Коррекция фонетико-фонематического недоразвития речи\n – Коррекция общего недоразвития речи\n – Коррекция мелодико-интонационной стороны речи\n –   Коррекционно-логопедическая работа со взрослыми (нарушения звукопроизношения, дизартрия)"
             android:layout_marginHorizontal="@dimen/app_padding"
-            android:text="@{viewModel.profile.fullName}" />
+            app:text="@{viewModel.profile.description}" />
 
           <View
             android:layout_width="match_parent"

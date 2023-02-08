@@ -11,4 +11,5 @@ enum class Work {
   DELETE_USER,
   DISAGREE_REQUEST,
   AGREE_REQUEST,
+  LOAD_REVIEWS,
 }

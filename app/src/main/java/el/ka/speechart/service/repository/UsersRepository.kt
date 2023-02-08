@@ -2,6 +2,7 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.util.Log
+import com.google.rpc.context.AttributeContext.Auth
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
@@ -36,8 +37,9 @@ object UsersRepository {
     return equalUsers <= 0
   }
 
-  suspend fun loadUser(currentUid: String, onSuccess: (User) -> Unit): ErrorApp? = try {
-    val doc = FirebaseService.usersCollection.document(currentUid).get().await()
+  suspend fun loadUser(currentUid: String? = null, onSuccess: (User) -> Unit): ErrorApp? = try {
+    val uid = currentUid ?: AuthRepository.currentUid!!
+    val doc = FirebaseService.usersCollection.document(uid).get().await()
     val user = doc.toObject(User::class.java)!!
     user.uid = doc.id
     onSuccess(user)
