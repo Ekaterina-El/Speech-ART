@@ -7,7 +7,7 @@ data class User(
   val role: UserRole = UserRole.STUDY,
   val email: String = "",
   val fullName: String = "",
-  val profileUrl: String = "",
+  var profileUrl: String = "",
 
   // for Specialist
   val rating: Float = 0f,

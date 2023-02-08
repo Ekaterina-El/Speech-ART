@@ -12,4 +12,5 @@ enum class Work {
   DISAGREE_REQUEST,
   AGREE_REQUEST,
   LOAD_REVIEWS,
+  UPDATE_USER,
 }

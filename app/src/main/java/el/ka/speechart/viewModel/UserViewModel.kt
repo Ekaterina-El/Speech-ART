@@ -1,6 +1,7 @@
 package el.ka.speechart.viewModel
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,20 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
   fun logout() {
     AuthRepository.logout{
       _externalAction.value = Action.RESTART
+    }
+  }
+
+  fun updateProfileImage(uri: Uri) {
+    val work = Work.UPDATE_USER
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = UsersRepository.updateProfileImage(_user.value!!.profileUrl, uri) { url ->
+        val user = _user.value!!
+        user.profileUrl = url
+        _user.postValue(user)
+      }
+      removeWork(work)
     }
   }
 }

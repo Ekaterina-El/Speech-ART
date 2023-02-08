@@ -1,6 +1,7 @@
 package el.ka.speechart.other
 
 object Constants {
+  const val FIELD_PROFILE_URL = "profileUrl"
   const val FIELD_EMAIL = "email"
   const val FIELD_ROLE = "role"
   const val LOAD_DELAY = 2000L

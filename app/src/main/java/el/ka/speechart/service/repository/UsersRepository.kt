@@ -1,6 +1,7 @@
 package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
+import android.net.Uri
 import android.util.Log
 import com.google.rpc.context.AttributeContext.Auth
 import el.ka.speechart.other.Constants
@@ -70,6 +71,22 @@ object UsersRepository {
   suspend fun deleteUser(user: User, onSuccess: () -> Unit): ErrorApp? = try {
     FirebaseService.usersCollection.document(user.uid).delete().await()
     onSuccess()
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun updateProfileImage(oldProfileUrl: String, uri: Uri, onSuccess: (String) -> Unit): ErrorApp? = try {
+    val uid = AuthRepository.currentUid!!
+
+    if (oldProfileUrl != "") FirebaseService.deleteByUrl(oldProfileUrl)
+
+    val url = FirebaseService.uploadToStorage(uri, "users/profiles/")
+    FirebaseService.usersCollection.document(uid).update(Constants.FIELD_PROFILE_URL, url).await()
+    onSuccess(url)
+
     null
   } catch (e: NetworkErrorException) {
     Errors.network

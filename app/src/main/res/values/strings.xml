@@ -49,4 +49,5 @@
   <string name="requests_to_check">Выполненые</string>
   <string name="profile">Профиль</string>
   <string name="exercises">Упражнения</string>
+  <string name="description_no_set">Описание не установленно</string>
 </resources>

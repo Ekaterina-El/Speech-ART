@@ -14,15 +14,7 @@ class SpecialistViewModel(application: Application) : BaseViewModel(application)
   private val _profile = MutableLiveData<User?>(null)
   val profile: LiveData<User?> get() = _profile
 
-  fun loadProfile() {
-    val work = Work.LOAD_USERS
-    addWork(work)
-
-    viewModelScope.launch {
-      _error.value = UsersRepository.loadUser {
-        _profile.postValue(it)
-      }
-      removeWork(work)
-    }
+  fun setProfile(it: User?) {
+    _profile.postValue(it)
   }
 }
