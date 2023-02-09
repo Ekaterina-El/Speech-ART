@@ -22,7 +22,7 @@
 
 
   <style name="text.clickable" parent="text">
-    <item name="android:textColor">@color/primary_color_dark</item>
+    <item name="android:textColor">@color/attention</item>
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
   </style>

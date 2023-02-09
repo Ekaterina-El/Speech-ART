@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+    <variable
+      name="item"
+      type="el.ka.speechart.other.SpinnerItem" />
+  </data>
+  <TextView
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="15dp"
+    android:text="@{item.key}"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:text="@string/easy" />
+</layout>

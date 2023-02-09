@@ -10,14 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
+import el.ka.speechart.other.LevelOfDifficulty
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
-import el.ka.speechart.view.adapter.list.specialist.SpecialistsAdapter
+import el.ka.speechart.view.dialog.AddExerciseDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.SpecialistViewModel
 import el.ka.speechart.viewModel.UserViewModel
-import org.w3c.dom.Text
 
 class SpecialistListOfExercisesFragment : UserBaseFragment() {
   private lateinit var binding: SpecialistListOfExercisesFragmentBinding
@@ -90,7 +90,18 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
     specialistViewModel.work.removeObserver(workObserver)
   }
 
-  fun showDialogForAddExercises() {
+  private val addExerciseDialogListener by lazy {
+    object: AddExerciseDialog.Companion.Listener {
+      override fun onSave(exercise: Exercise) {
+        specialistViewModel.addExercise(exercise)
+      }
+    }
+  }
 
+  private val addExerciseDialog by lazy {
+    AddExerciseDialog(requireContext(), this, addExerciseDialogListener)
+  }
+  fun showDialogForAddExercises() {
+    addExerciseDialog.open()
   }
 }

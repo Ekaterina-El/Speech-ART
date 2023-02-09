@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/primary_color"
+      android:gravity="center"
+      android:paddingHorizontal="15dp"
+      android:paddingVertical="10dp">
+
+      <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_add"
+        app:tint="@color/on_secondary_color" />
+
+      <TextView
+        android:id="@+id/textTitle"
+        style="text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_weight="1"
+        android:text="@string/add_exercise"
+        android:textColor="@color/on_secondary_color"
+        android:textSize="16sp" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:overScrollMode="never">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          style="@style/text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:text="@string/add_exercise_description"
+          android:textColor="@color/text_color" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutName"
+          style="@style/FieldWrapper.contrast"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/name">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            style="@style/FieldContent.contrast"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutDescription"
+          style="@style/FieldWrapper.contrast"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/description">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description"
+            style="@style/FieldContent.contrast"
+            android:gravity="top"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxLines="15" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/field_wrapper">
+
+          <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            tools:listitem="@layout/spinner_item" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutText"
+          style="@style/FieldWrapper.contrast"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:hint="@string/add_exercise_text">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text"
+            style="@style/FieldContent.contrast"
+            android:gravity="top"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:maxLines="15" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+          android:layout_marginTop="5dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/field_wrapper">
+
+          <TextView
+            style="@style/text"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:text="Файл не выбран" />
+        </LinearLayout>
+
+        <TextView
+          android:id="@+id/fileError"
+          style="@style/text.clickable"
+          android:layout_marginTop="2dp"
+          android:layout_marginStart="15dp"
+          android:textSize="12sp"
+          tools:text="@string/is_require" />
+
+        <Button
+          android:id="@+id/buttonContinue"
+          style="?android:attr/buttonBarButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_gravity="end"
+          android:layout_marginTop="10dp"
+          android:layout_weight="1"
+          android:background="@drawable/button_selector"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/continue_text"
+          android:textAllCaps="false"
+          android:textColor="@color/on_secondary_color"
+          app:backgroundTint="@null"
+          app:tint="@null" />
+
+
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+  </LinearLayout>
+</layout>

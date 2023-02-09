@@ -5,10 +5,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import el.ka.speechart.other.LevelOfDifficulty
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.User
+import el.ka.speechart.service.model.filterBy
 import el.ka.speechart.service.repository.ExercisesRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,11 +45,6 @@ class SpecialistViewModel(application: Application) : BaseViewModel(application)
     }
   }
 
-  fun List<Exercise>.filterBy(context: Context, search: String) = this.filter {
-    it.name.contains(search, true) ||
-        context.getString(it.levelOfDifficulty.strRes).contains(search, true)
-  }
-
   fun clearSearchExercises() {
     searchExercises.value = ""
     filterExercises()
@@ -60,16 +55,23 @@ class SpecialistViewModel(application: Application) : BaseViewModel(application)
     addWork(work)
 
     viewModelScope.launch {
-      delay(3000)
       _error.value = ExercisesRepository.loadExercises {
-//        _exercises.value = it
-        _exercises.value = listOf(
-          Exercise(name = "Упражнение #1", levelOfDifficulty = LevelOfDifficulty.EASY),
-          Exercise(name = "Упражнение #2", levelOfDifficulty = LevelOfDifficulty.EASY),
-          Exercise(name = "Упражнение #4", levelOfDifficulty = LevelOfDifficulty.MEDIUM),
-          Exercise(name = "Упражнение #84", levelOfDifficulty = LevelOfDifficulty.ADVANCED),
-          Exercise(name = "Упражнение #15", levelOfDifficulty = LevelOfDifficulty.MEDIUM),
-        )
+        _exercises.value = it
+        clearSearchExercises()
+      }
+      removeWork(work)
+    }
+  }
+
+  fun addExercise(exercise: Exercise) {
+    val work = Work.ADD_EXERCISE
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.addExercise(exercise) { exercise ->
+        val exercises = _exercises.value!!.toMutableList()
+        exercises.add(exercise)
+        _exercises.value = exercises
         clearSearchExercises()
       }
       removeWork(work)

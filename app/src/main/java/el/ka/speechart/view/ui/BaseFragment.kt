@@ -5,7 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -13,10 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import el.ka.speechart.MainActivity
 import el.ka.speechart.R
-import el.ka.speechart.other.Constants
-import el.ka.speechart.other.Credentials
-import el.ka.speechart.other.ErrorApp
-import el.ka.speechart.other.Work
+import el.ka.speechart.other.*
+import el.ka.speechart.view.adapter.list.spinner.SpinnerAdapter
 import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.dialog.InformDialog
 
@@ -132,4 +130,20 @@ open class BaseFragment : Fragment() {
   fun toast(text: String) {
     Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
   }
+
+  fun createSpinner(
+    itemsArrayRes: Int,
+    arrayValues: List<Any>,
+    spinner: Spinner,
+    value: Any?
+  ) {
+    val adapter =
+      SpinnerAdapter(requireContext(), getSpinnerItems(itemsArrayRes, arrayValues))
+
+    spinner.adapter = adapter
+    adapter.selectItem(value, spinner)
+  }
+
+  private fun getSpinnerItems(arrayId: Int, types: List<Any>) =
+    resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
 }
