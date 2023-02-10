@@ -2,11 +2,12 @@ package el.ka.speechart.service.model
 
 import android.content.Context
 import el.ka.speechart.other.LevelOfDifficulty
+import el.ka.speechart.other.MediaFileInfo
 
 data class Exercise(
   var id: String = "",
   val levelOfDifficulty: LevelOfDifficulty = LevelOfDifficulty.EASY,
-  val referencePronunciationFileUrl: String = "",
+  var referencePronunciationFile: MediaFileInfo? = null,
   val name: String = "",
   val description: String = "",
   val text: String = "",
@@ -14,7 +15,7 @@ data class Exercise(
 ) {
   override fun toString(): String =
     "id: $id | name: $name | description: $description | text: $text | " +
-        "level: $levelOfDifficulty | fileUrl: $referencePronunciationFileUrl | specialistUID: $createdByASpecialist"
+        "level: $levelOfDifficulty | fileUrl: ${referencePronunciationFile?.url} | specialistUID: $createdByASpecialist"
 }
 
 

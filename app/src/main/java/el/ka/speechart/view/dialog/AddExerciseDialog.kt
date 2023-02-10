@@ -2,9 +2,7 @@ package el.ka.speechart.view.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import el.ka.speechart.R
@@ -21,19 +19,17 @@ class AddExerciseDialog(
 ) : Dialog(context) {
   private lateinit var binding: AddExerciseDialogBinding
   private var levelOfDifficulty: LevelOfDifficulty = LevelOfDifficulty.EASY
-  private var fileUrl: Uri? = null
+  private var mediaFileInfo: MediaFileInfo? = null
 
   fun setPickedFile(uri: Uri?) {
-    fileUrl = uri
-
-    val mediaFileInfo = when (uri) {
+    mediaFileInfo = when (uri) {
       null -> null
       else -> filePicker.getMediaFileInfo(uri)
     }
 
     binding.fileName.text = when (mediaFileInfo) {
       null -> context.getString(R.string.file_no_picked)
-      else -> "${mediaFileInfo.title} | ${mediaFileInfo.duration.toMinutesAndSeconds()}"
+      else -> "${mediaFileInfo!!.title} | ${mediaFileInfo!!.duration.toMinutesAndSeconds()}"
     }
   }
 
@@ -69,17 +65,17 @@ class AddExerciseDialog(
 
       val exercise = Exercise(
         name = name, description = description, text = text, levelOfDifficulty = levelOfDifficulty,
-        referencePronunciationFileUrl = ""
+        referencePronunciationFile = mediaFileInfo
       )
 
-      if (checkFields(name, description, text, fileUrl)) {
+      if (checkFields(name, description, text, mediaFileInfo)) {
         listener.onSave(exercise)
         close()
       }
     }
   }
 
-  private fun checkFields(name: String, description: String, text: String, fileUrl: Uri?): Boolean {
+  private fun checkFields(name: String, description: String, text: String, mediaFileInfo: MediaFileInfo?): Boolean {
     binding.layoutName.error = ""
     binding.layoutDescription.error = ""
     binding.layoutText.error = ""
@@ -99,7 +95,7 @@ class AddExerciseDialog(
       binding.layoutText.error = isRequire
       errors++
     }
-    if (fileUrl == null) {
+    if (mediaFileInfo == null) {
       binding.fileError.text = isRequire
       errors++
     }

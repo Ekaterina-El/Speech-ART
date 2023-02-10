@@ -1,6 +1,7 @@
 package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.FirebaseNetworkException
 import com.google.rpc.context.AttributeContext.Auth
@@ -26,10 +27,17 @@ object ExercisesRepository {
 
   suspend fun addExercise(exercise: Exercise, onSuccess: (Exercise) -> Unit): ErrorApp? = try {
     exercise.createdByASpecialist = AuthRepository.currentUid!!
+
+    // Load media file to store
+    val uri = Uri.parse(exercise.referencePronunciationFile!!.url)
+    val fileUrl = FirebaseService.uploadToStorage(uri, "exercises/referencePronunciationFileUrls/")
+
+    exercise.referencePronunciationFile!!.url = fileUrl
+
+    // Add note to database
     val doc = FirebaseService.exercisesRepository.add(exercise).await()
     exercise.id = doc.id
 
-    Log.d("addExercise", exercise.toString())
     onSuccess(exercise)
     null
   } catch (e: FirebaseNetworkException)  {

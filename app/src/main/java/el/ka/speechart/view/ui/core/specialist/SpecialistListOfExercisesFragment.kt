@@ -29,14 +29,15 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
   private val specialistViewModel: SpecialistViewModel by activityViewModels()
 
   val list = listOf(Work.LOAD_EXERCISES, Work.ADD_EXERCISE)
+  private val List<Work>.hasLoad: Boolean get() =
+    when {
+      this.isEmpty() -> false
+      else -> this.map { item -> if (list.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
+    }
+
   override val workObserver = Observer<List<Work>> {
-    val isLoad =
-      when {
-        it.isEmpty() -> false
-        else -> it.map { item -> if (list.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
-      }
-    binding.swipeRefreshLayout.isRefreshing = isLoad
-    binding.swipeRefreshLayout2.isRefreshing = isLoad
+    binding.swipeRefreshLayout.isRefreshing = it.hasLoad
+    binding.swipeRefreshLayout2.isRefreshing = it.hasLoad
   }
 
   private val exercisesObserver = Observer<List<Exercise>> {
@@ -117,6 +118,7 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
     AddExerciseDialog(requireContext(), this, filePicker, addExerciseDialogListener)
   }
   fun showDialogForAddExercises() {
+    if (userViewModel.work.value!!.hasLoad || specialistViewModel.work.value!!.hasLoad ) return
     addExerciseDialog.open()
   }
 }

@@ -31,7 +31,7 @@ class FilePicker(val fragment: Fragment, val listener: Listener, val type: Strin
   }
 
   fun getMediaFileInfo(uri: Uri): MediaFileInfo {
-    val mediaFileInfo = MediaFileInfo(uri)
+    val mediaFileInfo = MediaFileInfo(uri.toString())
 
     val mmr = MediaMetadataRetriever()
     mmr.setDataSource(fragment.requireContext(), uri)
