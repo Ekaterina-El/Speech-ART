@@ -1,5 +1,7 @@
 package el.ka.speechart.view.ui.core.specialist
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
+import el.ka.speechart.other.Constants
+import el.ka.speechart.other.FilePicker
 import el.ka.speechart.other.LevelOfDifficulty
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
@@ -46,6 +50,7 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
+    initFilePicker()
     specialistViewModel.setContext(requireContext())
     binding = SpecialistListOfExercisesFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
@@ -98,8 +103,18 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
     }
   }
 
+  private lateinit var filePicker: FilePicker
+  private fun initFilePicker() {
+    val listener = object: FilePicker.Companion.Listener {
+      override fun onPicked(uri: Uri?) {
+        addExerciseDialog.setPickedFile(uri)
+      }
+    }
+    filePicker =  FilePicker(this, listener, Constants.pickUpAudioType)
+  }
+
   private val addExerciseDialog by lazy {
-    AddExerciseDialog(requireContext(), this, addExerciseDialogListener)
+    AddExerciseDialog(requireContext(), this, filePicker, addExerciseDialogListener)
   }
   fun showDialogForAddExercises() {
     addExerciseDialog.open()

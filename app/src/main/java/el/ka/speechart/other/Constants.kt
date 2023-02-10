@@ -1,19 +1,27 @@
 package el.ka.speechart.other
 
 object Constants {
+  const val LOAD_DELAY = 2000L
+  const val pickUpAudioType = "audio/*"
+
+  // region DB Fields
   const val EXERCISES_COLLECTION = "exercises"
   const val FIELD_DESCRIPTION = "description"
   const val FIELD_PROFILE_URL = "profileUrl"
   const val FIELD_EMAIL = "email"
   const val FIELD_ROLE = "role"
-  const val LOAD_DELAY = 2000L
+  // endregion
 
+  // region DB Collections
   const val USERS_COLLECTION = "users"
   const val REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION = "requests_to_reg_specialist"
+  // endregion
 
+  // region Shared Preferences
   const val SEPARATOR = ":"
   const val CREDENTIALS = "credentials"
   const val SP_NAME = "SpeechApp"
+  // endregion
 }
 
 // Owner
@@ -27,10 +35,10 @@ object Constants {
 
 // Admin
 /*
-* Agree/disagree request for create specialists
-* View list of request to create specialist
-* Remove specialists
-* View list of specialist
+* Agree/disagree request for create specialists +
+* View list of request to create specialist +
+* Remove specialists +
+* View list of specialist +
 *
 * *  Sections: specialist
 */

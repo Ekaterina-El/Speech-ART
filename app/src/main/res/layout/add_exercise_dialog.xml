@@ -125,16 +125,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
+          android:id="@+id/layoutFile"
           android:layout_marginTop="5dp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:background="@drawable/field_wrapper">
 
           <TextView
+            android:id="@+id/fileName"
             style="@style/text"
+            android:layout_width="match_parent"
             android:paddingHorizontal="15dp"
             android:paddingVertical="10dp"
-            android:text="Файл не выбран" />
+            android:text="@string/file_no_picked" />
         </LinearLayout>
 
         <TextView

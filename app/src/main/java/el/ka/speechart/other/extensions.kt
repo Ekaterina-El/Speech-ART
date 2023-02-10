@@ -14,3 +14,11 @@ fun Spinner.addListener(onSelected: (Any?) -> Unit) {
       override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
 }
+
+fun Int.toMinutesAndSeconds(): String {
+  val minutes = this / 60
+  val seconds = this - minutes * 60
+  return "${minutes.addZero()}:${seconds.addZero()}"
+}
+
+fun Int.addZero(): String = if (this < 10) "0$this" else "$this"
