@@ -26,7 +26,7 @@ class SpecialistExerciseFragment : BaseFragment() {
     )
 
     requireActivity().onBackPressedDispatcher.addCallback(this) {
-      findNavController().popBackStack()
+      goBack()
     }
 
     binding.apply {
@@ -42,5 +42,10 @@ class SpecialistExerciseFragment : BaseFragment() {
 
     val exercise = SpecialistExerciseFragmentArgs.fromBundle(requireArguments()).exercise
     exerciseViewModel.setExercise(exercise)
+
+  }
+
+  fun goBack() {
+    findNavController().popBackStack()
   }
 }

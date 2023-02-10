@@ -62,4 +62,5 @@
   <string name="name">Название</string>
   <string name="add_exercise_text">Текст упражнения</string>
   <string name="file_no_picked">Файл не выбран</string>
+  <string name="reference_pronunciation">Эталонное произношение</string>
 </resources>

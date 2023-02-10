@@ -27,12 +27,12 @@
 
 
       <TextView
-        style="@style/text.hint"
+        style="@style/text.hint.small"
         android:text="@{exercise.levelOfDifficulty.strRes}"
         tools:text="@string/easy" />
 
       <TextView
-        style="@style/text.header3"
+        style="@style/text"
         android:layout_marginTop="3dp"
         android:text="@{exercise.name}"
         tools:text="Упржнение на артикуляцию согласных" />

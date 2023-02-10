@@ -47,7 +47,7 @@
 
 
       <TextView
-        style="@style/text.header1"
+        style="@style/text.header2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
