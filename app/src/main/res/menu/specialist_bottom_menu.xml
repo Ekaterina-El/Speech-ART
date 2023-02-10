@@ -9,7 +9,7 @@
     android:title="@string/profile" />
 
   <item
-    android:id="@id/specialistExerciseFragment"
+    android:id="@id/specialistListOfExercisesFragment"
     android:icon="@drawable/ic_brain"
     app:showAsAction="always"
     android:title="@string/exercises" />

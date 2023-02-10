@@ -5,8 +5,9 @@ import el.ka.speechart.databinding.ItemExerciseBinding
 import el.ka.speechart.service.model.Exercise
 
 class ExerciseViewHolder(val binding: ItemExerciseBinding): RecyclerView.ViewHolder(binding.root) {
-  fun bind(exercise: Exercise) {
+  fun bind(exercise: Exercise, onSelectItem: (Exercise) -> Unit) {
     binding.exercise = exercise
+    binding.wrapper.setOnClickListener { onSelectItem(exercise) }
   }
 
 

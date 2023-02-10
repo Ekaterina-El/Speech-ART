@@ -3,7 +3,13 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment" />
 
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.ExerciseViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +21,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       style="@style/text.header1.bold"
-      android:text="Exercises"
+      android:text="@{viewModel.exercise.name}"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

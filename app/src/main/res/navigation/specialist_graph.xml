@@ -11,13 +11,29 @@
     android:name="el.ka.speechart.view.ui.core.specialist.SpecialistProfileFragment"
     android:label="SpecialistProfileFragment" />
   <fragment
-    android:id="@+id/specialistExerciseFragment"
+    android:id="@+id/specialistListOfExercisesFragment"
     tools:layout="@layout/specialist_list_of_exercises_fragment"
     android:name="el.ka.speechart.view.ui.core.specialist.SpecialistListOfExercisesFragment"
-    android:label="SpecialistExerciseFragment" />
+    android:label="SpecialistListOfExercisesFragment" >
+    <action
+      android:id="@+id/action_specialistListOfExercisesFragment_to_specialistExerciseFragment"
+      app:destination="@id/specialistExerciseFragment"
+      app:launchSingleTop="true"
+      app:popUpTo="@id/specialistListOfExercisesFragment"
+      app:popUpToInclusive="false" />
+  </fragment>
   <fragment
     android:id="@+id/specialistRequestsToCheckFragment"
     tools:layout="@layout/specialist_list_of_requests_to_check_fragment"
     android:name="el.ka.speechart.view.ui.core.specialist.SpecialistRequestsToCheckFragment"
     android:label="SpecialistRequestsToCheckFragment" />
+  <fragment
+    android:id="@+id/specialistExerciseFragment"
+    tools:layout="@layout/specialist_exercise_fragment"
+    android:name="el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment"
+    android:label="SpecialistExerciseFragment" >
+    <argument
+      android:name="exercise"
+      app:argType="el.ka.speechart.service.model.Exercise" />
+  </fragment>
 </navigation>

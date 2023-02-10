@@ -12,7 +12,7 @@ data class Exercise(
   val description: String = "",
   val text: String = "",
   var createdByASpecialist: String = "",
-) {
+): java.io.Serializable {
   override fun toString(): String =
     "id: $id | name: $name | description: $description | text: $text | " +
         "level: $levelOfDifficulty | fileUrl: ${referencePronunciationFile?.url} | specialistUID: $createdByASpecialist"
