@@ -16,11 +16,8 @@ class StudyMainFragment : BaseFragment() {
   private lateinit var binding: StudyMainFragmentBinding
   private val userViewModel by activityViewModels<UserViewModel>()
 
-  private val fm by lazy { requireActivity().supportFragmentManager }
-
   private val listOfExercises by lazy { StudyListOfExercisesFragment() }
   private val profile by lazy { StudyProfileFragment() }
-  private lateinit var active: Fragment
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -50,8 +47,7 @@ class StudyMainFragment : BaseFragment() {
       else -> null
     }
     return@OnItemSelectedListener if (newActive != null) {
-      fm.beginTransaction().hide(active).show(newActive).commit()
-      active = newActive
+      navigateTo(newActive)
       true
     } else false
   }

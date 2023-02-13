@@ -19,6 +19,15 @@ import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.dialog.InformDialog
 
 open class BaseFragment : Fragment() {
+  protected val fm by lazy { requireActivity().supportFragmentManager }
+  protected lateinit var active: Fragment
+
+  fun navigateTo(newActive: Fragment) {
+    fm.beginTransaction().hide(active).show(newActive).commit()
+    active = newActive
+  }
+
+
   open val workObserver = Observer<List<Work>> {
     if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
   }
