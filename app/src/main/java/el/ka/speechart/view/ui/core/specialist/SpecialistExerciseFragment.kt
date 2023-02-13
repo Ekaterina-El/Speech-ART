@@ -3,6 +3,7 @@ package el.ka.speechart.view.ui.core.specialist
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
   private lateinit var binding: SpecialistExerciseFragmentBinding
   private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
-  private lateinit var mediaPlayer: MediaPlayer
+  private var mediaPlayer: MediaPlayer? = null
   private val handler by lazy { Handler() }
 
   private val exerciseObserver = Observer<Exercise?> {
@@ -40,10 +41,11 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
 
     binding.seekBarProgress.max = 100
     binding.seekBarProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-      override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
-        val playPosition = (mediaPlayer.duration / 100) * progress
-        mediaPlayer.seekTo(playPosition)
-        exerciseViewModel.setCurrentMusicTime(mediaPlayer.currentPosition / 1000)
+      override fun onProgressChanged(p0: SeekBar?, progress: Int, isUser: Boolean) {
+        if (!isUser) return
+        val playPosition = (mediaPlayer!!.duration / 100) * progress
+        mediaPlayer!!.seekTo(playPosition)
+        exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.currentPosition / 1000)
       }
 
       override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -63,16 +65,20 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
   }
 
   fun goBack() {
+    mediaPlayer!!.pause()
+    exerciseViewModel.setIsPlayingAudio(false)
     onCloseItem()
   }
 
   override fun onResume() {
     super.onResume()
+    if (exerciseViewModel.isPlayingAudio.value!!) mediaPlayer!!.start()
     exerciseViewModel.exercise.observe(viewLifecycleOwner, exerciseObserver)
   }
 
   override fun onStop() {
     super.onStop()
+    if (mediaPlayer!!.isPlaying) mediaPlayer!!.pause()
     exerciseViewModel.exercise.removeObserver(exerciseObserver)
   }
 
@@ -80,12 +86,18 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
     val isPlaying = exerciseViewModel.isPlayingAudio.value!!
     if (isPlaying) {
       handler.removeCallbacks(updater)
-      mediaPlayer.pause()
+      mediaPlayer!!.pause()
     } else {
-      mediaPlayer.start()
+      mediaPlayer!!.start()
       updateSeekBar()
     }
     exerciseViewModel.setIsPlayingAudio(!isPlaying)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    mediaPlayer!!.release();
+    mediaPlayer = null;
   }
 
   private fun prepareMusicPlayer() {
@@ -95,11 +107,11 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
       val url = referencePronunciationFile.url
 
       mediaPlayer = MediaPlayer()
-      mediaPlayer.setDataSource(url)
-      mediaPlayer.prepare()
-      exerciseViewModel.setMusicDuration(mediaPlayer.duration / 1000)
+      mediaPlayer!!.setDataSource(url)
+      mediaPlayer!!.prepare()
+      exerciseViewModel.setMusicDuration(mediaPlayer!!.duration / 1000)
 
-      mediaPlayer.setOnCompletionListener {
+      mediaPlayer!!.setOnCompletionListener {
         exerciseViewModel.setIsPlayingAudio(false)
       }
     } catch (e: Exception) {
@@ -110,15 +122,15 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
   private val updater by lazy {
     Runnable {
       updateSeekBar()
-      exerciseViewModel.setCurrentMusicTime(mediaPlayer.currentPosition / 1000)
+      exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.currentPosition / 1000)
     }
   }
 
   private fun updateSeekBar() {
     val progress =
-      ((mediaPlayer.currentPosition.toFloat() / mediaPlayer.duration.toFloat()) * 100).toInt()
+      ((mediaPlayer!!.currentPosition.toFloat() / mediaPlayer!!.duration.toFloat()) * 100).toInt()
     binding.seekBarProgress.progress = progress
-    if (mediaPlayer.isPlaying) {
+    if (mediaPlayer!!.isPlaying) {
       handler.postDelayed(updater, 1000)
     }
   }
