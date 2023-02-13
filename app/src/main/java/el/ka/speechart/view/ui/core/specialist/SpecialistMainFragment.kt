@@ -18,13 +18,14 @@ class SpecialistMainFragment : UserBaseFragment() {
   private val specialistViewModel by activityViewModels<SpecialistViewModel>()
   override val userViewModel by activityViewModels<UserViewModel>()
 
-  private val profileFragment by lazy { SpecialistProfileFragment() }
-  private val listOfExerciseFragment by lazy {
-    SpecialistListOfExercisesFragment { navigateTo(exerciseFragment) }
+  private val profileFragment: SpecialistProfileFragment by lazy { SpecialistProfileFragment() }
+  private val listOfExerciseFragment: SpecialistListOfExercisesFragment by lazy {
+    SpecialistListOfExercisesFragment(onItemSelected = { navigateTo(exerciseFragment) })
   }
-
-  private val listOfRequestsFragment by lazy { SpecialistRequestsToCheckFragment() }
-  private val exerciseFragment by lazy { SpecialistExerciseFragment(null) }
+  private val listOfRequestsFragment: SpecialistRequestsToCheckFragment by lazy { SpecialistRequestsToCheckFragment() }
+  private val exerciseFragment: SpecialistExerciseFragment by lazy {
+    SpecialistExerciseFragment(null) { navigateTo(listOfExerciseFragment) }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -57,7 +58,8 @@ class SpecialistMainFragment : UserBaseFragment() {
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
   }
 
-  private val mOnNavigationSelectedListener = NavigationBarView.OnItemSelectedListener {
+  private
+  val mOnNavigationSelectedListener = NavigationBarView.OnItemSelectedListener {
     val newActive = when (it.itemId) {
       R.id.profile -> profileFragment
       R.id.listOfExercises -> listOfExerciseFragment

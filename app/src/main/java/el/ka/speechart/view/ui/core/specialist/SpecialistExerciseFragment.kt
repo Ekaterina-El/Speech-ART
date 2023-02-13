@@ -10,7 +10,6 @@ import android.widget.SeekBar
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
 import el.ka.speechart.other.Errors
@@ -18,11 +17,11 @@ import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 
-class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
+class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -> Unit) : BaseFragment() {
   private lateinit var binding: SpecialistExerciseFragmentBinding
   private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
-  private val mediaPlayer by lazy { MediaPlayer() }
+  private lateinit var mediaPlayer: MediaPlayer
   private val handler by lazy { Handler() }
 
   private val exerciseObserver = Observer<Exercise?> {
@@ -39,21 +38,6 @@ class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
       LayoutInflater.from(requireContext()), container, false
     )
 
-    requireActivity().onBackPressedDispatcher.addCallback(this) {
-      goBack()
-    }
-
-    binding.apply {
-      master = this@SpecialistExerciseFragment
-      viewModel = this@SpecialistExerciseFragment.exerciseViewModel
-      lifecycleOwner = viewLifecycleOwner
-    }
-    return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
     binding.seekBarProgress.max = 100
     binding.seekBarProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
       override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
@@ -66,13 +50,20 @@ class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
       override fun onStopTrackingTouch(p0: SeekBar?) {}
     })
 
-    mediaPlayer.setOnCompletionListener {
-      exerciseViewModel.setIsPlayingAudio(false)
+    requireActivity().onBackPressedDispatcher.addCallback(this) {
+      goBack()
     }
+
+    binding.apply {
+      master = this@SpecialistExerciseFragment
+      viewModel = this@SpecialistExerciseFragment.exerciseViewModel
+      lifecycleOwner = viewLifecycleOwner
+    }
+    return binding.root
   }
 
   fun goBack() {
-    findNavController().popBackStack()
+    onCloseItem()
   }
 
   override fun onResume() {
@@ -99,10 +90,18 @@ class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
 
   private fun prepareMusicPlayer() {
     try {
-      val url = exerciseViewModel.exercise.value!!.referencePronunciationFile!!.url
+      val exercise = exerciseViewModel.exercise.value ?: return
+      val referencePronunciationFile = exercise.referencePronunciationFile ?: return
+      val url = referencePronunciationFile.url
+
+      mediaPlayer = MediaPlayer()
       mediaPlayer.setDataSource(url)
       mediaPlayer.prepare()
       exerciseViewModel.setMusicDuration(mediaPlayer.duration / 1000)
+
+      mediaPlayer.setOnCompletionListener {
+        exerciseViewModel.setIsPlayingAudio(false)
+      }
     } catch (e: Exception) {
       toast(e.message ?: requireContext().getString(Errors.unknown.messageRes))
     }
@@ -123,5 +122,4 @@ class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
       handler.postDelayed(updater, 1000)
     }
   }
-
 }
