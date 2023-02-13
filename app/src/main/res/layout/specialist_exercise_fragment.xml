@@ -75,8 +75,8 @@
 
         <TextView
           style="@style/text"
-          app:levelExercise="@{viewModel.exercise.levelOfDifficulty}"
           android:textColor="@color/primary_color_dark"
+          app:levelExercise="@{viewModel.exercise.levelOfDifficulty}"
           tools:text="Продвинутый уровень" />
 
         <TextView
@@ -85,36 +85,38 @@
           tools:text="Какое-то описание..." />
 
         <TextView
-          android:layout_marginTop="20dp"
           style="@style/text.header3"
+          android:layout_marginTop="20dp"
           android:layout_marginBottom="5dp"
           android:text="@string/reference_pronunciation" />
 
         <LinearLayout
-          android:layout_marginTop="5dp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
           android:gravity="center">
 
           <androidx.cardview.widget.CardView
             android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/primary_color"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.playPauseMusic()}"
             app:cardCornerRadius="40dp"
-            app:cardElevation="0dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/primary_color"
-            android:layout_height="40dp">
+            app:cardElevation="0dp">
 
             <RelativeLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
               <ImageView
-                android:src="@drawable/ic_play"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_play"
+                app:isPlaying="@{viewModel.isPlayingAudio}"
                 app:tint="@color/on_primary_color" />
 
             </RelativeLayout>
@@ -123,23 +125,25 @@
 
           <TextView
             style="@style/text.hint.small"
-            app:time="@{viewModel.exercise.referencePronunciationFile.duration}"
-            android:layout_width="wrap_content"
-            tools:text="0:04"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.currentMusicTime}"
+            tools:text="0:04" />
 
-          <androidx.appcompat.widget.AppCompatSeekBar
+          <SeekBar
+            android:id="@+id/seek_bar_progress"
             android:layout_width="0dp"
-            android:layout_marginHorizontal="3dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
           <TextView
             style="@style/text.hint.small"
-            app:time="@{viewModel.exercise.referencePronunciationFile.duration}"
-            android:layout_width="wrap_content"
-            tools:text="3:04"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.musicDuration}"
+            tools:text="3:04" />
 
         </LinearLayout>
 
