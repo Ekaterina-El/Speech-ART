@@ -60,5 +60,5 @@ object Constants {
 * Perform exercise and send to specialists
 * Add reviews about specialist
 *
-* * Sections: exercise, self account (photo, fullName, preformed exercise (checked or unchecked), level)
+* * Sections: exercise, self account (photo, fullName, level, preformed exercise (checked or unchecked))
 */

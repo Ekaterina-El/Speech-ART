@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/study_graph"
+  app:startDestination="@id/studyProfileFragment">
+
+
+  <fragment
+    android:id="@+id/studyProfileFragment"
+    tools:layout="@layout/study_profile_fragment"
+    android:name="el.ka.speechart.view.ui.core.study.StudyProfileFragment"
+    android:label="StudyProfileFragment" />
+  <fragment
+    android:id="@+id/studyListOfExercisesFragment"
+    tools:layout="@layout/study_list_of_exercises_fragment"
+    android:name="el.ka.speechart.view.ui.core.study.StudyListOfExercisesFragment"
+    android:label="StudyListOfExercisesFragment" />
+</navigation>

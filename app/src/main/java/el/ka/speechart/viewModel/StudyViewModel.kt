@@ -13,7 +13,7 @@ import el.ka.speechart.service.repository.ExercisesRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SpecialistViewModel(application: Application) : ViewModelWithSearchExercise(application) {
+class StudyViewModel(application: Application) : ViewModelWithSearchExercise(application) {
   private val _profile = MutableLiveData<User?>(null)
   val profile: LiveData<User?> get() = _profile
 

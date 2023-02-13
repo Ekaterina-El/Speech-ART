@@ -1,4 +1,4 @@
-package el.ka.speechart.view.ui.core.specialist
+package el.ka.speechart.view.ui.core.study
 
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
+import el.ka.speechart.databinding.StudyListOfExercisesFragmentBinding
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.FilePicker
 import el.ka.speechart.other.Work
@@ -20,14 +21,15 @@ import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
 import el.ka.speechart.view.dialog.AddExerciseDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.SpecialistViewModel
+import el.ka.speechart.viewModel.StudyViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistListOfExercisesFragment : UserBaseFragment() {
-  private lateinit var binding: SpecialistListOfExercisesFragmentBinding
+class StudyListOfExercisesFragment : UserBaseFragment() {
+  private lateinit var binding: StudyListOfExercisesFragmentBinding
   override val userViewModel: UserViewModel by activityViewModels()
-  private val specialistViewModel: SpecialistViewModel by activityViewModels()
+  private val studyViewModel: StudyViewModel by activityViewModels()
 
-  val list = listOf(Work.LOAD_EXERCISES, Work.ADD_EXERCISE)
+  val list = listOf(Work.LOAD_EXERCISES)
   private val List<Work>.hasLoad: Boolean
     get() =
       when {
@@ -46,9 +48,9 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
 
   private val exercisesAdapter by lazy {
     ExercisesAdapter {
-      val destination = SpecialistListOfExercisesFragmentDirections
+      /*val destination = SpecialistListOfExercisesFragmentDirections
         .actionSpecialistListOfExercisesFragmentToSpecialistExerciseFragment(it)
-      findNavController().navigate(destination)
+      findNavController().navigate(destination)*/
     }
   }
 
@@ -57,17 +59,16 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    initFilePicker()
-    specialistViewModel.setContext(requireContext())
-    binding = SpecialistListOfExercisesFragmentBinding.inflate(
+    studyViewModel.setContext(requireContext())
+    binding = StudyListOfExercisesFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
     )
 
     binding.apply {
       lifecycleOwner = viewLifecycleOwner
-      master = this@SpecialistListOfExercisesFragment
-      viewModel = this@SpecialistListOfExercisesFragment.specialistViewModel
-      exercisesAdapter = this@SpecialistListOfExercisesFragment.exercisesAdapter
+      master = this@StudyListOfExercisesFragment
+      viewModel = this@StudyListOfExercisesFragment.studyViewModel
+      exercisesAdapter = this@StudyListOfExercisesFragment.exercisesAdapter
     }
     return binding.root
   }
@@ -75,14 +76,14 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    if (specialistViewModel.countOfLoadedExercise == 0) specialistViewModel.loadExercises()
+    if (studyViewModel.countOfLoadedExercise == 0) studyViewModel.loadExercises()
 
     val color = requireContext().getColor(R.color.loader_color)
     binding.swipeRefreshLayout.setColorSchemeColors(color)
-    binding.swipeRefreshLayout.setOnRefreshListener { specialistViewModel.loadExercises() }
+    binding.swipeRefreshLayout.setOnRefreshListener { studyViewModel.loadExercises() }
 
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
-    binding.swipeRefreshLayout2.setOnRefreshListener { specialistViewModel.loadExercises() }
+    binding.swipeRefreshLayout2.setOnRefreshListener {studyViewModel.loadExercises() }
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewExercises.addItemDecoration(decorator)
@@ -93,40 +94,13 @@ class SpecialistListOfExercisesFragment : UserBaseFragment() {
 
   override fun onResume() {
     super.onResume()
-    specialistViewModel.filteredExercises.observe(viewLifecycleOwner, exercisesObserver)
-    specialistViewModel.work.observe(viewLifecycleOwner, workObserver)
+    studyViewModel.filteredExercises.observe(viewLifecycleOwner, exercisesObserver)
+    studyViewModel.work.observe(viewLifecycleOwner, workObserver)
   }
 
   override fun onStop() {
     super.onStop()
-    specialistViewModel.filteredExercises.removeObserver(exercisesObserver)
-    specialistViewModel.work.removeObserver(workObserver)
-  }
-
-  private val addExerciseDialogListener by lazy {
-    object : AddExerciseDialog.Companion.Listener {
-      override fun onSave(exercise: Exercise) {
-        specialistViewModel.addExercise(exercise)
-      }
-    }
-  }
-
-  private lateinit var filePicker: FilePicker
-  private fun initFilePicker() {
-    val listener = object : FilePicker.Companion.Listener {
-      override fun onPicked(uri: Uri?) {
-        addExerciseDialog.setPickedFile(uri)
-      }
-    }
-    filePicker = FilePicker(this, listener, Constants.pickUpAudioType)
-  }
-
-  private val addExerciseDialog by lazy {
-    AddExerciseDialog(requireContext(), this, filePicker, addExerciseDialogListener)
-  }
-
-  fun showDialogForAddExercises() {
-    if (userViewModel.work.value!!.hasLoad || specialistViewModel.work.value!!.hasLoad) return
-    addExerciseDialog.open()
+    studyViewModel.filteredExercises.removeObserver(exercisesObserver)
+    studyViewModel.work.removeObserver(workObserver)
   }
 }

@@ -15,7 +15,7 @@ data class User(
   var description: String = "",
 
   // for Study
-  val resultsOfCompleted: List<String> = listOf(),
+  val performedExercises: List<String> = listOf(),
   val score: Int = 0,
 )
 

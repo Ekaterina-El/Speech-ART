@@ -1,6 +1,7 @@
 package el.ka.speechart.viewModel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,11 @@ import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Work
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
+  protected val context = MutableLiveData<Context>()
+  fun setContext(context: Context) {
+    this.context.value = context
+  }
+
   protected val _externalAction = MutableLiveData<Action?>(null)
   val externalAction: LiveData<Action?> = _externalAction
 

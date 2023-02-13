@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import el.ka.speechart.R
 import el.ka.speechart.databinding.StudyMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
-class StudyMainFragment: BaseFragment() {
+class StudyMainFragment : BaseFragment() {
   private lateinit var binding: StudyMainFragmentBinding
   private val userViewModel by activityViewModels<UserViewModel>()
 
@@ -23,5 +26,14 @@ class StudyMainFragment: BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
     }
     return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    val navController =
+      (childFragmentManager.findFragmentById(R.id.fragmentContainerViewStudy) as NavHostFragment)
+        .navController
+    binding.bottomNavigationView.setupWithNavController(navController)
   }
 }
