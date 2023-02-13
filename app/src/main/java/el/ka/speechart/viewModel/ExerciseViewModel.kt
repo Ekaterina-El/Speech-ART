@@ -9,7 +9,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   private val _exercise = MutableLiveData<Exercise?>(null)
   val exercise: LiveData<Exercise?> get() = _exercise
 
-  fun setExercise(exercise: Exercise) {
+  fun setExercise(exercise: Exercise?) {
     _exercise.postValue(exercise)
   }
 

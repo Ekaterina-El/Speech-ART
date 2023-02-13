@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationBarView
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistMainFragmentBinding
 import el.ka.speechart.view.ui.UserBaseFragment
@@ -18,6 +17,14 @@ class SpecialistMainFragment : UserBaseFragment() {
 
   private val specialistViewModel by activityViewModels<SpecialistViewModel>()
   override val userViewModel by activityViewModels<UserViewModel>()
+
+  private val profileFragment by lazy { SpecialistProfileFragment() }
+  private val listOfExerciseFragment by lazy {
+    SpecialistListOfExercisesFragment { navigateTo(exerciseFragment) }
+  }
+
+  private val listOfRequestsFragment by lazy { SpecialistRequestsToCheckFragment() }
+  private val exerciseFragment by lazy { SpecialistExerciseFragment(null) }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -34,9 +41,33 @@ class SpecialistMainFragment : UserBaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val navController =
-      (childFragmentManager.findFragmentById(R.id.fragmentContainerViewSpecialist) as NavHostFragment).navController
-    binding.bottomNavigationView.setupWithNavController(navController)
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, listOfRequestsFragment, "listOfRequests")
+      .hide(listOfRequestsFragment).commit()
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, listOfExerciseFragment, "listOfExercise")
+      .hide(listOfExerciseFragment).commit()
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, exerciseFragment, "exerciseFragment")
+      .hide(exerciseFragment).commit()
+    fm.beginTransaction().add(R.id.fragmentContainerViewSpecialist, profileFragment, "profile")
+      .commit()
+    active = profileFragment
+
+    binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
+  }
+
+  private val mOnNavigationSelectedListener = NavigationBarView.OnItemSelectedListener {
+    val newActive = when (it.itemId) {
+      R.id.profile -> profileFragment
+      R.id.listOfExercises -> listOfExerciseFragment
+      R.id.listOfRequests -> listOfRequestsFragment
+      else -> null
+    }
+    return@OnItemSelectedListener if (newActive != null) {
+      navigateTo(newActive)
+      true
+    } else false
   }
 
   override fun onResume() {
@@ -50,5 +81,4 @@ class SpecialistMainFragment : UserBaseFragment() {
     userViewModel.error.removeObserver(errorObserver)
     specialistViewModel.error.removeObserver(errorObserver)
   }
-
 }

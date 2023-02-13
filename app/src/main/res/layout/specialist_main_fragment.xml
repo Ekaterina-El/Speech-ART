@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
@@ -11,35 +12,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
+   <!-- <View
       android:id="@+id/action_bar_bg"
       android:layout_width="match_parent"
       android:layout_height="56dp"
       android:background="@color/primary_color"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent" />-->
 
-    <View
+    <!--<View
       android:layout_width="match_parent"
       android:layout_height="5dp"
       android:layout_marginBottom="10dp"
       android:background="@drawable/shadow_line"
-      app:layout_constraintTop_toBottomOf="@id/action_bar_bg" />
+      app:layout_constraintTop_toBottomOf="@id/action_bar_bg" />-->
 
 
-    <androidx.fragment.app.FragmentContainerView
+    <FrameLayout
       android:id="@+id/fragmentContainerViewSpecialist"
-      android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      app:defaultNavHost="false"
-      app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"
+      app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:navGraph="@navigation/specialist_graph" />
+      />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottomNavigationView"

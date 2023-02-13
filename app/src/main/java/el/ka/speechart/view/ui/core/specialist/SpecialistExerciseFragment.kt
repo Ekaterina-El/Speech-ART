@@ -1,6 +1,5 @@
 package el.ka.speechart.view.ui.core.specialist
 
-import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,9 +18,9 @@ import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 
-class SpecialistExerciseFragment : BaseFragment() {
+class SpecialistExerciseFragment(val exercise: Exercise?) : BaseFragment() {
   private lateinit var binding: SpecialistExerciseFragmentBinding
-  private lateinit var exerciseViewModel: ExerciseViewModel
+  private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
   private val mediaPlayer by lazy { MediaPlayer() }
   private val handler by lazy { Handler() }
@@ -35,7 +35,6 @@ class SpecialistExerciseFragment : BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    exerciseViewModel = ViewModelProvider(this)[ExerciseViewModel::class.java]
     binding = SpecialistExerciseFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
     )
@@ -52,34 +51,15 @@ class SpecialistExerciseFragment : BaseFragment() {
     return binding.root
   }
 
-  @SuppressLint("ClickableViewAccessibility")
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val exercise = SpecialistExerciseFragmentArgs.fromBundle(requireArguments()).exercise
-    exerciseViewModel.setExercise(exercise)
-
     binding.seekBarProgress.max = 100
-
-    /*binding.seekBarProgress.setOnTouchListener { _, _ ->
-      val progress = binding.seekBarProgress.progress
-      val playPosition = (mediaPlayer.duration / 100) * progress
-      *//*
-      val progressSeekBar = ((playPosition.toFloat() / mediaPlayer.duration.toFloat()) * 100).toInt()
-      binding.seekBarProgress.progress = progressSeekBar*//*
-
-      mediaPlayer.seekTo(playPosition)
-//      updateSeekBar()
-      return@setOnTouchListener false
-    }*/
-
     binding.seekBarProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
       override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
         val playPosition = (mediaPlayer.duration / 100) * progress
         mediaPlayer.seekTo(playPosition)
-
         exerciseViewModel.setCurrentMusicTime(mediaPlayer.currentPosition / 1000)
-//        updateSeekBar()
       }
 
       override fun onStartTrackingTouch(p0: SeekBar?) {}
