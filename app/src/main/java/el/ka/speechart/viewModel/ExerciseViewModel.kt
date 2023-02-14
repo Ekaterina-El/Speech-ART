@@ -13,6 +13,13 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _exercise.postValue(exercise)
   }
 
+  private val _preparedFileUrl = MutableLiveData<String?>(null)
+  val preparedFileUrl: LiveData<String?> get() = _preparedFileUrl
+
+  fun setPrepareFileUrl(url: String?) {
+    _preparedFileUrl.value = url
+  }
+
   private val _currentMusicTime = MutableLiveData(0)
   val currentMusicTime: LiveData<Int> get() = _currentMusicTime
   fun setCurrentMusicTime(currentPosition: Int) {

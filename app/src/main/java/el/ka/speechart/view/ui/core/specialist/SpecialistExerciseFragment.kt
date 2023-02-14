@@ -106,10 +106,15 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
       val referencePronunciationFile = exercise.referencePronunciationFile ?: return
       val url = referencePronunciationFile.url
 
+      if (exerciseViewModel.preparedFileUrl.value == url) return
+      exerciseViewModel.setPrepareFileUrl(url)
+
       mediaPlayer = MediaPlayer()
       mediaPlayer!!.setDataSource(url)
       mediaPlayer!!.prepare()
       exerciseViewModel.setMusicDuration(mediaPlayer!!.duration / 1000)
+
+      updateSeekBar()
 
       mediaPlayer!!.setOnCompletionListener {
         exerciseViewModel.setIsPlayingAudio(false)
