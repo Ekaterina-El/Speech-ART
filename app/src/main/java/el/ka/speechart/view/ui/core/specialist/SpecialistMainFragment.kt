@@ -24,7 +24,7 @@ class SpecialistMainFragment : UserBaseFragment() {
   }
   private val listOfRequestsFragment: SpecialistRequestsToCheckFragment by lazy { SpecialistRequestsToCheckFragment() }
   private val exerciseFragment: SpecialistExerciseFragment by lazy {
-    SpecialistExerciseFragment(null) { navigateTo(listOfExerciseFragment) }
+    SpecialistExerciseFragment { navigateTo(listOfExerciseFragment) }
   }
 
   override fun onCreateView(

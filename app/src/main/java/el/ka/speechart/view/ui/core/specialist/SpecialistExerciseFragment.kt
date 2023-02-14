@@ -10,7 +10,7 @@ import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 
-class SpecialistExerciseFragment(val exercise: Exercise?, onCloseItem: () -> Unit) :
+class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
   ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: SpecialistExerciseFragmentBinding
 

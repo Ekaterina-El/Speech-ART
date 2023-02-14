@@ -17,11 +17,6 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
-  private val exerciseObserver = Observer<Exercise?> {
-    if (it == null) return@Observer
-    prepareMusicPlayer()
-  }
-
   private fun updateSeekBar() {
     val progress =
       ((mediaPlayer!!.currentPosition.toFloat() / mediaPlayer!!.duration.toFloat()) * 100).toInt()
@@ -48,10 +43,9 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.exercise.value?.referencePronunciationFile?.url
 
 
-  private fun prepareMusicPlayer() {
+
+  private fun prepareMusicPlayer(url: String) {
     try {
-      val url = getAudioFileUrl() ?: return
-      if (exerciseViewModel.preparedFileUrl.value == url) return
       exerciseViewModel.setPrepareFileUrl(url)
 
       mediaPlayer = MediaPlayer()
@@ -71,12 +65,18 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   fun playPauseMusic() {
     val isPlaying = exerciseViewModel.isPlayingAudio.value!!
-    if (isPlaying) {
-      handler.removeCallbacks(updater)
-      mediaPlayer!!.pause()
-    } else {
+    if (!isPlaying) {
+      if (mediaPlayer == null) {
+        val url = getAudioFileUrl() ?: return
+        if (exerciseViewModel.preparedFileUrl.value == url) return
+        prepareMusicPlayer(url)
+      }
       mediaPlayer!!.start()
       updateSeekBar()
+
+    } else {
+      handler.removeCallbacks(updater)
+      mediaPlayer!!.pause()
     }
     exerciseViewModel.setIsPlayingAudio(!isPlaying)
   }
@@ -90,13 +90,11 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   override fun onResume() {
     super.onResume()
     if (exerciseViewModel.isPlayingAudio.value!!) mediaPlayer!!.start()
-    exerciseViewModel.exercise.observe(viewLifecycleOwner, exerciseObserver)
   }
 
   override fun onStop() {
     super.onStop()
     if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
-    exerciseViewModel.exercise.removeObserver(exerciseObserver)
   }
 
   fun goBack() {
