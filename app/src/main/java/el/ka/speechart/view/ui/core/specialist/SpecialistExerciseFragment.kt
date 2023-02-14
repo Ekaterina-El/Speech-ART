@@ -78,7 +78,7 @@ class SpecialistExerciseFragment(val exercise: Exercise?,  val onCloseItem: () -
 
   override fun onStop() {
     super.onStop()
-    if (mediaPlayer!!.isPlaying) mediaPlayer!!.pause()
+    if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
     exerciseViewModel.exercise.removeObserver(exerciseObserver)
   }
 
