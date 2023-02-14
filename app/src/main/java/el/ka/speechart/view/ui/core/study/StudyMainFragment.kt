@@ -4,19 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.navigation.NavigationBarView
 import el.ka.speechart.R
 import el.ka.speechart.databinding.StudyMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
+import el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
 class StudyMainFragment : BaseFragment() {
   private lateinit var binding: StudyMainFragmentBinding
   private val userViewModel by activityViewModels<UserViewModel>()
 
-  private val listOfExercises by lazy { StudyListOfExercisesFragment() }
+  private val listOfExercisesFragment by lazy {
+    StudyListOfExercisesFragment { navigateTo(exerciseFragment) }
+  }
+
+  private val exerciseFragment: StudyExerciseFragment by lazy {
+    StudyExerciseFragment { navigateTo(listOfExercisesFragment) }
+  }
+
   private val profile by lazy { StudyProfileFragment() }
 
   override fun onCreateView(
@@ -35,7 +42,10 @@ class StudyMainFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
 
-    fm.beginTransaction().add(R.id.study_container, listOfExercises, "listOfExercises").hide(listOfExercises).commit();
+    fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
+      .hide(listOfExercisesFragment).commit()
+    fm.beginTransaction().add(R.id.study_container, exerciseFragment, "exercise")
+      .hide(exerciseFragment).commit()
     fm.beginTransaction().add(R.id.study_container, profile, "profile").commit()
     active = profile
   }
@@ -43,7 +53,7 @@ class StudyMainFragment : BaseFragment() {
   private val mOnNavigationSelectedListener = NavigationBarView.OnItemSelectedListener {
     val newActive = when (it.itemId) {
       R.id.profile -> profile
-      R.id.listOfExercises -> listOfExercises
+      R.id.listOfExercises -> listOfExercisesFragment
       else -> null
     }
     return@OnItemSelectedListener if (newActive != null) {

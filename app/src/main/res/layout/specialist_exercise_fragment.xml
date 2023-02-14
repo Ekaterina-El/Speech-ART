@@ -5,6 +5,10 @@
 
   <data>
 
+    <import type="android.view.View" />
+
+    <import type="el.ka.speechart.other.Status" />
+
     <variable
       name="master"
       type="el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment" />
@@ -107,7 +111,7 @@
             app:cardCornerRadius="40dp"
             app:cardElevation="0dp">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -116,10 +120,22 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:src="@drawable/ic_play"
-                app:isPlaying="@{viewModel.isPlayingAudio}"
+                app:musicStatus="@{viewModel.musicStatus}"
                 app:tint="@color/on_primary_color" />
 
-            </RelativeLayout>
+              <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:indeterminateTint="@color/on_primary_color"
+                android:padding="3dp"
+                android:visibility="@{viewModel.musicStatus == Status.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
           </androidx.cardview.widget.CardView>
 
@@ -157,6 +173,7 @@
           style="@style/text"
           android:text="@{viewModel.exercise.text}"
           tools:text="Какое-то описание..." />
+
 
       </LinearLayout>
 

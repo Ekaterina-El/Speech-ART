@@ -63,4 +63,10 @@
   <string name="add_exercise_text">Текст упражнения</string>
   <string name="file_no_picked">Файл не выбран</string>
   <string name="reference_pronunciation">Эталонное произношение</string>
+  <string name="pause">Пауза</string>
+  <string name="stop">Стоп</string>
+  <string name="recording">Идёт запись!</string>
+  <string name="start_recording">Начать запись</string>
+  <string name="delete_record">Удалить запись</string>
+  <string name="send_to_check">На проверку</string>
 </resources>

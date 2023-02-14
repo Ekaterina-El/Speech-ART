@@ -1,4 +1,4 @@
-package el.ka.speechart.view.ui.core.specialist
+package el.ka.speechart.view.ui.core.study
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.addCallback
 import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
+import el.ka.speechart.databinding.StudyExerciseFragmentBinding
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 
-class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
-  ExerciseBaseFragment(onCloseItem) {
-  private lateinit var binding: SpecialistExerciseFragmentBinding
+class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCloseItem) {
+  private lateinit var binding: StudyExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
 
   override fun onCreateView(
@@ -20,7 +20,7 @@ class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    binding = SpecialistExerciseFragmentBinding.inflate(
+    binding = StudyExerciseFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
     )
 
@@ -41,8 +41,8 @@ class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
     }
 
     binding.apply {
-      master = this@SpecialistExerciseFragment
-      viewModel = this@SpecialistExerciseFragment.exerciseViewModel
+      master = this@StudyExerciseFragment
+      viewModel = this@StudyExerciseFragment.exerciseViewModel
       lifecycleOwner = viewLifecycleOwner
     }
     return binding.root

@@ -1,8 +1,10 @@
 package el.ka.speechart.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import el.ka.speechart.other.Status
 import el.ka.speechart.service.model.Exercise
 
 class ExerciseViewModel(application: Application) : BaseViewModel(application) {
@@ -26,16 +28,48 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _currentMusicTime.value = currentPosition
   }
 
-  private val _isPlayingAudio = MutableLiveData(false)
-  val isPlayingAudio: LiveData<Boolean> get() = _isPlayingAudio
-
-  fun setIsPlayingAudio(newValue: Boolean) {
-    _isPlayingAudio.value = newValue
-  }
-
   private val _musicDuration = MutableLiveData(0)
   val musicDuration: LiveData<Int> get() = _musicDuration
   fun setMusicDuration(duration: Int) {
     _musicDuration.value = duration
   }
+
+  private val _musicStatus = MutableLiveData(Status.NO_LOADED)
+  val musicStatus: LiveData<Status> get() = _musicStatus
+  fun setMusicStatus(status: Status) {
+    Log.d("setMusicStatus", "Status: $status")
+      _musicStatus.value = status
+  }
+
+  fun clearUserData() {
+    _userMusicStatus.value = Status.NO_RECORDED
+    _currentUserRecordTime.value = 0
+  }
+
+  private val _userMusicStatus = MutableLiveData(Status.NO_RECORDED)
+  val userMusicStatus: LiveData<Status> get() = _userMusicStatus
+  fun setUserMusicStatus(status: Status) {
+    _userMusicStatus.value = status
+  }
+
+  private val _currentUserRecordTime = MutableLiveData(0)
+  val currentUserRecordTime: LiveData<Int> get() = _currentUserRecordTime
+  fun setCurrentUserRecordTime(time: Int) {
+    _currentMusicTime.value = time
+  }
+
+  private val _userMusicDuration = MutableLiveData(0)
+  val userMusicDuration: LiveData<Int> get() = _userMusicDuration
+  fun setUserMusicDuration(time: Int) {
+    _userMusicDuration.value = time
+  }
+
+  private val _currentUserMusicTime = MutableLiveData(0)
+  val currentUserMusicTime: LiveData<Int> get() = _currentUserMusicTime
+  fun setCurrentUserMusicTime(time: Int) {
+    _currentUserMusicTime.value = time
+  }
+
+
+
 }

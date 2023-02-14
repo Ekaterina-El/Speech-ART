@@ -1,6 +1,5 @@
 package el.ka.speechart.view.ui.core.study
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,26 +7,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.R
-import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
 import el.ka.speechart.databinding.StudyListOfExercisesFragmentBinding
-import el.ka.speechart.other.Constants
-import el.ka.speechart.other.FilePicker
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
-import el.ka.speechart.view.dialog.AddExerciseDialog
 import el.ka.speechart.view.ui.UserBaseFragment
-import el.ka.speechart.viewModel.SpecialistViewModel
+import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.StudyViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class StudyListOfExercisesFragment : UserBaseFragment() {
+class StudyListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFragment() {
   private lateinit var binding: StudyListOfExercisesFragmentBinding
+
   override val userViewModel: UserViewModel by activityViewModels()
   private val studyViewModel: StudyViewModel by activityViewModels()
+  private val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
   val list = listOf(Work.LOAD_EXERCISES)
   private val List<Work>.hasLoad: Boolean
@@ -47,10 +43,9 @@ class StudyListOfExercisesFragment : UserBaseFragment() {
   }
 
   private val exercisesAdapter by lazy {
-    ExercisesAdapter {
-      /*val destination = SpecialistListOfExercisesFragmentDirections
-        .actionSpecialistListOfExercisesFragmentToSpecialistExerciseFragment(it)
-      findNavController().navigate(destination)*/
+    ExercisesAdapter { exercise ->
+      exerciseViewModel.setExercise(exercise)
+      onItemSelected()
     }
   }
 
@@ -83,7 +78,7 @@ class StudyListOfExercisesFragment : UserBaseFragment() {
     binding.swipeRefreshLayout.setOnRefreshListener { studyViewModel.loadExercises() }
 
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
-    binding.swipeRefreshLayout2.setOnRefreshListener {studyViewModel.loadExercises() }
+    binding.swipeRefreshLayout2.setOnRefreshListener { studyViewModel.loadExercises() }
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewExercises.addItemDecoration(decorator)
