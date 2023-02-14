@@ -16,7 +16,7 @@ fun setImageByUrl(image: ImageView, url: String?) {
 fun setIsPlaying(image: ImageView, musicStatus: Status) {
   val imageResource: Int? = when (musicStatus) {
     Status.PLAYING -> R.drawable.ic_pause
-    Status.PAUSED, Status.NO_LOADED -> R.drawable.ic_play
+    Status.PAUSED, Status.NO_LOADED, Status.RECORDED -> R.drawable.ic_play
     else -> null
   }
   if (imageResource == null) {

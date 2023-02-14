@@ -1,13 +1,19 @@
 package el.ka.speechart.view.ui.core
 
+import android.content.Context
 import android.media.MediaPlayer
+import android.media.MediaRecorder
+import android.os.Build
+import android.os.Environment
 import android.os.Handler
+import android.util.Log
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import el.ka.speechart.other.Errors
 import el.ka.speechart.other.Status
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
+import java.util.*
 
 abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment() {
   abstract var seekBar: SeekBar
@@ -67,6 +73,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   fun playPauseMusic() {
+    if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) return
+
     val musicStatus = exerciseViewModel.musicStatus.value!!
     if (musicStatus == Status.PAUSED || musicStatus == Status.NO_LOADED) {
       if (mediaPlayer == null) {
@@ -109,6 +117,66 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   fun playPauseUserMusic() {
+
+  }
+
+  private lateinit var mediaRecorder: MediaRecorder
+
+  private val recorderUpdate: Runnable by lazy {
+    Runnable {
+      if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) {
+        exerciseViewModel.setCurrentUserRecordTime(exerciseViewModel.currentUserRecordTime.value!! + 1)
+        handler.postDelayed(recorderUpdate, 1000)
+      }
+    }
+  }
+
+  fun startRecord() {
+    if (mediaPlayer?.isPlaying == true) playPauseMusic()
+
+    val name = Calendar.getInstance().time.toString().split(" ").joinToString("-")
+    val output = requireContext().getExternalFilesDir(Context.STORAGE_SERVICE)?.absolutePath + "/$name.mp3"
+    exerciseViewModel.setUserFileUrl(output)
+    mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      MediaRecorder(requireContext())
+    } else {
+      MediaRecorder()
+    }
+    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+    mediaRecorder.setOutputFile(output)
+
+    mediaRecorder.prepare()
+    mediaRecorder.start()
+
+    exerciseViewModel.setUserMusicStatus(Status.RECORDING)
+    handler.post(recorderUpdate)
+  }
+
+  fun stopRecord() {
+    exerciseViewModel.setUserMusicStatus(Status.RECORDED)
+    mediaRecorder.stop()
+    mediaRecorder.release()
+  }
+
+  fun togglePauseRecord() {
+    if (exerciseViewModel.userMusicStatus.value == Status.PAUSED_RECORDING) {
+      mediaRecorder.resume()
+      exerciseViewModel.setUserMusicStatus(Status.RECORDING)
+      handler.post(recorderUpdate)
+    } else {
+      mediaRecorder.pause()
+      exerciseViewModel.setUserMusicStatus(Status.PAUSED_RECORDING)
+      Status.PAUSED_RECORDING
+    }
+  }
+
+  fun deleteRecord() {
+    exerciseViewModel.clearUserData()
+  }
+
+  fun sendToCheck() {
 
   }
 }

@@ -44,6 +44,9 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   fun clearUserData() {
     _userMusicStatus.value = Status.NO_RECORDED
     _currentUserRecordTime.value = 0
+    _userMusicDuration.value = 0
+    _currentMusicTime.value = 0
+    _userFileUrl.value = ""
   }
 
   private val _userMusicStatus = MutableLiveData(Status.NO_RECORDED)
@@ -55,7 +58,8 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   private val _currentUserRecordTime = MutableLiveData(0)
   val currentUserRecordTime: LiveData<Int> get() = _currentUserRecordTime
   fun setCurrentUserRecordTime(time: Int) {
-    _currentMusicTime.value = time
+    Log.d("setCurrentUserRecordTime", "Time: $time")
+    _currentUserRecordTime.value = time
   }
 
   private val _userMusicDuration = MutableLiveData(0)
@@ -70,6 +74,11 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _currentUserMusicTime.value = time
   }
 
+  private val _userFileUrl = MutableLiveData("")
+  val userFileUrl: LiveData<String> get() = _userFileUrl
+  fun setUserFileUrl(output: String) {
+    _userFileUrl.value = output
+  }
 
 
 }

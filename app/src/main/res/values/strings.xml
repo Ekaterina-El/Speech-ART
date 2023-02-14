@@ -69,4 +69,5 @@
   <string name="start_recording">Начать запись</string>
   <string name="delete_record">Удалить запись</string>
   <string name="send_to_check">На проверку</string>
+  <string name="play">Пуск</string>
 </resources>

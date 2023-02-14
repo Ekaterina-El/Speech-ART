@@ -182,7 +182,7 @@
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:visibility="@{viewModel.userMusicStatus == Status.RECORDED ? View.VISIBLE : View.GONE}"
-          tools:visibility="gone">
+          tools:visibility="visible">
 
           <LinearLayout
             android:layout_width="match_parent"
@@ -260,6 +260,7 @@
 
             <Button
               android:id="@+id/buttonCancel"
+              android:onClick="@{() -> master.deleteRecord()}"
               style="?android:attr/buttonBarButtonStyle"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
@@ -277,6 +278,7 @@
             <Button
               android:id="@+id/buttonYes"
               style="?android:attr/buttonBarButtonStyle"
+              android:onClick="@{() -> master.sendToCheck()}"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_gravity="end"
@@ -302,7 +304,7 @@
           <TextView
             style="@style/text.hint.small"
             android:layout_gravity="center"
-            android:text="@string/recording" />
+            android:text="@{viewModel.userMusicStatus == Status.RECORDING ? @string/recording : @string/pause}" />
 
           <TextView
             style="@style/text.header1"
@@ -327,7 +329,8 @@
               android:layout_weight="1"
               android:background="@drawable/button_selector_natural"
               android:fontFamily="@font/montserrat_regular"
-              android:text="@string/pause"
+              android:text="@{viewModel.userMusicStatus == Status.PAUSED_RECORDING ? @string/play : @string/pause}"
+              android:onClick="@{() -> master.togglePauseRecord()}"
               android:textAllCaps="false"
               android:textColor="@color/primary_color"
               app:backgroundTint="@null"
@@ -339,6 +342,7 @@
               android:layout_height="wrap_content"
               android:layout_gravity="end"
               android:layout_weight="1"
+              android:onClick="@{() -> master.stopRecord()}"
               android:background="@drawable/button_selector"
               android:fontFamily="@font/montserrat_regular"
               android:text="@string/stop"
@@ -354,6 +358,8 @@
         <Button
           android:visibility="@{viewModel.userMusicStatus == Status.NO_RECORDED ? View.VISIBLE : View.GONE}"
           android:layout_marginTop="20dp"
+          tools:visibility="gone"
+          android:onClick="@{() -> master.startRecord()}"
           style="?android:attr/buttonBarButtonStyle"
           android:layout_width="match_parent"
           android:layout_height="0dp"
