@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.addCallback
+import androidx.lifecycle.Observer
 import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
 import el.ka.speechart.databinding.StudyExerciseFragmentBinding
+import el.ka.speechart.other.Action
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 
@@ -15,6 +17,10 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
   private lateinit var binding: StudyExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
   override var userSeekBar: SeekBar? = null
+
+  private val externalActionObserver = Observer<Action?> {
+    if (it == Action.GO_BACK) onCloseItem()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -64,10 +70,12 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
   override fun onResume() {
     super.onResume()
     exerciseViewModel.work.observe(viewLifecycleOwner, workObserver)
+    exerciseViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
   }
 
   override fun onStop() {
     super.onStop()
     exerciseViewModel.work.removeObserver(workObserver)
+    exerciseViewModel.externalAction.removeObserver(externalActionObserver)
   }
 }

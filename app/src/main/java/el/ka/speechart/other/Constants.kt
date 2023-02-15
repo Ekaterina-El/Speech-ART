@@ -5,9 +5,9 @@ object Constants {
   const val pickUpAudioType = "audio/*"
 
   // region DB Fields
-  const val EXERCISES_COLLECTION = "exercises"
   const val FIELD_DESCRIPTION = "description"
   const val FIELD_PROFILE_URL = "profileUrl"
+  const val FIELD_PERFORMED_EXERCISES = "performedExercises"
   const val FIELD_EMAIL = "email"
   const val FIELD_ROLE = "role"
   // endregion
@@ -15,6 +15,8 @@ object Constants {
   // region DB Collections
   const val USERS_COLLECTION = "users"
   const val REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION = "requests_to_reg_specialist"
+  const val EXERCISES_COLLECTION = "exercises"
+  const val PERFORMED_EXERCISES_COLLECTION = "performed_exercises"
   // endregion
 
   // region Shared Preferences

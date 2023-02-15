@@ -39,5 +39,6 @@ object FirebaseService {
 
   val usersCollection by lazy { Firebase.firestore.collection(Constants.USERS_COLLECTION) }
   val exercisesRepository by lazy { Firebase.firestore.collection(Constants.EXERCISES_COLLECTION) }
+  val performedExercisesRepository by lazy { Firebase.firestore.collection(Constants.PERFORMED_EXERCISES_COLLECTION) }
   val requestsToRegSpecialistsCollection by lazy { Firebase.firestore.collection(Constants.REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION) }
 }

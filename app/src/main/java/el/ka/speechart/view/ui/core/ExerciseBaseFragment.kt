@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Build
 import android.os.Handler
-import android.util.Log
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import el.ka.speechart.other.*
@@ -97,7 +96,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   private fun destroyMediaPlayer() {
-    mediaPlayer!!.release()
+    mediaPlayer?.release()
     mediaPlayer = null
 
     userMediaPlayer?.release()
@@ -203,7 +202,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     if (mediaPlayer?.isPlaying == true) playPauseMusic()
 
     val name = Calendar.getInstance().time.toString().split(" ").joinToString("-")
-    val output = requireContext().getExternalFilesDir(Context.STORAGE_SERVICE)?.absolutePath + "/$name.mp3"
+    val output =
+      requireContext().getExternalFilesDir(Context.STORAGE_SERVICE)?.absolutePath + "/$name.mp3"
     exerciseViewModel.setUserFileUrl(output)
     mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
       MediaRecorder(requireContext())

@@ -5,9 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import el.ka.speechart.other.Action
 import el.ka.speechart.other.Status
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
+import el.ka.speechart.service.model.PerformedExercise
+import el.ka.speechart.service.repository.AuthRepository
 import el.ka.speechart.service.repository.ExercisesRepository
 import kotlinx.coroutines.launch
 
@@ -112,7 +115,21 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     }
   }
 
-  fun sendToCheck() {
+  val performedExercise: PerformedExercise get() = PerformedExercise(
+    user = AuthRepository.currentUid ?: "",
+    userAudioFileUrl = _userFileUrl.value!!,
+    exerciseId = _exercise.value!!.id,
+  )
 
+  fun sendToCheck() {
+    val work = Work.ADD_EXERCISE
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.sendExercise(performedExercise)
+      _externalAction.value = Action.GO_BACK
+      clearUserData()
+      removeWork(work)
+    }
   }
 }

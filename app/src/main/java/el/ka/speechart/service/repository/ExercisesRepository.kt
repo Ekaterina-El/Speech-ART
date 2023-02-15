@@ -2,13 +2,14 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.FirebaseNetworkException
-import com.google.rpc.context.AttributeContext.Auth
+import com.google.firebase.firestore.FieldValue
+import el.ka.speechart.other.Constants.FIELD_PERFORMED_EXERCISES
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.Exercise
+import el.ka.speechart.service.model.PerformedExercise
 import kotlinx.coroutines.tasks.await
 import java.io.File
 
@@ -20,7 +21,7 @@ object ExercisesRepository {
       return@mapNotNull exercise
     }
     onSuccess(items)
-     null
+    null
   } catch (e: NetworkErrorException) {
     Errors.network
   } catch (e: Exception) {
@@ -42,7 +43,7 @@ object ExercisesRepository {
 
     onSuccess(exercise)
     null
-  } catch (e: FirebaseNetworkException)  {
+  } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown
@@ -68,4 +69,18 @@ object ExercisesRepository {
     Errors.unknown
   }
 
+  suspend fun sendExercise(performedExercise: PerformedExercise): ErrorApp? = try {
+    // add note performed exercise to collection
+    val doc = FirebaseService.performedExercisesRepository.add(performedExercise).await()
+
+    // add note id to user node to user collection
+    FirebaseService.usersCollection.document(performedExercise.user)
+      .update(FIELD_PERFORMED_EXERCISES, FieldValue.arrayUnion(doc.id)).await()
+
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
 }
