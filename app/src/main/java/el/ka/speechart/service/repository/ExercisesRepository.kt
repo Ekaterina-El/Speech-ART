@@ -59,7 +59,7 @@ object ExercisesRepository {
 
   suspend fun uploadUserAudioFile(url: String, onSuccess: (String) -> Unit): ErrorApp? = try {
     val uri = File(url).toUri()
-    val newUrl = FirebaseService.uploadToStorage(uri, "exercises/usersAudioFiles")
+    val newUrl = FirebaseService.uploadToStorage(uri, "exercises/usersAudioFiles/")
     onSuccess(newUrl)
     null
   } catch (e: FirebaseNetworkException) {
