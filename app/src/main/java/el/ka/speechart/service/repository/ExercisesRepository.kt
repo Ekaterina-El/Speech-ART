@@ -2,6 +2,7 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FieldValue
@@ -82,5 +83,64 @@ object ExercisesRepository {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown
+  }
+
+  suspend fun getAllPerformedExercisesToCheck(
+    onSuccess: (List<PerformedExercise>) -> Unit
+  ): ErrorApp? = try {
+    val list = FirebaseService.performedExercisesRepository.get().await().map {
+      val exercise = it.toObject(PerformedExercise::class.java)
+      exercise.id = it.id
+      return@map exercise
+    }
+    onSuccess(list)
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun getPerformedExercisesByListOfIds(
+    listOfIds: List<String>,
+    withDetails: Boolean = false,
+    onSuccess: (List<PerformedExercise>) -> Unit,
+  ): ErrorApp? = try {
+    val list = listOfIds.map { id ->
+      if (withDetails) loadPerformedExerciseByIdWithLocalData(id) else loadPerformedExerciseById(id)
+    }
+    onSuccess(list)
+    null
+  } catch (e: NetworkErrorException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  private suspend fun loadPerformedExerciseByIdWithLocalData(id: String): PerformedExercise {
+    val performedExercise = loadPerformedExerciseById(id)
+
+    //    load user, specialist & exercise
+    performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
+    if (performedExercise.specialistId != null) performedExercise.specialistLocal =
+      UsersRepository.getUserById(performedExercise.specialistId)
+    performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
+
+    return performedExercise
+  }
+
+  private suspend fun getExerciseById(id: String): Exercise {
+    val doc = FirebaseService.exercisesRepository.document(id).get().await()
+    val exercise = doc.toObject(Exercise::class.java)!!
+    exercise.id = doc.id
+    return exercise
+  }
+
+  private suspend fun loadPerformedExerciseById(id: String): PerformedExercise {
+    val doc = FirebaseService.performedExercisesRepository.document(id).get().await()
+    val performedExercise = doc.toObject(PerformedExercise::class.java)!!
+    performedExercise.id = id
+    Log.d("loadPerformedExercises", "Id4 : $id")
+    return performedExercise
   }
 }

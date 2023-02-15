@@ -1,6 +1,7 @@
 package el.ka.speechart.view.ui.core.study
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ class StudyProfileFragment : UserBaseFragment() {
   }
 
   private val userObserver = Observer<User?> {
-    studyViewModel.setProfile(it)
+    if (it != null) studyViewModel.setProfile(it)
   }
 
   override fun onCreateView(

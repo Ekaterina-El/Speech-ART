@@ -102,4 +102,5 @@ object UsersRepository {
     Errors.unknown
   }
 
+  suspend fun getUserById(id: String): User? = FirebaseService.usersCollection.document(id).get().await().toObject(User::class.java)
 }
