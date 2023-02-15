@@ -1,25 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
+
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.specialist.SpecialistRequestsToCheckFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.SpecialistViewModel" />
+
+    <variable
+      name="performedExercisesAdapter"
+      type="el.ka.speechart.view.adapter.list.performedExercises.PerformedExercisesAdapter" />
 
   </data>
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-      android:id="@+id/textViewRole"
-      android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:background="@color/primary_color"
+      android:paddingHorizontal="@dimen/app_padding">
+
+      <ImageView
+        android:id="@+id/icon_edit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:clickable="true"
+        android:contentDescription="@string/exit"
+        android:onClick="@{() -> master.showExitDialog()}"
+        android:src="@drawable/ic_exit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/on_secondary_color" />
+
+
+      <TextView
+        style="@style/text.header2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:text="@string/exercises"
+        android:textColor="@color/on_secondary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      style="@style/text.header1.bold"
-      android:text="Exercises"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_marginTop="15dp"
+      android:gravity="center"
+      android:orientation="horizontal">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/field_wrapper"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <EditText
+          style="@style/text.header3"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="10dp"
+          android:layout_weight="1"
+          android:afterTextChanged="@{() -> viewModel.filterPerformedExercises()}"
+          android:background="@null"
+          android:ellipsize="end"
+          android:hint="@string/search_hint"
+          android:maxLines="1"
+          android:text="@={viewModel.searchPerformedExercise}"
+          tools:ignore="NestedWeights" />
+
+        <ImageView
+          style="@style/icon"
+          android:src="@drawable/ic_search"
+          android:visibility="@{viewModel.searchPerformedExercise.isEmpty() ? View.VISIBLE : View.GONE }" />
+
+        <ImageView
+          style="@style/icon"
+          android:onClick="@{() -> viewModel.clearSearchPerformedExercise()}"
+          android:src="@drawable/ic_close"
+          android:visibility="@{viewModel.searchPerformedExercise.isEmpty() ? View.GONE : View.VISIBLE }" />
+
+      </LinearLayout>
+    </LinearLayout>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginVertical="10dp"
+      android:layout_weight="1"
+      android:visibility="@{viewModel.filteredPerformedExercise.size() == 0 ? View.VISIBLE : View.GONE}">
+
+      <include
+        android:id="@+id/no_found"
+        layout="@layout/users_no_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/app_padding" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout2"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginVertical="10dp"
+
+      android:layout_weight="1"
+      android:visibility="@{viewModel.filteredPerformedExercise.size() == 0 ? View.GONE : View.VISIBLE}">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewExercises"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adapter="@{performedExercisesAdapter}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_exercise" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+  </LinearLayout>
 </layout>

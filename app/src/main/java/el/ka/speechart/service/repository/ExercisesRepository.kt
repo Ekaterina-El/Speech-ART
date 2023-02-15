@@ -89,9 +89,13 @@ object ExercisesRepository {
     onSuccess: (List<PerformedExercise>) -> Unit
   ): ErrorApp? = try {
     val list = FirebaseService.performedExercisesRepository.get().await().map {
-      val exercise = it.toObject(PerformedExercise::class.java)
-      exercise.id = it.id
-      return@map exercise
+      val performedExercise = it.toObject(PerformedExercise::class.java)
+      performedExercise.id = it.id
+      performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
+      if (performedExercise.specialistId != null) performedExercise.specialistLocal =
+        UsersRepository.getUserById(performedExercise.specialistId)
+      performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
+      return@map performedExercise
     }
     onSuccess(list)
     null
@@ -140,7 +144,6 @@ object ExercisesRepository {
     val doc = FirebaseService.performedExercisesRepository.document(id).get().await()
     val performedExercise = doc.toObject(PerformedExercise::class.java)!!
     performedExercise.id = id
-    Log.d("loadPerformedExercises", "Id4 : $id")
     return performedExercise
   }
 }
