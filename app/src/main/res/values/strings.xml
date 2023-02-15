@@ -70,4 +70,5 @@
   <string name="delete_record">Удалить запись</string>
   <string name="send_to_check">На проверку</string>
   <string name="play">Пуск</string>
+  <string name="performed_exercises">Выполненные упражнения</string>
 </resources>

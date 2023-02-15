@@ -29,7 +29,7 @@ class StudyViewModel(application: Application) : ViewModelWithSearchExercise(app
   val performedExercise: LiveData<List<PerformedExercise>> get() = _performedExercises
 
   private fun loadPerformedExercises() {
-    val work = Work.LOAD_EXERCISES
+    val work = Work.LOAD_PERFORMED_EXERCISE
     addWork(work)
 
 

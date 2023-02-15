@@ -8,6 +8,10 @@
     <import type="android.view.View" />
 
     <variable
+      name="performedExercisesAdapter"
+      type="el.ka.speechart.view.adapter.list.performedExercises.PerformedExercisesAdapter" />
+
+    <variable
       name="master"
       type="el.ka.speechart.view.ui.core.study.StudyProfileFragment" />
 
@@ -98,12 +102,30 @@
             android:layout_marginTop="10dp"
             android:text="* Level *" />
 
-          <View
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+          <TextView
+            style="@style/text.header2"
             android:layout_marginHorizontal="@dimen/app_padding"
-            android:layout_marginTop="20dp"
-            android:background="#E2E2E2" />
+            android:layout_marginTop="10dp"
+            android:text="@string/performed_exercises" />
+
+          <include
+            android:id="@+id/no_found"
+            android:visibility="@{viewModel.performedExercise.size() == 0 ? View.VISIBLE : View.GONE}"
+            layout="@layout/users_no_found"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/app_padding" />
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPerformedExercises"
+            android:visibility="@{viewModel.performedExercise.size() == 0 ? View.GONE : View.VISIBLE}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_exercise"
+            android:adapter="@{performedExercisesAdapter}"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
       </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

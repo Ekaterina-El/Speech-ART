@@ -7,8 +7,8 @@
   android:layout_height="wrap_content">
 
   <ImageView
-    android:layout_width="50dp"
-    android:layout_height="50dp"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
     android:layout_marginBottom="10dp"
     android:src="@drawable/ic_search"
     app:tint="@color/primary_color" />
@@ -18,7 +18,7 @@
     android:layout_width="wrap_content"
     android:gravity="center"
     android:layout_height="wrap_content"
-    style="@style/text.header3"
+    style="@style/text"
     android:text="@string/users_no_found" />
 
 </LinearLayout>

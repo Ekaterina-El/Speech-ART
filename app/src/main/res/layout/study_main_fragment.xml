@@ -11,32 +11,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-      android:id="@+id/action_bar_bg"
-      android:layout_width="match_parent"
-      android:layout_height="56dp"
-      android:background="@color/primary_color"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-      android:layout_width="match_parent"
-      android:layout_height="5dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/shadow_line"
-      app:layout_constraintTop_toBottomOf="@id/action_bar_bg" />
-
-    <!--<androidx.fragment.app.FragmentContainerView
-      android:id="@+id/fragmentContainerViewStudy"
-      android:name="androidx.navigation.fragment.NavHostFragment"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      app:defaultNavHost="false"
-
-      app:navGraph="@navigation/study_graph" />-->
-
     <FrameLayout
       android:id="@+id/study_container"
       android:layout_width="match_parent"
