@@ -14,6 +14,7 @@ import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: StudyExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
+  override var userSeekBar: SeekBar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -36,6 +37,18 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
       override fun onStopTrackingTouch(p0: SeekBar?) {}
     })
 
+    userSeekBar = binding.seekBarProgressUser
+    userSeekBar!!.max = 100
+    userSeekBar!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+      override fun onProgressChanged(p0: SeekBar?, progress: Int, isUser: Boolean) {
+        if (!isUser) return
+        rewindUserAudio(progress)
+      }
+
+      override fun onStartTrackingTouch(p0: SeekBar?) {}
+      override fun onStopTrackingTouch(p0: SeekBar?) {}
+    })
+
     requireActivity().onBackPressedDispatcher.addCallback(this) {
       goBack()
     }
@@ -46,5 +59,15 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
       lifecycleOwner = viewLifecycleOwner
     }
     return binding.root
+  }
+
+  override fun onResume() {
+    super.onResume()
+    exerciseViewModel.work.observe(viewLifecycleOwner, workObserver)
+  }
+
+  override fun onStop() {
+    super.onStop()
+    exerciseViewModel.work.removeObserver(workObserver)
   }
 }

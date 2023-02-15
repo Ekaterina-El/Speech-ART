@@ -4,8 +4,12 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import el.ka.speechart.other.Status
+import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
+import el.ka.speechart.service.repository.ExercisesRepository
+import kotlinx.coroutines.launch
 
 class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   private val _exercise = MutableLiveData<Exercise?>(null)
@@ -46,7 +50,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _currentUserRecordTime.value = 0
     _userMusicDuration.value = 0
     _currentMusicTime.value = 0
-    _userFileUrl.value = ""
+    if (_userFileUrl.value == null) removeUserAudioFile()
   }
 
   private val _userMusicStatus = MutableLiveData(Status.NO_RECORDED)
@@ -80,5 +84,35 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _userFileUrl.value = output
   }
 
+  private val _preparedUserFileUrl = MutableLiveData<String?>(null)
+  val preparedUserFileUrl: LiveData<String?> get() = _preparedUserFileUrl
+  fun setPrepareUserFileUrl(url: String) {
+    _preparedUserFileUrl.value = url
+  }
 
+  private fun removeUserAudioFile() {
+    val work = Work.REMOVER_FILE
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.removeUserAudioFile(_preparedUserFileUrl.value!!)
+      removeWork(work)
+    }
+  }
+
+  fun uploadAudioFile() {
+    val work = Work.UPLOAD_FILE
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.uploadUserAudioFile(_userFileUrl.value!!) { newUrl ->
+        _userFileUrl.value = newUrl
+      }
+      removeWork(work)
+    }
+  }
+
+  fun sendToCheck() {
+
+  }
 }

@@ -3,12 +3,14 @@ package el.ka.speechart.service.repository
 import android.accounts.NetworkErrorException
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import com.google.firebase.FirebaseNetworkException
 import com.google.rpc.context.AttributeContext.Auth
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.Exercise
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 object ExercisesRepository {
   suspend fun loadExercises(onSuccess: (List<Exercise>) -> Unit): ErrorApp? = try {
@@ -41,6 +43,26 @@ object ExercisesRepository {
     onSuccess(exercise)
     null
   } catch (e: FirebaseNetworkException)  {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun removeUserAudioFile(url: String): ErrorApp? = try {
+    FirebaseService.deleteByUrl(url)
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
+  suspend fun uploadUserAudioFile(url: String, onSuccess: (String) -> Unit): ErrorApp? = try {
+    val uri = File(url).toUri()
+    val newUrl = FirebaseService.uploadToStorage(uri, "exercises/usersAudioFiles")
+    onSuccess(newUrl)
+    null
+  } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown

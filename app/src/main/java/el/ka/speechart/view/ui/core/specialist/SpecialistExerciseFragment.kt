@@ -14,6 +14,7 @@ class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
   ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: SpecialistExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
+  override var userSeekBar: SeekBar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,

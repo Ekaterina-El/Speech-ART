@@ -4,28 +4,27 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Build
-import android.os.Environment
 import android.os.Handler
 import android.util.Log
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
-import el.ka.speechart.other.Errors
-import el.ka.speechart.other.Status
+import el.ka.speechart.other.*
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import java.util.*
 
 abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment() {
   abstract var seekBar: SeekBar
+  abstract var userSeekBar: SeekBar?
+
   private var mediaPlayer: MediaPlayer? = null
+  private var userMediaPlayer: MediaPlayer? = null
   private val handler by lazy { Handler() }
 
   val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
   private fun updateSeekBar() {
-    val progress =
-      ((mediaPlayer!!.currentPosition.toFloat() / mediaPlayer!!.duration.toFloat()) * 100).toInt()
-    seekBar.progress = progress
+    seekBar.progress = mediaPlayer!!.progress
     if (mediaPlayer!!.isPlaying) {
       handler.postDelayed(updater, 1000)
     }
@@ -34,14 +33,18 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   private val updater by lazy {
     Runnable {
       updateSeekBar()
-      exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.currentPosition / 1000)
+      exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.timeInSeconds)
     }
   }
 
   fun rewindAudio(progress: Int) {
-    val playPosition = (mediaPlayer!!.duration / 100) * progress
-    mediaPlayer!!.seekTo(playPosition)
-    exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.currentPosition / 1000)
+    mediaPlayer!!.playAt(progress)
+    exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.timeInSeconds)
+  }
+
+  fun rewindUserAudio(progress: Int) {
+    userMediaPlayer!!.playAt(progress)
+    exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.timeInSeconds)
   }
 
   private fun getAudioFileUrl(): String? =
@@ -93,33 +96,98 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.setMusicStatus(if (musicStatus == Status.PLAYING) Status.PAUSED else Status.PLAYING)
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  private fun destroyMediaPlayer() {
     mediaPlayer!!.release()
     mediaPlayer = null
+
+    userMediaPlayer?.release()
+    userMediaPlayer = null
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    destroyMediaPlayer()
   }
 
   override fun onResume() {
     super.onResume()
     if (exerciseViewModel.musicStatus.value == Status.PLAYING) mediaPlayer!!.start()
+    if (exerciseViewModel.userMusicStatus.value == Status.PLAYING) userMediaPlayer!!.start()
   }
 
   override fun onStop() {
     super.onStop()
     if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
+    if (userMediaPlayer?.isPlaying == true) userMediaPlayer?.pause()
   }
 
   fun goBack() {
-    mediaPlayer!!.pause()
+    destroyMediaPlayer()
     exerciseViewModel.clearUserData()
     exerciseViewModel.setMusicStatus(Status.NO_LOADED)
     onCloseItem()
   }
 
   fun playPauseUserMusic() {
+    if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) return
 
+    val musicStatus = exerciseViewModel.userMusicStatus.value!!
+    if (musicStatus == Status.PAUSED || musicStatus == Status.NO_LOADED || musicStatus == Status.RECORDED) {
+      if (userMediaPlayer == null) {
+        val url = exerciseViewModel.userFileUrl.value ?: return
+        if (exerciseViewModel.preparedUserFileUrl.value == url) return
+        prepareUserMusicPlayer(url)
+        return
+      } else {
+        userMediaPlayer!!.start()
+        updateUserSeekBar()
+      }
+    } else if (musicStatus == Status.PLAYING) {
+      handler.removeCallbacks(updater)
+      userMediaPlayer!!.pause()
+    }
+    exerciseViewModel.setUserMusicStatus(if (musicStatus == Status.PLAYING) Status.PAUSED else Status.PLAYING)
   }
 
+  private fun prepareUserMusicPlayer(url: String) {
+    try {
+      exerciseViewModel.setPrepareUserFileUrl(url)
+      userMediaPlayer = MediaPlayer()
+      userMediaPlayer!!.setDataSource(url)
+      exerciseViewModel.setUserMusicStatus(Status.LOADING)
+
+      userMediaPlayer!!.setOnPreparedListener {
+        exerciseViewModel.setUserMusicDuration(userMediaPlayer!!.duration / 1000)
+        exerciseViewModel.setUserMusicStatus(Status.PLAYING)
+        userMediaPlayer!!.start()
+        updateUserSeekBar()
+      }
+      userMediaPlayer!!.prepareAsync()
+
+
+      userMediaPlayer!!.setOnCompletionListener {
+        exerciseViewModel.setUserMusicStatus(Status.PAUSED)
+      }
+    } catch (e: Exception) {
+      toast(e.message ?: requireContext().getString(Errors.unknown.messageRes))
+    }
+  }
+
+  private fun updateUserSeekBar() {
+    userSeekBar!!.progress = userMediaPlayer!!.progress
+    if (userMediaPlayer!!.isPlaying) {
+      handler.postDelayed(userUpdater, 1000)
+    }
+  }
+
+  private val userUpdater by lazy {
+    Runnable {
+      updateUserSeekBar()
+      exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.currentPosition / 1000)
+    }
+  }
+
+  // region Recorder
   private lateinit var mediaRecorder: MediaRecorder
 
   private val recorderUpdate: Runnable by lazy {
@@ -158,6 +226,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.setUserMusicStatus(Status.RECORDED)
     mediaRecorder.stop()
     mediaRecorder.release()
+    exerciseViewModel.uploadAudioFile()
   }
 
   fun togglePauseRecord() {
@@ -168,15 +237,26 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     } else {
       mediaRecorder.pause()
       exerciseViewModel.setUserMusicStatus(Status.PAUSED_RECORDING)
-      Status.PAUSED_RECORDING
     }
   }
 
   fun deleteRecord() {
+    if (userMediaPlayer != null) {
+      userMediaPlayer!!.pause()
+      userMediaPlayer!!.release()
+      userMediaPlayer = null
+    }
+
     exerciseViewModel.clearUserData()
   }
+  // endregion
 
   fun sendToCheck() {
-
+    if (userMediaPlayer != null) {
+      userMediaPlayer!!.pause()
+      userMediaPlayer!!.release()
+      userMediaPlayer = null
+    }
+    exerciseViewModel.sendToCheck()
   }
 }

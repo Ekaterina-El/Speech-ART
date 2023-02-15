@@ -181,7 +181,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:visibility="@{viewModel.userMusicStatus == Status.RECORDED ? View.VISIBLE : View.GONE}"
+          android:visibility="@{viewModel.userMusicStatus == Status.RECORDED || viewModel.userMusicStatus == Status.PAUSED || viewModel.userMusicStatus == Status.PLAYING || viewModel.userMusicStatus == Status.LOADING  ? View.VISIBLE : View.GONE}"
           tools:visibility="visible">
 
           <LinearLayout
