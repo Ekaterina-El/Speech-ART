@@ -72,18 +72,28 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
+
         <TextView
-          style="@style/text.header3"
+          style="@style/text.header1"
+          android:layout_gravity="center"
           android:layout_marginBottom="5dp"
-          android:text="@string/description" />
+          tools:text="Упражнение #1"
+          android:text="@{viewModel.exercise.name}" />
+
+        <RatingBar
+          android:theme="@style/ratingBar"
+          style="?android:attr/ratingBarStyleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:numStars="3"
+          tools:rating="2"
+          android:layout_gravity="center"
+          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
+          android:isIndicator="true"
+          />
 
         <TextView
-          style="@style/text"
-          android:textColor="@color/primary_color_dark"
-          app:levelExercise="@{viewModel.exercise.levelOfDifficulty}"
-          tools:text="Продвинутый уровень" />
-
-        <TextView
+          android:layout_marginTop="10dp"
           style="@style/text"
           android:text="@{viewModel.exercise.description}"
           tools:text="Какое-то описание..." />
@@ -91,6 +101,18 @@
         <TextView
           style="@style/text.header3"
           android:layout_marginTop="20dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/add_exercise_text" />
+
+        <TextView
+          style="@style/text"
+          android:text="@{viewModel.exercise.text}"
+          tools:text="Какое-то описание..." />
+
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginTop="30dp"
           android:layout_marginBottom="5dp"
           android:text="@string/reference_pronunciation" />
 
@@ -165,18 +187,7 @@
 
         <TextView
           style="@style/text.header3"
-          android:layout_marginTop="20dp"
-          android:layout_marginBottom="5dp"
-          android:text="@string/add_exercise_text" />
-
-        <TextView
-          style="@style/text"
-          android:text="@{viewModel.exercise.text}"
-          tools:text="Какое-то описание..." />
-
-        <TextView
-          style="@style/text.header3"
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="15dp"
           android:layout_marginBottom="5dp"
           android:text="@string/user_record" />
 
@@ -250,7 +261,7 @@
 
         <TextView
           style="@style/text.header3"
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="30dp"
           android:layout_marginBottom="5dp"
           android:text="@string/conclusion" />
 
@@ -281,6 +292,7 @@
           android:background="@drawable/button_selector"
           android:fontFamily="@font/montserrat_regular"
           android:text="@string/continue_text"
+          android:layout_marginBottom="20dp"
           android:onClick="@{() -> viewModel.sendConclusion()}"
           android:textAllCaps="false"
           android:textColor="@color/on_secondary_color"

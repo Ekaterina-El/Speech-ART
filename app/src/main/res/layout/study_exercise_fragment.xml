@@ -71,17 +71,26 @@
         android:orientation="vertical">
 
         <TextView
-          style="@style/text.header3"
+          style="@style/text.header1"
+          android:layout_gravity="center"
           android:layout_marginBottom="5dp"
-          android:text="@string/description" />
+          tools:text="Упражнение #1"
+          android:text="@{viewModel.exercise.name}" />
+
+        <RatingBar
+          android:theme="@style/ratingBar"
+          style="?android:attr/ratingBarStyleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:numStars="3"
+          tools:rating="2"
+          android:layout_gravity="center"
+          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
+          android:isIndicator="true"
+          />
 
         <TextView
-          style="@style/text"
-          android:textColor="@color/primary_color_dark"
-          app:levelExercise="@{viewModel.exercise.levelOfDifficulty}"
-          tools:text="Продвинутый уровень" />
-
-        <TextView
+          android:layout_marginTop="10dp"
           style="@style/text"
           android:text="@{viewModel.exercise.description}"
           tools:text="Какое-то описание..." />
@@ -89,6 +98,17 @@
         <TextView
           style="@style/text.header3"
           android:layout_marginTop="20dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/add_exercise_text" />
+
+        <TextView
+          style="@style/text"
+          android:text="@{viewModel.exercise.text}"
+          tools:text="Какое-то описание..." />
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginTop="30dp"
           android:layout_marginBottom="5dp"
           android:text="@string/reference_pronunciation" />
 
@@ -162,27 +182,16 @@
 
         <TextView
           style="@style/text.header3"
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="15dp"
           android:layout_marginBottom="5dp"
-          android:text="@string/add_exercise_text" />
-
-        <TextView
-          style="@style/text"
-          android:text="@{viewModel.exercise.text}"
-          tools:text="Какое-то описание..." />
-
-        <TextView
-          style="@style/text.header3"
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="5dp"
-          android:text="Какое-то название раздела с 'диктофоном'" />
+          android:text="@string/user_record" />
 
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:visibility="@{viewModel.userMusicStatus == Status.RECORDED || viewModel.userMusicStatus == Status.PAUSED || viewModel.userMusicStatus == Status.PLAYING || viewModel.userMusicStatus == Status.LOADING  ? View.VISIBLE : View.GONE}"
-          tools:visibility="visible">
+          tools:visibility="gone">
 
           <LinearLayout
             android:layout_width="match_parent"
@@ -255,7 +264,7 @@
           <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <Button
@@ -304,6 +313,7 @@
           <TextView
             style="@style/text.hint.small"
             android:layout_gravity="center"
+            tools:text="@string/recording"
             android:text="@{viewModel.userMusicStatus == Status.RECORDING ? @string/recording : @string/pause}" />
 
           <TextView
@@ -329,6 +339,7 @@
               android:layout_weight="1"
               android:background="@drawable/button_selector_natural"
               android:fontFamily="@font/montserrat_regular"
+              tools:text="@string/pause"
               android:text="@{viewModel.userMusicStatus == Status.PAUSED_RECORDING ? @string/play : @string/pause}"
               android:onClick="@{() -> master.togglePauseRecord()}"
               android:textAllCaps="false"
@@ -358,7 +369,7 @@
         <Button
           android:visibility="@{viewModel.userMusicStatus == Status.NO_RECORDED ? View.VISIBLE : View.GONE}"
           android:layout_marginTop="20dp"
-          tools:visibility="gone"
+          tools:visibility="visible"
           android:onClick="@{() -> master.startRecord()}"
           style="?android:attr/buttonBarButtonStyle"
           android:layout_width="match_parent"

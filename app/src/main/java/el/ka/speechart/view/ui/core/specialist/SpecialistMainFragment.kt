@@ -52,7 +52,9 @@ class SpecialistMainFragment : UserBaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, performedExerciseFragment, "performedExerciseFragment")
+      .hide(performedExerciseFragment).commit()
     fm.beginTransaction()
       .add(R.id.fragmentContainerViewSpecialist, listOfRequestsFragment, "listOfRequests")
       .hide(listOfRequestsFragment).commit()
@@ -62,9 +64,7 @@ class SpecialistMainFragment : UserBaseFragment() {
     fm.beginTransaction()
       .add(R.id.fragmentContainerViewSpecialist, exerciseFragment, "exerciseFragment")
       .hide(exerciseFragment).commit()
-    fm.beginTransaction()
-      .add(R.id.fragmentContainerViewSpecialist, performedExerciseFragment, "performedExerciseFragment")
-      .hide(performedExerciseFragment).commit()
+
     fm.beginTransaction().add(R.id.fragmentContainerViewSpecialist, profileFragment, "profile")
       .commit()
     active = profileFragment
