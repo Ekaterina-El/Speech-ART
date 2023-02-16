@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.UserRole
 import el.ka.speechart.other.Work
+import el.ka.speechart.service.model.Review
 import el.ka.speechart.service.model.User
 import el.ka.speechart.service.repository.AuthRepository
+import el.ka.speechart.service.repository.ReviewRepository
 import el.ka.speechart.service.repository.UsersRepository
 import kotlinx.coroutines.launch
 

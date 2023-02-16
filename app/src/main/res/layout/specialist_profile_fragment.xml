@@ -4,8 +4,11 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
     <import type="android.view.View" />
+
+    <variable
+      name="reviewsAdapter"
+      type="el.ka.speechart.view.adapter.list.reviews.ReviewsAdapter" />
 
     <variable
       name="master"
@@ -14,6 +17,10 @@
     <variable
       name="viewModel"
       type="el.ka.speechart.viewModel.UserViewModel" />
+
+    <variable
+      name="specialistViewModel"
+      type="el.ka.speechart.viewModel.SpecialistViewModel" />
   </data>
 
   <LinearLayout
@@ -74,53 +81,69 @@
           android:layout_height="match_parent"
           android:orientation="vertical">
 
-
-
           <RatingBar
-            android:theme="@style/ratingBar"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-            app:hideIfEmpty="@{viewModel.user.fullName}"
-            tools:rating="3.7"
-            android:layout_marginTop="15dp"
             android:layout_gravity="center"
-            android:rating="@{viewModel.user.rating}"
+            android:layout_marginTop="15dp"
             android:isIndicator="true"
-            />
+            android:numStars="5"
+            android:rating="@{viewModel.user.rating}"
+            android:theme="@style/ratingBar"
+            app:hideIfEmpty="@{viewModel.user.fullName}"
+            tools:rating="3.7" />
 
           <TextView
             style="@style/text.header3"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/app_padding"
-            tools:text="Курчагин Юрий Дмитриевич"
-            app:text="@{viewModel.user.fullName}" />
+            app:text="@{viewModel.user.fullName}"
+            tools:text="Курчагин Юрий Дмитриевич" />
 
           <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginTop="20dp"
             android:layout_width="160dp"
-            android:onClick="@{() -> master.changeProfileImage()}"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            tools:src="@drawable/placeholder_image"
+            android:layout_marginTop="20dp"
+            android:onClick="@{() -> master.changeProfileImage()}"
             app:hideIfEmpty="@{viewModel.user.fullName}"
-            app:imageUrl="@{viewModel.user.profileUrl}" />
+            app:imageUrl="@{viewModel.user.profileUrl}"
+            tools:src="@drawable/placeholder_image" />
 
           <TextView
             style="@style/text"
+            android:layout_marginHorizontal="@dimen/app_padding"
             android:layout_marginTop="25dp"
             android:onClick="@{() -> master.showChangeDescriptionDialog()}"
-            tools:text="Коррекционно-логопедическая деятельность:\n\n – Диагностика речевых нарушений\n – Коррекция фонетико-фонематического недоразвития речи\n – Коррекция общего недоразвития речи\n – Коррекция мелодико-интонационной стороны речи\n –   Коррекционно-логопедическая работа со взрослыми (нарушения звукопроизношения, дизартрия)"
-            android:layout_marginHorizontal="@dimen/app_padding"
-            app:text="@{viewModel.user.description.isEmpty() ? @string/description_no_set : viewModel.user.description}" />
+            app:text="@{viewModel.user.description.isEmpty() ? @string/description_no_set : viewModel.user.description}"
+            tools:text="Коррекционно-логопедическая деятельность:\n\n – Диагностика речевых нарушений\n – Коррекция фонетико-фонематического недоразвития речи\n – Коррекция общего недоразвития речи\n – Коррекция мелодико-интонационной стороны речи\n –   Коррекционно-логопедическая работа со взрослыми (нарушения звукопроизношения, дизартрия)" />
 
-          <View
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+
+          <TextView
+            style="@style/text.header3"
             android:layout_marginHorizontal="@dimen/app_padding"
-            android:layout_marginTop="20dp"
-            android:background="#E2E2E2" />
+            android:layout_marginTop="15dp"
+            android:text="@string/reviews" />
+
+          <include
+            android:id="@+id/no_found"
+            android:visibility="@{specialistViewModel.reviews.size() == 0 ? View.VISIBLE : View.GONE}"
+            layout="@layout/users_no_found"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/app_padding" />
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:visibility="@{specialistViewModel.reviews.size() == 0 ? View.GONE : View.VISIBLE}"
+            android:id="@+id/recyclerViewReviews"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:adapter="@{reviewsAdapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_review" />
 
         </LinearLayout>
 

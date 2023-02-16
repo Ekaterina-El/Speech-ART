@@ -80,4 +80,6 @@
   <string name="sendReview">Отправить отзыв</string>
   <string name="review_text">Оценка услуги</string>
   <string name="you_can_send_review_after_check">Вы можете оставить отзыв специалисту только после того, как он проверит</string>
+  <string name="reviews">Отзывы</string>
+  <string name="reviews_no_found">Отзывы не найдены</string>
 </resources>

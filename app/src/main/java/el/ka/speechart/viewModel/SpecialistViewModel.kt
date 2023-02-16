@@ -6,11 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import el.ka.speechart.other.Work
-import el.ka.speechart.service.model.Exercise
-import el.ka.speechart.service.model.PerformedExercise
-import el.ka.speechart.service.model.User
-import el.ka.speechart.service.model.filterBy
+import el.ka.speechart.service.model.*
 import el.ka.speechart.service.repository.ExercisesRepository
+import el.ka.speechart.service.repository.ReviewRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -19,7 +17,8 @@ class SpecialistViewModel(application: Application) : ViewModelWithSearchExercis
   val profile: LiveData<User?> get() = _profile
 
   fun setProfile(it: User?) {
-    _profile.postValue(it)
+    _profile.value = it
+    loadReviews()
   }
 
   val searchPerformedExercise = MutableLiveData("")
@@ -59,5 +58,20 @@ class SpecialistViewModel(application: Application) : ViewModelWithSearchExercis
   fun deleteLocalPerformedExercise(performedExercise: PerformedExercise) {
     _performedExercises.value = _performedExercises.value!!.filter { it.id != performedExercise.id }
     filterPerformedExercises()
+  }
+
+  private val _reviews = MutableLiveData<List<Review>>(listOf())
+  val reviews: LiveData<List<Review>> get() = _reviews
+
+  private fun loadReviews() {
+    val work = Work.LOAD_REVIEWS
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ReviewRepository.getReviewsByListOfIds(_profile.value!!.reviews) { reviews ->
+        _reviews.value = reviews
+      }
+      removeWork(work)
+    }
   }
 }
