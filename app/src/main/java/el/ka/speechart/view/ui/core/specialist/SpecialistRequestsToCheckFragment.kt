@@ -16,12 +16,15 @@ import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.view.adapter.list.performedExercises.PerformedExercisesAdapter
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.view.ui.UserBaseFragment
+import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.SpecialistViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistRequestsToCheckFragment : UserBaseFragment() {
+class SpecialistRequestsToCheckFragment(val openItem: (PerformedExercise) -> Unit) : UserBaseFragment() {
   private lateinit var binding: SpecialistListOfRequestsToCheckFragmentBinding
   private lateinit var performedExercisesAdapter: PerformedExercisesAdapter
+
+  private val exerciseViewModel by activityViewModels<ExerciseViewModel>()
 
   private val performedExercisesObserver = Observer<List<PerformedExercise>> {
     performedExercisesAdapter.setItems(it)
@@ -52,8 +55,9 @@ class SpecialistRequestsToCheckFragment : UserBaseFragment() {
     binding = SpecialistListOfRequestsToCheckFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
     )
-    performedExercisesAdapter = PerformedExercisesAdapter {
-
+    performedExercisesAdapter = PerformedExercisesAdapter { performedExercise ->
+      exerciseViewModel.setPerformedExercise(performedExercise)
+      openItem(performedExercise)
     }
     specialistViewModel.setContext(requireContext())
 

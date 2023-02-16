@@ -73,4 +73,6 @@
   <string name="performed_exercises">Выполненные упражнения</string>
   <string name="performed_exercises_user_info">%1$s (Счет: %2$d)</string>
   <string name="user_record">Запись пользователя</string>
+  <string name="conclusion">Заключение</string>
+  <string name="conclusion_description">Замечания, рекомендации, упражнения и т.д</string>
 </resources>

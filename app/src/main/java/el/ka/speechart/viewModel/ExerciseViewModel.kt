@@ -5,9 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import el.ka.speechart.other.Action
-import el.ka.speechart.other.Status
-import el.ka.speechart.other.Work
+import com.google.rpc.context.AttributeContext.Auth
+import el.ka.speechart.other.*
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.repository.AuthRepository
@@ -63,6 +62,8 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _currentUserRecordTime.value = 0
     _userMusicDuration.value = 0
     _currentMusicTime.value = 0
+    conclusion.value = ""
+    _fieldErrors.value = listOf()
     if (_userFileUrl.value == null) removeUserAudioFile()
   }
 
@@ -139,6 +140,29 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
       _error.value = ExercisesRepository.sendExercise(newPerformedExercise)
       _externalAction.value = Action.GO_BACK
       clearUserData()
+      removeWork(work)
+    }
+  }
+
+  private val _fieldErrors = MutableLiveData<List<FieldError>>(listOf())
+  val fieldError: LiveData<List<FieldError>> get() = _fieldErrors
+
+  val conclusion = MutableLiveData("")
+  fun sendConclusion() {
+    if (conclusion.value!!.isEmpty()) {
+      _fieldErrors.value = listOf(
+        FieldError(Field.CONCLUSION, errorType = FieldErrorType.IS_REQUIRE)
+      )
+      return
+    }
+
+    val work = Work.SEND_CONCLUSION
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.sendConclusion(_performedExercise.value!!, conclusion.value!!, AuthRepository.currentUid!!) {
+        _externalAction.value = Action.DELETE_AND_GO_BACK
+      }
       removeWork(work)
     }
   }

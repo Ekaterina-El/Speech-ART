@@ -55,4 +55,9 @@ class SpecialistViewModel(application: Application) : ViewModelWithSearchExercis
       removeWork(work)
     }
   }
+
+  fun deleteLocalPerformedExercise(performedExercise: PerformedExercise) {
+    _performedExercises.value = _performedExercises.value!!.filter { it.id != performedExercise.id }
+    filterPerformedExercises()
+  }
 }

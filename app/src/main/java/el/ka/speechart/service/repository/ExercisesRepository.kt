@@ -2,22 +2,24 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FieldValue
 import el.ka.speechart.other.Constants.FIELD_PERFORMED_EXERCISES
+import el.ka.speechart.other.Constants.FIELD_SCORE
 import el.ka.speechart.other.Constants.FIELD_SPECIALIST_ANSWER
+import el.ka.speechart.other.Constants.FIELD_SPECIALIST_ID
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.PerformedExercise
+import el.ka.speechart.service.model.User
 import kotlinx.coroutines.tasks.await
 import java.io.File
 
 object ExercisesRepository {
   suspend fun loadExercises(onSuccess: (List<Exercise>) -> Unit): ErrorApp? = try {
-    val items = FirebaseService.exercisesRepository.get().await().mapNotNull {
+    val items = FirebaseService.exercisesCollection.get().await().mapNotNull {
       val exercise = it.toObject(Exercise::class.java)
       exercise.id = it.id
       return@mapNotNull exercise
@@ -40,7 +42,7 @@ object ExercisesRepository {
     exercise.referencePronunciationFile!!.url = fileUrl
 
     // Add note to database
-    val doc = FirebaseService.exercisesRepository.add(exercise).await()
+    val doc = FirebaseService.exercisesCollection.add(exercise).await()
     exercise.id = doc.id
 
     onSuccess(exercise)
@@ -73,7 +75,7 @@ object ExercisesRepository {
 
   suspend fun sendExercise(performedExercise: PerformedExercise): ErrorApp? = try {
     // add note performed exercise to collection
-    val doc = FirebaseService.performedExercisesRepository.add(performedExercise).await()
+    val doc = FirebaseService.performedExercisesCollection.add(performedExercise).await()
 
     // add note id to user node to user collection
     FirebaseService.usersCollection.document(performedExercise.user)
@@ -89,12 +91,12 @@ object ExercisesRepository {
   suspend fun getAllPerformedExercisesToCheck(
     onSuccess: (List<PerformedExercise>) -> Unit
   ): ErrorApp? = try {
-    val list = FirebaseService.performedExercisesRepository.whereEqualTo(FIELD_SPECIALIST_ANSWER, null).get().await().map {
+    val list = FirebaseService.performedExercisesCollection.whereEqualTo(FIELD_SPECIALIST_ANSWER, null).get().await().map {
       val performedExercise = it.toObject(PerformedExercise::class.java)
       performedExercise.id = it.id
       performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
       if (performedExercise.specialistId != null) performedExercise.specialistLocal =
-        UsersRepository.getUserById(performedExercise.specialistId)
+        UsersRepository.getUserById(performedExercise.specialistId!!)
       performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
       return@map performedExercise
     }
@@ -128,23 +130,48 @@ object ExercisesRepository {
     //    load user, specialist & exercise
     performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
     if (performedExercise.specialistId != null) performedExercise.specialistLocal =
-      UsersRepository.getUserById(performedExercise.specialistId)
+      UsersRepository.getUserById(performedExercise.specialistId!!)
     performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
 
     return performedExercise
   }
 
   private suspend fun getExerciseById(id: String): Exercise {
-    val doc = FirebaseService.exercisesRepository.document(id).get().await()
+    val doc = FirebaseService.exercisesCollection.document(id).get().await()
     val exercise = doc.toObject(Exercise::class.java)!!
     exercise.id = doc.id
     return exercise
   }
 
   private suspend fun loadPerformedExerciseById(id: String): PerformedExercise {
-    val doc = FirebaseService.performedExercisesRepository.document(id).get().await()
+    val doc = FirebaseService.performedExercisesCollection.document(id).get().await()
     val performedExercise = doc.toObject(PerformedExercise::class.java)!!
     performedExercise.id = id
     return performedExercise
+  }
+
+  suspend fun sendConclusion(
+    performedExercise: PerformedExercise,
+    conclusion: String,
+    specialistId: String,
+    onSuccess: () -> Unit
+  ): ErrorApp? = try {
+
+    val ref = FirebaseService.performedExercisesCollection.document(performedExercise.id)
+    ref.update(FIELD_SPECIALIST_ANSWER, conclusion).await()
+    ref.update(FIELD_SPECIALIST_ID, specialistId).await()
+
+    // update user score
+    val levelScore = performedExercise.exerciseLocal!!.levelOfDifficulty.exp
+    val userScore = UsersRepository.getUserById(performedExercise.user)!!.score
+    val newUserScore = levelScore + userScore
+    FirebaseService.usersCollection.document(performedExercise.user).update(FIELD_SCORE, newUserScore).await()
+
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
   }
 }

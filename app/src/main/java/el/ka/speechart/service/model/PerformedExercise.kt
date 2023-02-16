@@ -12,9 +12,9 @@ data class PerformedExercise(
   val exerciseId: String = "",
   var exerciseLocal: Exercise? = null,
 
-  val specialistId: String? = null, // null if no check
+  var specialistId: String? = null, // null if no check
   var specialistLocal: User? = null,
-  val specialistAnswer: String? = null,
+  var specialistAnswer: String? = null,
 
   val reviewId: String? = null
 )

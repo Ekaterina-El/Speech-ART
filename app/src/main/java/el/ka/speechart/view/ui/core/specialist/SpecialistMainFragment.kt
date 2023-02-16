@@ -22,7 +22,18 @@ class SpecialistMainFragment : UserBaseFragment() {
   private val listOfExerciseFragment: SpecialistListOfExercisesFragment by lazy {
     SpecialistListOfExercisesFragment(onItemSelected = { navigateTo(exerciseFragment) })
   }
-  private val listOfRequestsFragment: SpecialistRequestsToCheckFragment by lazy { SpecialistRequestsToCheckFragment() }
+  private val listOfRequestsFragment: SpecialistRequestsToCheckFragment by lazy {
+    SpecialistRequestsToCheckFragment {
+      navigateTo(performedExerciseFragment)
+    }
+  }
+
+  private val performedExerciseFragment: SpecialistPerformedExerciseFragment by lazy {
+    SpecialistPerformedExerciseFragment {
+      navigateTo(listOfRequestsFragment)
+    }
+  }
+
   private val exerciseFragment: SpecialistExerciseFragment by lazy {
     SpecialistExerciseFragment { navigateTo(listOfExerciseFragment) }
   }
@@ -51,6 +62,9 @@ class SpecialistMainFragment : UserBaseFragment() {
     fm.beginTransaction()
       .add(R.id.fragmentContainerViewSpecialist, exerciseFragment, "exerciseFragment")
       .hide(exerciseFragment).commit()
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, performedExerciseFragment, "performedExerciseFragment")
+      .hide(performedExerciseFragment).commit()
     fm.beginTransaction().add(R.id.fragmentContainerViewSpecialist, profileFragment, "profile")
       .commit()
     active = profileFragment
