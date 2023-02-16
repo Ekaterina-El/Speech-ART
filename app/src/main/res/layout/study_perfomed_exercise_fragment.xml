@@ -76,24 +76,23 @@
           style="@style/text.header1"
           android:layout_gravity="center"
           android:layout_marginBottom="5dp"
-          tools:text="Упражнение #1"
-          android:text="@{viewModel.exercise.name}" />
+          android:text="@{viewModel.exercise.name}"
+          tools:text="Упражнение #1" />
 
         <RatingBar
-          android:theme="@style/ratingBar"
           style="?android:attr/ratingBarStyleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:numStars="3"
-          tools:rating="2"
           android:layout_gravity="center"
-          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
           android:isIndicator="true"
-          />
+          android:numStars="3"
+          android:theme="@style/ratingBar"
+          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
+          tools:rating="2" />
 
         <TextView
-          android:layout_marginTop="10dp"
           style="@style/text"
+          android:layout_marginTop="10dp"
           android:text="@{viewModel.exercise.description}"
           tools:text="Какое-то описание..." />
 
@@ -269,42 +268,61 @@
           tools:text="@string/no_specialist_answered" />
 
         <TextView
-          android:layout_marginTop="20dp"
           style="@style/text.header3"
+          android:layout_marginTop="20dp"
           android:layout_marginBottom="5dp"
           android:text="@string/review" />
+
+        <TextView
+          style="@style/text"
+          android:text="@string/you_can_send_review_after_check"
+          android:layout_marginBottom="20dp"
+          android:visibility="@{viewModel.performedExercise.specialistAnswer == null ? View.VISIBLE : View.GONE}" />
 
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginBottom="20dp"
           android:orientation="vertical"
-          android:visibility="@{viewModel.performedExercise.reviewLocal != null ? View.VISIBLE : View.GONE}"
-          >
+          android:visibility="@{viewModel.performedExercise.reviewLocal != null ? View.VISIBLE : View.GONE}">
 
-          
+          <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="@{viewModel.performedExercise.reviewLocal.rating}"
+            android:theme="@style/ratingBar"
+            tools:rating="2" />
+
+
+          <TextView
+            style="@style/text"
+            android:text="@{viewModel.performedExercise.reviewLocal.text}"
+            tools:text="Текст отзыва" />
 
         </LinearLayout>
 
 
         <LinearLayout
           android:layout_width="match_parent"
-          tools:visibility="gone"
-          android:visibility="@{viewModel.performedExercise.specialistAnswer == null|| viewModel.performedExercise.reviewId != null ? View.GONE : View.VISIBLE}"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:visibility="@{viewModel.performedExercise.specialistAnswer == null|| viewModel.performedExercise.reviewId != null ? View.GONE : View.VISIBLE}"
+          tools:visibility="gone">
 
           <RatingBar
             android:id="@+id/reviewRating"
-            android:stepSize="1"
-            android:theme="@style/MyRatingBar"
             style="?android:attr/ratingBarStyleIndicator"
-            android:isIndicator="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:isIndicator="false"
             android:numStars="5"
             android:rating="@{viewModel.reviewRating}"
-            android:layout_gravity="center"
-            />
+            android:stepSize="1"
+            android:theme="@style/MyRatingBar" />
 
           <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutText"
@@ -323,17 +341,18 @@
               android:maxLines="15"
               android:text="@={viewModel.reviewText}" />
           </com.google.android.material.textfield.TextInputLayout>
+
           <Button
             android:id="@+id/buttonContinue"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button_selector"
             android:fontFamily="@font/montserrat_regular"
-            android:text="@string/sendReview"
-            android:layout_marginBottom="20dp"
             android:onClick="@{() -> viewModel.sendReview()}"
+            android:text="@string/sendReview"
             android:textAllCaps="false"
             android:textColor="@color/on_secondary_color"
             app:backgroundTint="@null"

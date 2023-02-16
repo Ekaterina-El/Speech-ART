@@ -10,7 +10,7 @@ data class Review(
   var specialistLocal: User? = null,
 
   val performedExerciseId: String = "",
-  val performedExerciseLocal: PerformedExercise? = null,
+  var performedExerciseLocal: PerformedExercise? = null,
 
   val rating: Int = 0,
   val text: String = "",

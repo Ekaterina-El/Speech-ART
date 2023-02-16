@@ -13,7 +13,6 @@ import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.PerformedExercise
-import el.ka.speechart.service.model.User
 import kotlinx.coroutines.tasks.await
 import java.io.File
 
@@ -91,15 +90,17 @@ object ExercisesRepository {
   suspend fun getAllPerformedExercisesToCheck(
     onSuccess: (List<PerformedExercise>) -> Unit
   ): ErrorApp? = try {
-    val list = FirebaseService.performedExercisesCollection.whereEqualTo(FIELD_SPECIALIST_ANSWER, null).get().await().map {
-      val performedExercise = it.toObject(PerformedExercise::class.java)
-      performedExercise.id = it.id
-      performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
-      if (performedExercise.specialistId != null) performedExercise.specialistLocal =
-        UsersRepository.getUserById(performedExercise.specialistId!!)
-      performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
-      return@map performedExercise
-    }
+    val list =
+      FirebaseService.performedExercisesCollection.whereEqualTo(FIELD_SPECIALIST_ANSWER, null).get()
+        .await().map {
+        val performedExercise = it.toObject(PerformedExercise::class.java)
+        performedExercise.id = it.id
+        performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)
+        if (performedExercise.specialistId != null) performedExercise.specialistLocal =
+          UsersRepository.getUserById(performedExercise.specialistId!!)
+        performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
+        return@map performedExercise
+      }
     onSuccess(list)
     null
   } catch (e: NetworkErrorException) {
@@ -124,7 +125,7 @@ object ExercisesRepository {
     Errors.unknown
   }
 
-  private suspend fun loadPerformedExerciseByIdWithLocalData(id: String): PerformedExercise {
+  suspend fun loadPerformedExerciseByIdWithLocalData(id: String): PerformedExercise {
     val performedExercise = loadPerformedExerciseById(id)
 
     //    load user, specialist & exercise
@@ -132,6 +133,14 @@ object ExercisesRepository {
     if (performedExercise.specialistId != null) performedExercise.specialistLocal =
       UsersRepository.getUserById(performedExercise.specialistId!!)
     performedExercise.exerciseLocal = getExerciseById(performedExercise.exerciseId)
+
+    if (performedExercise.reviewId != null) performedExercise.reviewLocal =
+      ReviewRepository.getReviewById(
+        performedExercise.reviewId!!,
+        withUser = true,
+        withSpecialist = true,
+        withExercise = false
+      )
 
     return performedExercise
   }
@@ -165,7 +174,8 @@ object ExercisesRepository {
     val levelScore = performedExercise.exerciseLocal!!.levelOfDifficulty.exp
     val userScore = UsersRepository.getUserById(performedExercise.user)!!.score
     val newUserScore = levelScore + userScore
-    FirebaseService.usersCollection.document(performedExercise.user).update(FIELD_SCORE, newUserScore).await()
+    FirebaseService.usersCollection.document(performedExercise.user)
+      .update(FIELD_SCORE, newUserScore).await()
 
     onSuccess()
     null

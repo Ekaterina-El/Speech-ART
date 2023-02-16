@@ -2,6 +2,7 @@ package el.ka.speechart.service.repository
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.toObject
 import el.ka.speechart.other.Constants.FIELD_RATING
 import el.ka.speechart.other.Constants.FIELD_REVIEWS
 import el.ka.speechart.other.Constants.FIELD_REVIEW_ID
@@ -62,5 +63,17 @@ object ReviewRepository {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown
+  }
+
+  suspend fun getReviewById(reviewId: String, withUser: Boolean, withSpecialist: Boolean, withExercise: Boolean): Review {
+    val doc = FirebaseService.reviewCollection.document(reviewId).get().await()
+    val review = doc.toObject(Review::class.java)!!
+    review.id = doc.id
+
+    if (withUser) review.userLocal = UsersRepository.getUserById(review.userId)
+    if (withSpecialist) review.specialistLocal = UsersRepository.getUserById(review.specialistId)
+    if (withExercise) review.performedExerciseLocal = ExercisesRepository.loadPerformedExerciseByIdWithLocalData(review.performedExerciseId)
+
+    return review
   }
 }
