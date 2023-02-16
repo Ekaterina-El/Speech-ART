@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <import type="el.ka.speechart.other.Status" />
+
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.study.StudyPerformedExerciseFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.ExerciseViewModel" />
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:background="@color/primary_color"
+      android:paddingHorizontal="@dimen/app_padding">
+
+      <ImageView
+        android:id="@+id/icon_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:contentDescription="@string/exit"
+        android:onClick="@{() -> master.goBack()}"
+        android:padding="3dp"
+        android:src="@drawable/ic_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/on_secondary_color" />
+
+
+      <TextView
+        style="@style/text.header2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:text="@{viewModel.exercise.name}"
+        android:textColor="@color/on_secondary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Упражнение #1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginBottom="5dp"
+          android:text="@string/description" />
+
+        <TextView
+          style="@style/text"
+          android:textColor="@color/primary_color_dark"
+          app:levelExercise="@{viewModel.exercise.levelOfDifficulty}"
+          tools:text="Продвинутый уровень" />
+
+        <TextView
+          style="@style/text"
+          android:text="@{viewModel.exercise.description}"
+          tools:text="Какое-то описание..." />
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/reference_pronunciation" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:gravity="center">
+
+          <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/primary_color"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.playPauseMusic()}"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_play"
+                app:musicStatus="@{viewModel.musicStatus}"
+                app:tint="@color/on_primary_color" />
+
+              <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:indeterminateTint="@color/on_primary_color"
+                android:padding="3dp"
+                android:visibility="@{viewModel.musicStatus == Status.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.currentMusicTime}"
+            tools:text="0:04" />
+
+          <SeekBar
+            android:id="@+id/seek_bar_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.musicDuration}"
+            tools:text="3:04" />
+
+        </LinearLayout>
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/add_exercise_text" />
+
+        <TextView
+          style="@style/text"
+          android:text="@{viewModel.exercise.text}"
+          tools:text="Какое-то описание..." />
+
+        <TextView
+          style="@style/text.header3"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/user_record" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:gravity="center">
+
+          <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/primary_color"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.playPauseUserMusic()}"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_play"
+                app:musicStatus="@{viewModel.userMusicStatus}"
+                app:tint="@color/on_primary_color" />
+
+              <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:indeterminateTint="@color/on_primary_color"
+                android:padding="3dp"
+                android:visibility="@{viewModel.userMusicStatus == Status.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.currentUserMusicTime}"
+            tools:text="0:04" />
+
+          <SeekBar
+            android:id="@+id/seek_bar_progress_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:time="@{viewModel.userMusicDuration}"
+            tools:text="3:04" />
+        </LinearLayout>
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+  </LinearLayout>
+</layout>

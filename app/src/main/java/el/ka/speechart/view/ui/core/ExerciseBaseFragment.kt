@@ -79,6 +79,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
     val musicStatus = exerciseViewModel.musicStatus.value!!
     if (musicStatus == Status.PAUSED || musicStatus == Status.NO_LOADED) {
+      if (userMediaPlayer?.isPlaying == true) playPauseUserMusic()
+
       if (mediaPlayer == null) {
         val url = getAudioFileUrl() ?: return
         if (exerciseViewModel.preparedFileUrl.value == url) return
@@ -132,6 +134,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
     val musicStatus = exerciseViewModel.userMusicStatus.value!!
     if (musicStatus == Status.PAUSED || musicStatus == Status.NO_LOADED || musicStatus == Status.RECORDED) {
+      if (mediaPlayer?.isPlaying == true) playPauseMusic()
       if (userMediaPlayer == null) {
         val url = exerciseViewModel.userFileUrl.value ?: return
         if (exerciseViewModel.preparedUserFileUrl.value == url) return

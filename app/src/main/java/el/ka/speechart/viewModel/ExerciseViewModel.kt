@@ -19,7 +19,17 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   val exercise: LiveData<Exercise?> get() = _exercise
 
   fun setExercise(exercise: Exercise?) {
-    _exercise.postValue(exercise)
+    _exercise.value = exercise
+  }
+
+  private val _performedExercise = MutableLiveData<PerformedExercise?>(null)
+  val performedExercise: LiveData<PerformedExercise?> get() = _performedExercise
+
+  fun setPerformedExercise(performedExercise: PerformedExercise) {
+    setExercise(performedExercise.exerciseLocal)
+    _userMusicStatus.value = Status.NO_LOADED
+    _userFileUrl.value = performedExercise.userAudioFileUrl
+    _performedExercise.value = performedExercise
   }
 
   private val _preparedFileUrl = MutableLiveData<String?>(null)
@@ -115,7 +125,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     }
   }
 
-  val performedExercise: PerformedExercise get() = PerformedExercise(
+  val newPerformedExercise: PerformedExercise get() = PerformedExercise(
     user = AuthRepository.currentUid ?: "",
     userAudioFileUrl = _userFileUrl.value!!,
     exerciseId = _exercise.value!!.id,
@@ -126,7 +136,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     addWork(work)
 
     viewModelScope.launch {
-      _error.value = ExercisesRepository.sendExercise(performedExercise)
+      _error.value = ExercisesRepository.sendExercise(newPerformedExercise)
       _externalAction.value = Action.GO_BACK
       clearUserData()
       removeWork(work)

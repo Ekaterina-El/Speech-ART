@@ -19,12 +19,15 @@ import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.performedExercises.PerformedExercisesAdapter
 import el.ka.speechart.view.ui.UserBaseFragment
+import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.StudyViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class StudyProfileFragment : UserBaseFragment() {
+class StudyProfileFragment(val openItem: (PerformedExercise) -> Unit) : UserBaseFragment() {
   private lateinit var binding: StudyProfileFragmentBinding
   private lateinit var performedExercisesAdapter: PerformedExercisesAdapter
+
+  private val exerciseViewModel by activityViewModels<ExerciseViewModel>()
 
   private val hasLoad: Boolean
     get() =
@@ -61,7 +64,8 @@ class StudyProfileFragment : UserBaseFragment() {
       LayoutInflater.from(requireContext()), container, false
     )
     performedExercisesAdapter = PerformedExercisesAdapter {
-      toast("Open ${it.id}")
+      exerciseViewModel.setPerformedExercise(it)
+      openItem(it)
     }
 
     binding.apply {

@@ -72,4 +72,5 @@
   <string name="play">Пуск</string>
   <string name="performed_exercises">Выполненные упражнения</string>
   <string name="performed_exercises_user_info">%1$s (Счет: %2$d)</string>
+  <string name="user_record">Запись пользователя</string>
 </resources>

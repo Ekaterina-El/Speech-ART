@@ -4,17 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.navigation.NavigationBarView
 import el.ka.speechart.R
 import el.ka.speechart.databinding.StudyMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
-import el.ka.speechart.view.ui.core.specialist.SpecialistExerciseFragment
-import el.ka.speechart.viewModel.UserViewModel
 
 class StudyMainFragment : BaseFragment() {
   private lateinit var binding: StudyMainFragmentBinding
-  private val userViewModel by activityViewModels<UserViewModel>()
 
   private val listOfExercisesFragment by lazy {
     StudyListOfExercisesFragment { navigateTo(exerciseFragment) }
@@ -24,7 +20,15 @@ class StudyMainFragment : BaseFragment() {
     StudyExerciseFragment { navigateTo(listOfExercisesFragment) }
   }
 
-  private val profile by lazy { StudyProfileFragment() }
+  private val performedExerciseFragment: StudyPerformedExerciseFragment by lazy {
+    StudyPerformedExerciseFragment { navigateTo(profile) }
+  }
+
+  private val profile by lazy {
+    StudyProfileFragment {
+      navigateTo(performedExerciseFragment)
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -46,6 +50,8 @@ class StudyMainFragment : BaseFragment() {
       .hide(listOfExercisesFragment).commit()
     fm.beginTransaction().add(R.id.study_container, exerciseFragment, "exercise")
       .hide(exerciseFragment).commit()
+    fm.beginTransaction().add(R.id.study_container, performedExerciseFragment, "performedExercises")
+      .hide(performedExerciseFragment).commit()
     fm.beginTransaction().add(R.id.study_container, profile, "profile").commit()
     active = profile
   }
