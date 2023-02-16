@@ -77,24 +77,23 @@
           style="@style/text.header1"
           android:layout_gravity="center"
           android:layout_marginBottom="5dp"
-          tools:text="Упражнение #1"
-          android:text="@{viewModel.exercise.name}" />
+          android:text="@{viewModel.exercise.name}"
+          tools:text="Упражнение #1" />
 
         <RatingBar
-          android:theme="@style/ratingBar"
           style="?android:attr/ratingBarStyleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:numStars="3"
-          tools:rating="2"
           android:layout_gravity="center"
-          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
           android:isIndicator="true"
-          />
+          android:numStars="3"
+          android:theme="@style/ratingBar"
+          app:levelRating="@{viewModel.exercise.levelOfDifficulty}"
+          tools:rating="2" />
 
         <TextView
-          android:layout_marginTop="10dp"
           style="@style/text"
+          android:layout_marginTop="10dp"
           android:text="@{viewModel.exercise.description}"
           tools:text="Какое-то описание..." />
 
@@ -108,6 +107,40 @@
           style="@style/text"
           android:text="@{viewModel.exercise.text}"
           tools:text="Какое-то описание..." />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:orientation="horizontal">
+
+          <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            app:imageUrl="@{viewModel.performedExercise.userLocal.profileUrl}"
+            tools:src="@drawable/placeholder_image" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:text="@{viewModel.performedExercise.userLocal.fullName}"
+              tools:text="Иванов Иван Иванович" />
+
+            <TextView
+              style="@style/text.hint.small"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:text="@{viewModel.performedExercise.userLocal.email}"
+              tools:text="mail@email.com" />
+          </LinearLayout>
+        </LinearLayout>
 
 
         <TextView
@@ -289,11 +322,11 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="5dp"
+          android:layout_marginBottom="20dp"
           android:background="@drawable/button_selector"
           android:fontFamily="@font/montserrat_regular"
-          android:text="@string/continue_text"
-          android:layout_marginBottom="20dp"
           android:onClick="@{() -> viewModel.sendConclusion()}"
+          android:text="@string/continue_text"
           android:textAllCaps="false"
           android:textColor="@color/on_secondary_color"
           app:backgroundTint="@null"
