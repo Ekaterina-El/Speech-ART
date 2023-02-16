@@ -82,4 +82,7 @@
   <string name="you_can_send_review_after_check">Вы можете оставить отзыв специалисту только после того, как он проверит</string>
   <string name="reviews">Отзывы</string>
   <string name="reviews_no_found">Отзывы не найдены</string>
+  <string name="recovery_password">Восстановление пароля</string>
+  <string name="recovery_password_description">Для восстановления пароля необходимо ввести адрес электронной почты, который был указан при создании аккаунта.</string>
+  <string name="recovery_password_after">Если введенный адрес электронной почты окажется действительным, то на почту придет письмо с дальнейшими действиями</string>
 </resources>

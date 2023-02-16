@@ -15,6 +15,7 @@ import el.ka.speechart.databinding.LoginFragmentBinding
 import el.ka.speechart.databinding.WelcomeFragmentBinding
 import el.ka.speechart.other.*
 import el.ka.speechart.service.model.User
+import el.ka.speechart.view.dialog.RecoveryPasswordDialog
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.LoginViewModel
 import el.ka.speechart.viewModel.UserViewModel
@@ -22,6 +23,16 @@ import el.ka.speechart.viewModel.UserViewModel
 class LoginFragment: BaseFragment() {
   private lateinit var viewModel: LoginViewModel
   private val userViewModel by activityViewModels<UserViewModel>()
+
+  private val recoveryPasswordDialogListener: RecoveryPasswordDialog.Companion.ConfirmListener by lazy {
+    object: RecoveryPasswordDialog.Companion.ConfirmListener {
+      override fun onContinue(email: String) {
+        userViewModel.sendRecoveryPasswordMail(email)
+        recoveryPasswordDialog.close()
+      }
+    }
+  }
+  private val recoveryPasswordDialog by lazy { RecoveryPasswordDialog(requireContext(), recoveryPasswordDialogListener) }
 
   private lateinit var binding: LoginFragmentBinding
 
@@ -59,7 +70,7 @@ class LoginFragment: BaseFragment() {
   }
 
   fun forgetPassword() {
-    Toast.makeText(requireContext(), "А голову ты дома не забыл?", Toast.LENGTH_SHORT).show()
+    recoveryPasswordDialog.openConfirmDialog()
   }
 
   override fun onResume() {

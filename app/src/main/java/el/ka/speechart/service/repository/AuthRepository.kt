@@ -53,5 +53,18 @@ object AuthRepository {
     after()
   }
 
+  suspend fun sendRecoveryPasswordMail(email: String): ErrorApp? = try {
+    auth.sendPasswordResetEmail(email).await()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: FirebaseAuthInvalidCredentialsException) {
+    Errors.invalidEmailPassword
+  } catch (e: FirebaseAuthInvalidUserException) {
+    Errors.invalidEmailPassword
+  } catch (e: Exception) {
+    Errors.unknown
+  }
+
   val currentUid: String? get() = auth.currentUser?.uid
 }

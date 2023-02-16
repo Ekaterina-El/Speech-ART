@@ -12,6 +12,7 @@ import el.ka.speechart.databinding.SingUpFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.other.Field
 import el.ka.speechart.other.FieldError
+import el.ka.speechart.view.dialog.RecoveryPasswordDialog
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.SignUpViewModel
 

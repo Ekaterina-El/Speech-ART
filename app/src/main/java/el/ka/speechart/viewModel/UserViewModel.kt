@@ -74,4 +74,14 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
       removeWork(work)
     }
   }
+
+  fun sendRecoveryPasswordMail(email: String) {
+    val work = Work.SEND_RECOVERY_PASSWORD_EMAIL
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = AuthRepository.sendRecoveryPasswordMail(email)
+      removeWork(work)
+    }
+  }
 }
