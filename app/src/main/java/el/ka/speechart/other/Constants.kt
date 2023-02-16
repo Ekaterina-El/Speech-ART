@@ -10,6 +10,8 @@ object Constants {
   const val FIELD_PERFORMED_EXERCISES = "performedExercises"
   const val FIELD_EMAIL = "email"
   const val FIELD_ROLE = "role"
+
+  const val FIELD_SPECIALIST_ANSWER = "specialistAnswer"
   // endregion
 
   // region DB Collections

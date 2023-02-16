@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FieldValue
 import el.ka.speechart.other.Constants.FIELD_PERFORMED_EXERCISES
+import el.ka.speechart.other.Constants.FIELD_SPECIALIST_ANSWER
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.Exercise
@@ -88,7 +89,7 @@ object ExercisesRepository {
   suspend fun getAllPerformedExercisesToCheck(
     onSuccess: (List<PerformedExercise>) -> Unit
   ): ErrorApp? = try {
-    val list = FirebaseService.performedExercisesRepository.get().await().map {
+    val list = FirebaseService.performedExercisesRepository.whereEqualTo(FIELD_SPECIALIST_ANSWER, null).get().await().map {
       val performedExercise = it.toObject(PerformedExercise::class.java)
       performedExercise.id = it.id
       performedExercise.userLocal = UsersRepository.getUserById(performedExercise.user)

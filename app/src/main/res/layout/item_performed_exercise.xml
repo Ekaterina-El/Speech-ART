@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
@@ -12,13 +12,14 @@
 
   <androidx.cardview.widget.CardView
     android:id="@+id/wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="0dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
@@ -27,17 +28,77 @@
 
 
       <TextView
+        android:id="@+id/level"
         style="@style/text.hint.small"
+        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
         android:text="@{exercise.exerciseLocal.levelOfDifficulty.strRes}"
+        app:layout_constraintStart_toEndOf="@id/check_status"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/easy" />
 
+      <View
+        android:id="@+id/check_status"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@{exercise.specialistAnswer != null ? @drawable/check_status_checked : @drawable/check_status_no_checked}"
+        app:layout_constraintBottom_toBottomOf="@id/level"
+        app:layout_constraintTop_toTopOf="@id/level"
+        tools:background="@drawable/check_status_checked" />
+
       <TextView
+        android:id="@+id/exercise_name"
         style="@style/text"
+        android:layout_width="match_parent"
         android:layout_marginTop="3dp"
         android:text="@{exercise.exerciseLocal.name}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/level"
         tools:text="Упржнение на артикуляцию согласных" />
 
-    </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exercise_name">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_marginEnd="10dp"
+          app:imageUrl="@{exercise.userLocal.profileUrl}"
+          tools:src="@drawable/placeholder_image" />
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@{@string/performed_exercises_user_info(exercise.userLocal.fullName, exercise.userLocal.score)}"
+            tools:text="Иванов Иван Иванович (Счет: 443)" />
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{exercise.userLocal.email}"
+            tools:text="mail@email.com" />
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
 </layout>
