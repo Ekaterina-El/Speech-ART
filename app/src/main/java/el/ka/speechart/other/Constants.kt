@@ -11,12 +11,16 @@ object Constants {
   const val FIELD_EMAIL = "email"
   const val FIELD_ROLE = "role"
   const val FIELD_SCORE = "score"
+  const val FIELD_REVIEWS = "reviews"
+  const val FIELD_RATING = "rating"
 
   const val FIELD_SPECIALIST_ANSWER = "specialistAnswer"
   const val FIELD_SPECIALIST_ID = "specialistId"
+  const val FIELD_REVIEW_ID = "reviewId"
   // endregion
 
   // region DB Collections
+  const val REVIEW_COLLECTION = "reviews"
   const val USERS_COLLECTION = "users"
   const val REQUESTS_TO_REGISTRATION_SPECIALIST_COLLECTION = "requests_to_reg_specialist"
   const val EXERCISES_COLLECTION = "exercises"

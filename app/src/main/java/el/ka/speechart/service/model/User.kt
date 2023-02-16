@@ -10,8 +10,8 @@ data class User(
   var profileUrl: String = "",
 
   // for Specialist
-  val rating: Float = 0f,
-  val reviews: List<String> = listOf(),
+  var rating: Float = 0f,
+  var reviews: List<String> = listOf(),
   var description: String = "",
 
   // for Study

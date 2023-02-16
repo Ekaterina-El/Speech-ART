@@ -19,4 +19,5 @@ enum class Work {
   UPLOAD_FILE,
   REMOVER_FILE,
   SEND_CONCLUSION,
+  SEND_REVIEW,
 }

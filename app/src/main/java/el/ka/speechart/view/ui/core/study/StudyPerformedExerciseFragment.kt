@@ -56,6 +56,10 @@ class StudyPerformedExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFrag
       override fun onStopTrackingTouch(p0: SeekBar?) {}
     })
 
+    binding.reviewRating.setOnRatingBarChangeListener { _, rating, _ ->
+      exerciseViewModel.setReviewRating(rating.toInt())
+    }
+
     requireActivity().onBackPressedDispatcher.addCallback(this) {
       goBack()
     }

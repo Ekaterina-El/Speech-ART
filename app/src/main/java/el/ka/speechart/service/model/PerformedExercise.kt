@@ -16,7 +16,8 @@ data class PerformedExercise(
   var specialistLocal: User? = null,
   var specialistAnswer: String? = null,
 
-  val reviewId: String? = null
+  var reviewId: String? = null,
+  var reviewLocal: Review? = null
 )
 
 

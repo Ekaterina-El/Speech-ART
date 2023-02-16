@@ -2,10 +2,13 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
+import android.widget.RatingBar
+import com.google.firebase.FirebaseNetworkException
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.other.UserRole
+import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.model.User
 import kotlinx.coroutines.tasks.await
 
@@ -86,7 +89,7 @@ object UsersRepository {
     onSuccess(url)
 
     null
-  } catch (e: NetworkErrorException) {
+  } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown
@@ -96,7 +99,7 @@ object UsersRepository {
     FirebaseService.updateUsersField(AuthRepository.currentUid!!, Constants.FIELD_DESCRIPTION, newDescription)
     onSuccess()
     null
-  } catch (e: NetworkErrorException) {
+  } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
     Errors.unknown

@@ -11,6 +11,8 @@ import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.repository.AuthRepository
 import el.ka.speechart.service.repository.ExercisesRepository
+import el.ka.speechart.service.repository.ReviewRepository
+import el.ka.speechart.service.repository.UsersRepository
 import kotlinx.coroutines.launch
 
 class ExerciseViewModel(application: Application) : BaseViewModel(application) {
@@ -166,4 +168,30 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
       removeWork(work)
     }
   }
+
+  // region Review
+  private val _reviewRating = MutableLiveData(1)
+  val reviewRating: LiveData<Int> get() = _reviewRating
+
+  fun setReviewRating(rating: Int) {
+    _reviewRating.value = rating
+  }
+
+  val reviewText = MutableLiveData("")
+
+  fun sendReview() {
+    val work = Work.SEND_REVIEW
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ReviewRepository.sendReview(_performedExercise.value!!, _reviewRating.value!!, reviewText.value!!) { review ->
+        val performedExercise = _performedExercise.value!!
+        performedExercise.reviewId = review.id
+        performedExercise.reviewLocal = review
+        _performedExercise.value = performedExercise
+      }
+      removeWork(work)
+    }
+  }
+  // endregion
 }

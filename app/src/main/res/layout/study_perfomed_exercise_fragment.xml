@@ -264,10 +264,81 @@
           android:text="@string/conclusion" />
 
         <TextView
-          android:layout_marginBottom="20dp"
           style="@style/text"
           android:text="@{viewModel.performedExercise.specialistAnswer != null ? viewModel.performedExercise.specialistAnswer : @string/no_specialist_answered}"
           tools:text="@string/no_specialist_answered" />
+
+        <TextView
+          android:layout_marginTop="20dp"
+          style="@style/text.header3"
+          android:layout_marginBottom="5dp"
+          android:text="@string/review" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:visibility="@{viewModel.performedExercise.reviewLocal != null ? View.VISIBLE : View.GONE}"
+          >
+
+          
+
+        </LinearLayout>
+
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          tools:visibility="gone"
+          android:visibility="@{viewModel.performedExercise.specialistAnswer == null|| viewModel.performedExercise.reviewId != null ? View.GONE : View.VISIBLE}"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <RatingBar
+            android:id="@+id/reviewRating"
+            android:stepSize="1"
+            android:theme="@style/MyRatingBar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:isIndicator="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="@{viewModel.reviewRating}"
+            android:layout_gravity="center"
+            />
+
+          <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutText"
+            style="@style/FieldWrapper.contrast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/review_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/text"
+              style="@style/FieldContent.contrast"
+              android:gravity="top"
+              android:imeOptions="actionNext"
+              android:inputType="textMultiLine"
+              android:lines="10"
+              android:maxLines="15"
+              android:text="@={viewModel.reviewText}" />
+          </com.google.android.material.textfield.TextInputLayout>
+          <Button
+            android:id="@+id/buttonContinue"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_selector"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/sendReview"
+            android:layout_marginBottom="20dp"
+            android:onClick="@{() -> viewModel.sendReview()}"
+            android:textAllCaps="false"
+            android:textColor="@color/on_secondary_color"
+            app:backgroundTint="@null"
+            app:tint="@null" />
+        </LinearLayout>
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
