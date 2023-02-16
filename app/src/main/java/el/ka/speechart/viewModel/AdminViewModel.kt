@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.UserRole
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.RequestToRegSpecialist
 import el.ka.speechart.service.model.filterByUser
+import el.ka.speechart.service.repository.AuthRepository
 import el.ka.speechart.service.repository.RequestsRepository
 import kotlinx.coroutines.launch
 
@@ -69,14 +71,16 @@ class AdminViewModel(application: Application) :
     clearSearchRequest()
   }
 
-  fun agreeRequest(request: RequestToRegSpecialist) {
-    val work = Work.DISAGREE_REQUEST
+  fun agreeRequest(request: RequestToRegSpecialist, credentials: Credentials) {
+    val work = Work.AGREE_REQUEST
     addWork(work)
     viewModelScope.launch {
       _error.value = RequestsRepository.agreeRequest(request) {
         editRequestList(request, isAdd = false)
       }
       removeWork(work)
+      _error.value = AuthRepository.login(credentials.email, credentials.password)
+
     }
   }
 }

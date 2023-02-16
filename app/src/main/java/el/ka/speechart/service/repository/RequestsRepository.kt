@@ -1,6 +1,7 @@
 package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import el.ka.speechart.other.Constants.FIELD_EMAIL
 import el.ka.speechart.other.Constants.FIELD_PASSWORD
 import el.ka.speechart.other.ErrorApp
@@ -45,12 +46,18 @@ object RequestsRepository {
 
   suspend fun agreeRequest(request: RequestToRegSpecialist, onSuccess: () -> Unit): ErrorApp? =
     try {
+      Log.d("agreeRequest","1: ${request.userData}")
       AuthRepository.createAccount(request.userData, request.password)
+      Log.d("agreeRequest","2")
+      FirebaseService.requestsToRegSpecialistsCollection.document(request.id).delete().await()
+      Log.d("agreeRequest","3")
       onSuccess()
       null
     } catch (e: NetworkErrorException) {
+      Log.d("agreeRequest","error1")
       Errors.network
     } catch (e: Exception) {
+      Log.d("agreeRequest","error2")
       Errors.unknown
     }
 

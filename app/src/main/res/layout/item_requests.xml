@@ -8,6 +8,11 @@
       type="el.ka.speechart.service.model.RequestToRegSpecialist" />
   </data>
 
+  <androidx.cardview.widget.CardView
+    android:id="@+id/wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
   <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -26,4 +31,7 @@
       android:text="@{request.userData.email}"
       tools:text="reuwappiheje-3869@yopmail.com" />
   </LinearLayout>
+
+  </androidx.cardview.widget.CardView>
+
 </layout>

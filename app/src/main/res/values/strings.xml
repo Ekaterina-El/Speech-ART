@@ -86,4 +86,6 @@
   <string name="recovery_password">Восстановление пароля</string>
   <string name="recovery_password_description">Для восстановления пароля необходимо ввести адрес электронной почты, который был указан при создании аккаунта.</string>
   <string name="recovery_password_after">Если введенный адрес электронной почты окажется действительным, то на почту придет письмо с дальнейшими действиями</string>
+  <string name="agree">Принять</string>
+  <string name="disagree">Отклонить</string>
 </resources>

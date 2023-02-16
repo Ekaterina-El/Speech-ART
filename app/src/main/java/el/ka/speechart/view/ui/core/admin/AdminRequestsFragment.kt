@@ -32,16 +32,18 @@ class AdminRequestsFragment : UserBaseFragment() {
     requestsAdapter.setItems(it)
   }
 
-  private val requestsAdapterCallback = AdapterDeleter(
-    onLeft = {
-      val request = (it as RequestViewHolder).binding.request
-      if (request != null) adminViewModel.disagreeRequest(request)
-    },
-    onRight = {
-      val request = (it as RequestViewHolder).binding.request
-      if (request != null) adminViewModel.agreeRequest(request)
+  private val requestAdapterListener by lazy {
+    object: RequestViewHolder.Companion.Listener {
+      override fun agree(request: RequestToRegSpecialist) {
+        adminViewModel.agreeRequest(request, getCredentials()!!)
+      }
+
+      override fun disagree(request: RequestToRegSpecialist) {
+        adminViewModel.disagreeRequest(request)
+      }
+
     }
-  )
+  }
 
   val list = listOf(Work.LOAD_USERS, Work.LOAD_REQUESTS, Work.AGREE_REQUEST, Work.DISAGREE_REQUEST)
 
@@ -62,7 +64,7 @@ class AdminRequestsFragment : UserBaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    requestsAdapter = RequestToRegSpecialistAdapter()
+    requestsAdapter = RequestToRegSpecialistAdapter(requireContext(), requestAdapterListener)
     binding =
       AdminRequestsFragmentBinding.inflate(LayoutInflater.from(requireContext()), container, false)
 
@@ -86,8 +88,8 @@ class AdminRequestsFragment : UserBaseFragment() {
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
     binding.swipeRefreshLayout2.setOnRefreshListener { adminViewModel.loadRequestsToRegSpecialist() }
 
-    val helper = ItemTouchHelper(requestsAdapterCallback)
-    helper.attachToRecyclerView(binding.recyclerViewRequests)
+//    val helper = ItemTouchHelper(requestsAdapterCallback)
+//    helper.attachToRecyclerView(binding.recyclerViewRequests)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewRequests.addItemDecoration(decorator)
