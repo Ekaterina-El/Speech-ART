@@ -1,6 +1,5 @@
 package el.ka.speechart.service.repository
 
-import android.util.Log
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -8,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.service.model.User
@@ -43,7 +41,8 @@ object AuthRepository {
   } catch (e: FirebaseAuthInvalidCredentialsException) {
     Errors.invalidEmailPassword
   } catch (e: FirebaseAuthInvalidUserException) {
-    Errors.invalidEmailPassword
+    val hasRequest = RequestsRepository.hasRequestWithEmail(email, password)
+    if (hasRequest) Errors.requestToCreateSpecialist else Errors.invalidEmailPassword
   } catch (e: Exception) {
     Errors.unknown
   }

@@ -9,6 +9,7 @@ object Constants {
   const val FIELD_PROFILE_URL = "profileUrl"
   const val FIELD_PERFORMED_EXERCISES = "performedExercises"
   const val FIELD_EMAIL = "email"
+  const val FIELD_PASSWORD = "password"
   const val FIELD_ROLE = "role"
   const val FIELD_SCORE = "score"
   const val FIELD_REVIEWS = "reviews"

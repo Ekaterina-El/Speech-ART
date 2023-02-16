@@ -41,6 +41,7 @@
   <string name="requests">Запросы</string>
   <string name="specialists_title">Специалисты</string>
   <string name="requests_to_specialist_added">Заявка на регистрацию нового специалиста отправлена! Администраторы рассмотрят её в ближайшее время.</string>
+  <string name="error_requests_to_specialist_added">Заявка на регистрацию нового специалиста уже отправлена! Администраторы рассмотрят её в ближайшее время. После этого вы сможете авторизоваться под эти аккаунтом.</string>
   <string name="request_sent">Заявка отправлена!</string>
   <string name="requests_title">Запросы</string>
   <string name="requests_no_found">Запросы на регистрацию специалистов не найдены</string>
