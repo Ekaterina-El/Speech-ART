@@ -75,4 +75,5 @@
   <string name="user_record">Запись пользователя</string>
   <string name="conclusion">Заключение</string>
   <string name="conclusion_description">Замечания, рекомендации, упражнения и т.д</string>
+  <string name="no_specialist_answered">Специалист ещё не проверил выполнение упражнения</string>
 </resources>
