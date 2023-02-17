@@ -51,7 +51,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:layout_marginStart="15dp"
-        android:text="@{viewModel.exercise.name}"
+        app:exerciseName="@{viewModel.exercise}"
         android:textColor="@color/on_secondary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/icon_back"
@@ -75,9 +75,9 @@
 
         <TextView
           style="@style/text.header1"
+          app:exerciseName="@{viewModel.exercise}"
           android:layout_gravity="center"
           android:layout_marginBottom="5dp"
-          android:text="@{viewModel.exercise.name}"
           tools:text="Упражнение #1" />
 
         <RatingBar
@@ -94,7 +94,7 @@
         <TextView
           style="@style/text"
           android:layout_marginTop="10dp"
-          android:text="@{viewModel.exercise.description}"
+          app:exerciseDescription="@{viewModel.exercise}"
           tools:text="Какое-то описание..." />
 
         <TextView
@@ -105,7 +105,7 @@
 
         <TextView
           style="@style/text"
-          android:text="@{viewModel.exercise.text}"
+          app:exerciseText="@{viewModel.exercise}"
           tools:text="Какое-то описание..." />
 
         <LinearLayout
@@ -130,14 +130,14 @@
             <TextView
               android:layout_width="wrap_content"
               android:layout_height="match_parent"
-              android:text="@{viewModel.performedExercise.userLocal.fullName}"
+              app:userName="@{viewModel.performedExercise.userLocal}"
               tools:text="Иванов Иван Иванович" />
 
             <TextView
               style="@style/text.hint.small"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:text="@{viewModel.performedExercise.userLocal.email}"
+              app:userEmail="@{viewModel.performedExercise.userLocal}"
               tools:text="mail@email.com" />
           </LinearLayout>
         </LinearLayout>

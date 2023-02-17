@@ -31,12 +31,12 @@ fun setIsPlaying(image: ImageView, musicStatus: Status) {
 
 @BindingAdapter("app:levelRating")
 fun setLevelRating(ratingBar: RatingBar, level: LevelOfDifficulty?) {
-  if (level == null) return
 
   val rating = when(level) {
     LevelOfDifficulty.EASY -> 1f
     LevelOfDifficulty.MEDIUM -> 2f
     LevelOfDifficulty.ADVANCED -> 3f
+    null -> 0f
   }
   ratingBar.rating = rating
 }

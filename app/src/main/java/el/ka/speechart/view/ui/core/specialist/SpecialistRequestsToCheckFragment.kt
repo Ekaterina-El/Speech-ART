@@ -10,17 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfRequestsToCheckFragmentBinding
-import el.ka.speechart.databinding.SpecialistRequestToCheckFragmentBinding
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.view.adapter.list.performedExercises.PerformedExercisesAdapter
-import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.SpecialistViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistRequestsToCheckFragment(val openItem: (PerformedExercise) -> Unit) : UserBaseFragment() {
+class SpecialistRequestsToCheckFragment(val openItem: (PerformedExercise) -> Unit) :
+  UserBaseFragment() {
   private lateinit var binding: SpecialistListOfRequestsToCheckFragmentBinding
   private lateinit var performedExercisesAdapter: PerformedExercisesAdapter
 
@@ -90,7 +89,10 @@ class SpecialistRequestsToCheckFragment(val openItem: (PerformedExercise) -> Uni
 
   override fun onResume() {
     super.onResume()
-    specialistViewModel.filteredPerformedExercise.observe(viewLifecycleOwner, performedExercisesObserver)
+    specialistViewModel.filteredPerformedExercise.observe(
+      viewLifecycleOwner,
+      performedExercisesObserver
+    )
     specialistViewModel.work.observe(viewLifecycleOwner, workObserver)
   }
 

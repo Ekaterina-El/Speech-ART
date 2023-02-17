@@ -52,18 +52,16 @@
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
-          android:text="@{@string/performed_exercises_user_info(review.userLocal.fullName, review.userLocal.score)}"
+          app:userNameScore="@{review.userLocal}"
           tools:text="Иванов Иван Иванович (Счет: 443)" />
 
         <TextView
           style="@style/text.hint.small"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:text="@{review.userLocal.email}"
+          app:userEmail="@{review.userLocal}"
           tools:text="mail@email.com" />
       </LinearLayout>
     </LinearLayout>
-
-
   </LinearLayout>
 </layout>

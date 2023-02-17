@@ -93,4 +93,7 @@
   <string name="permission_for_record_description">Для записи аудиозаписи необходимо предоставить доступ к микрофону в настройках приложения.</string>
   <string name="permission_for_record_warning">(нажмите на текст выше для быстрого перехода в настройки)</string>
   <string name="score">Счёт: %1$dxp</string>
+  <string name="exercise_deleted">Упражнение удаленно</string>
+  <string name="no_data">Данные отсутствуют</string>
+  <string name="user_deleted">Пользователь удален</string>
 </resources>

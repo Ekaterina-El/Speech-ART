@@ -2,6 +2,7 @@ package el.ka.speechart.viewModel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -51,6 +52,7 @@ class SpecialistViewModel(application: Application) : ViewModelWithSearchExercis
         _performedExercises.value = it
         clearSearchPerformedExercise()
       }
+      Log.d("loadPerformedExercises", "Has error: ${_error.value != null}")
       removeWork(work)
     }
   }

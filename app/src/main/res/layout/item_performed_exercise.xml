@@ -32,7 +32,7 @@
         style="@style/text.hint.small"
         android:layout_marginStart="8dp"
         android:layout_width="wrap_content"
-        android:text="@{exercise.exerciseLocal.levelOfDifficulty.strRes}"
+        app:levelDifficulty="@{exercise.exerciseLocal}"
         app:layout_constraintStart_toEndOf="@id/check_status"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/easy" />
@@ -52,7 +52,7 @@
         style="@style/text"
         android:layout_width="match_parent"
         android:layout_marginTop="3dp"
-        android:text="@{exercise.exerciseLocal.name}"
+        app:exerciseName="@{exercise.exerciseLocal}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/level"

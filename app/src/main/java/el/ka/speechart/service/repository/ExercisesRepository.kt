@@ -17,6 +17,7 @@ import kotlinx.coroutines.tasks.await
 import java.io.File
 
 object ExercisesRepository {
+
   suspend fun loadExercises(onSuccess: (List<Exercise>) -> Unit): ErrorApp? = try {
     val items = FirebaseService.exercisesCollection.get().await().mapNotNull {
       val exercise = it.toObject(Exercise::class.java)
@@ -145,9 +146,9 @@ object ExercisesRepository {
     return performedExercise
   }
 
-  private suspend fun getExerciseById(id: String): Exercise {
+  private suspend fun getExerciseById(id: String): Exercise? {
     val doc = FirebaseService.exercisesCollection.document(id).get().await()
-    val exercise = doc.toObject(Exercise::class.java)!!
+    val exercise = doc.toObject(Exercise::class.java) ?: return null
     exercise.id = doc.id
     return exercise
   }
