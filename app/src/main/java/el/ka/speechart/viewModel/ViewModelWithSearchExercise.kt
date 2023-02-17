@@ -36,12 +36,11 @@ abstract class ViewModelWithSearchExercise(application: Application) :
     val search = searchExercise.value!!
     val exercise = exercises.value!!
 
-    _filteredExercises.postValue(
-      when {
-        search.isEmpty() -> exercise
-        else -> exercise.filterBy(context.value!!, search)
-      }
-    )
+    _filteredExercises.value = when {
+      search.isEmpty() -> exercise
+      else -> exercise.filterBy(context.value!!, search)
+    }
+
   }
 
   fun clearSearchExercise() {
@@ -59,6 +58,19 @@ abstract class ViewModelWithSearchExercise(application: Application) :
         exercises.add(exercise)
         this@ViewModelWithSearchExercise.exercises.value = exercises
         clearSearchExercise()
+      }
+      removeWork(work)
+    }
+  }
+
+  fun deleteExercise(exercise: Exercise) {
+    val work = Work.DELETE_EXERCISE
+    addWork(work)
+
+    viewModelScope.launch {
+      _error.value = ExercisesRepository.deleteExercise(exercise) {
+        exercises.value = exercises.value!!.filter { it.id != exercise.id }
+        filterExercises()
       }
       removeWork(work)
     }

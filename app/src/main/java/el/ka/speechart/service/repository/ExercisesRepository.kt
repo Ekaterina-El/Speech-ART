@@ -184,4 +184,15 @@ object ExercisesRepository {
   } catch (e: Exception) {
     Errors.unknown
   }
+
+  suspend fun deleteExercise(exercise: Exercise, onSuccess: () -> Unit): ErrorApp? = try {
+    FirebaseService.deleteByUrl(exercise.referencePronunciationFile!!.url!!)
+    FirebaseService.exercisesCollection.document(exercise.id).delete().await()
+    onSuccess()
+    null
+  } catch (e: FirebaseNetworkException) {
+    Errors.network
+  } catch (e: Exception) {
+    Errors.unknown
+  }
 }

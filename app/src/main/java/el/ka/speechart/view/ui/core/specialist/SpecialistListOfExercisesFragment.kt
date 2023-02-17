@@ -10,13 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
+import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.FilePicker
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
+import el.ka.speechart.view.adapter.list.exercises.ExerciseViewHolder
 import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
+import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
 import el.ka.speechart.view.dialog.AddExerciseDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
@@ -30,7 +34,14 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
   private val exerciseViewModel: ExerciseViewModel by activityViewModels()
   private val specialistViewModel: SpecialistViewModel by activityViewModels()
 
-  val list = listOf(Work.LOAD_EXERCISES, Work.ADD_EXERCISE)
+  private val exercisesAdapterCallback = AdapterDeleter(
+    onLeft = {
+      val exercise = (it as ExerciseViewHolder).binding.exercise
+      if (exercise != null) specialistViewModel.deleteExercise(exercise)
+    }
+  )
+
+  val list = listOf(Work.LOAD_EXERCISES, Work.ADD_EXERCISE, Work.DELETE_EXERCISE)
   private val List<Work>.hasLoad: Boolean
     get() =
       when {
@@ -85,6 +96,9 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
 
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
     binding.swipeRefreshLayout2.setOnRefreshListener { specialistViewModel.loadExercises() }
+
+    val helper = ItemTouchHelper(exercisesAdapterCallback)
+    helper.attachToRecyclerView(binding.recyclerViewExercises)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewExercises.addItemDecoration(decorator)
