@@ -19,14 +19,15 @@ import el.ka.speechart.view.adapter.list.specialist.SpecialistsAdapter
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
+import el.ka.speechart.viewModel.ViewerSpecialistProfileViewModel
 
-class AdminSpecialistsFragment : UserBaseFragment() {
+class AdminSpecialistsFragment(private val openSpecialist: () -> Unit) : UserBaseFragment() {
   private lateinit var binding: AdminSpecialistsFragmentBinding
   override val userViewModel by activityViewModels<UserViewModel>()
   private val adminViewModel by activityViewModels<AdminViewModel>()
 
   private lateinit var specialistsAdapter: SpecialistsAdapter
-
+  private val viewerSpecialistProfileViewModel by activityViewModels<ViewerSpecialistProfileViewModel>()
 
   private val specialistsObserver = Observer<List<User>> {
     specialistsAdapter.setItems(it)
@@ -46,7 +47,11 @@ class AdminSpecialistsFragment : UserBaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    specialistsAdapter = SpecialistsAdapter()
+    specialistsAdapter = SpecialistsAdapter { specialist ->
+      viewerSpecialistProfileViewModel.setProfile(specialist)
+      openSpecialist()
+    }
+
     binding = AdminSpecialistsFragmentBinding.inflate(
       LayoutInflater.from(requireContext()),
       container,

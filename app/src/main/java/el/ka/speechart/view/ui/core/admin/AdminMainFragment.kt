@@ -15,6 +15,7 @@ import el.ka.speechart.databinding.AdminMainFragmentBinding
 import el.ka.speechart.other.Work
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.view.ui.core.study.StudyListOfExercisesFragment
+import el.ka.speechart.view.ui.viewer.ViewerSpecialistProfileFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
@@ -28,9 +29,12 @@ class AdminMainFragment : UserBaseFragment() {
   }
 
   private val listOfSpecialists by lazy {
-    AdminSpecialistsFragment()
+    AdminSpecialistsFragment { navigateTo(viewerSpecialistProfileFragment) }
   }
 
+  private val viewerSpecialistProfileFragment: ViewerSpecialistProfileFragment by lazy {
+    ViewerSpecialistProfileFragment { navigateTo(listOfSpecialists) }
+  }
 
 
   override val workObserver = Observer<List<Work>> {
@@ -57,6 +61,8 @@ class AdminMainFragment : UserBaseFragment() {
 
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
 
+    fm.beginTransaction().add(R.id.admin_container, viewerSpecialistProfileFragment, "viewerSpecialistProfileFragment")
+      .hide(viewerSpecialistProfileFragment).commit()
     fm.beginTransaction().add(R.id.admin_container, listOfRequestsToRegSpecialistFragment, "listOfRequestsToRegSpecialist")
       .hide(listOfRequestsToRegSpecialistFragment).commit()
     fm.beginTransaction().add(R.id.admin_container, listOfSpecialists, "listOfSpecialists").commit()
