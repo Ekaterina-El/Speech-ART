@@ -63,12 +63,6 @@ class OwnerMainFragment : UserBaseFragment() {
 
   private lateinit var adminAdapter: AdminAdapter
 
-  private val deletedUserObserver = Observer<User?> {
-    if (it == null) return@Observer
-    adminAdapter.removeItem(it)
-    ownerViewModel.afterNotifyAboutUserDeleter()
-  }
-
   override val workObserver = Observer<List<Work>> {
     Log.d("workObserver", it.joinToString(", "))
     if (!it.contains(Work.LOAD_USERS)) {
@@ -137,7 +131,6 @@ class OwnerMainFragment : UserBaseFragment() {
     ownerViewModel.filteredUsers.observe(viewLifecycleOwner, adminsObserver)
     ownerViewModel.error.observe(viewLifecycleOwner, errorObserver)
     ownerViewModel.work.observe(viewLifecycleOwner, workObserver)
-    ownerViewModel.deletedUser.observe(viewLifecycleOwner, deletedUserObserver)
     ownerViewModel.newUserCredentials.observe(viewLifecycleOwner, newUserCredentialsObserver)
   }
 
@@ -146,7 +139,6 @@ class OwnerMainFragment : UserBaseFragment() {
     ownerViewModel.filteredUsers.removeObserver(adminsObserver)
     ownerViewModel.error.removeObserver(errorObserver)
     ownerViewModel.work.removeObserver(workObserver)
-    ownerViewModel.deletedUser.removeObserver(deletedUserObserver)
     ownerViewModel.newUserCredentials.removeObserver(newUserCredentialsObserver)
   }
 

@@ -50,23 +50,17 @@ abstract class ViewModelWithSearchUsers(application: Application, private val us
   }
 
   // region Edit users
-  private val _deletedUser = MutableLiveData<User?>(null)
-  val deletedUser: LiveData<User?> get() = _deletedUser
-
   fun deleteUser(user: User) {
     val work = Work.DELETE_USER
     addWork(work)
 
     viewModelScope.launch {
       _error.value = UsersRepository.deleteUser(user) {
-        _deletedUser.postValue(user)
+        users.value = users.value!!.filter { it != user }
+        filterUsers()
       }
       removeWork(work)
     }
-  }
-
-  fun afterNotifyAboutUserDeleter() {
-    _deletedUser.value = null
   }
   // endregion
 }
