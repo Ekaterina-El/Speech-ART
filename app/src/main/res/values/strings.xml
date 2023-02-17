@@ -88,4 +88,8 @@
   <string name="recovery_password_after">Если введенный адрес электронной почты окажется действительным, то на почту придет письмо с дальнейшими действиями</string>
   <string name="agree">Принять</string>
   <string name="disagree">Отклонить</string>
+  <string name="for_record_audio_we_need_permission">Для записи аудиозаписи необходимо предоставить доступ</string>
+  <string name="permission_for_record_title">Разрешение для записи</string>
+  <string name="permission_for_record_description">Для записи аудиозаписи необходимо предоставить доступ к микрофону в настройках приложения.</string>
+  <string name="permission_for_record_warning">(нажмите на текст выше для быстрого перехода в настройки)</string>
 </resources>

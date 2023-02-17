@@ -1,16 +1,24 @@
 package el.ka.speechart.view.ui.core
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.provider.Settings
 import android.widget.SeekBar
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import el.ka.speechart.R
 import el.ka.speechart.other.*
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import java.util.*
+
 
 abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment() {
   abstract var seekBar: SeekBar
@@ -201,7 +209,44 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     }
   }
 
+  private val recordAudioPermission = android.Manifest.permission.RECORD_AUDIO
+  private val isRecordAudioPermissionGranted: Boolean
+    get() =
+      ContextCompat.checkSelfPermission(
+        requireContext(),
+        recordAudioPermission
+      ) == PackageManager.PERMISSION_GRANTED
+
+   private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+     for (permission in permissions) {
+       if (permission.key == recordAudioPermission) {
+         when (permission.value) {
+           true -> startRecord()
+           false -> {
+             showInformDialog(
+               getString(R.string.permission_for_record_title),
+               getString(R.string.permission_for_record_description),
+               getString(R.string.permission_for_record_warning)
+             ) {
+               val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+               val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
+               intent.data = uri
+               startActivity(intent)
+             }
+           }
+         }
+       }
+     }
+   }
+
   fun startRecord() {
+    // check permission
+    if (!isRecordAudioPermissionGranted) {
+      toast(getString(R.string.for_record_audio_we_need_permission))
+      requestPermissionLauncher.launch(arrayOf(recordAudioPermission))
+      return
+    }
+
     if (mediaPlayer?.isPlaying == true) playPauseMusic()
 
     val name = Calendar.getInstance().time.toString().split(" ").joinToString("-")
