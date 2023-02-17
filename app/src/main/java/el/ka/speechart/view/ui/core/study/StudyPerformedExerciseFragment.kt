@@ -6,18 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
-import el.ka.speechart.databinding.StudyExerciseFragmentBinding
 import el.ka.speechart.databinding.StudyPerfomedExerciseFragmentBinding
 import el.ka.speechart.other.Action
-import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
+import el.ka.speechart.viewModel.ViewerSpecialistProfileViewModel
 
-class StudyPerformedExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCloseItem) {
+class StudyPerformedExerciseFragment(
+  val openSpecialist: () -> Unit,
+  onCloseItem: () -> Unit
+) : ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: StudyPerfomedExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
   override var userSeekBar: SeekBar? = null
+
+  private val viewerSpecialistProfileViewModel by activityViewModels<ViewerSpecialistProfileViewModel>()
+
+  fun openSpecialistProfile() {
+    val specialist = exerciseViewModel.performedExercise.value?.specialistLocal
+    if (specialist != null) {
+      viewerSpecialistProfileViewModel.setProfile(specialist)
+      openSpecialist()
+    }
+  }
+
 
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.GO_BACK) onCloseItem()

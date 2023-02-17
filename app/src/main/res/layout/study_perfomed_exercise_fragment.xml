@@ -262,10 +262,19 @@
           android:layout_marginBottom="5dp"
           android:text="@string/conclusion" />
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:clickable="true"
+          app:cardElevation="0dp"
+          android:onClick="@{() -> master.openSpecialistProfile()}"
           android:layout_marginBottom="5dp"
+          android:layout_height="wrap_content">
+        <LinearLayout
+          android:paddingVertical="5dp"
+          android:paddingHorizontal="5dp"
           android:visibility="@{viewModel.performedExercise.specialistLocal == null ? View.GONE : View.VISIBLE}"
           android:layout_width="match_parent"
+          android:gravity="center"
           android:layout_height="wrap_content"
           android:orientation="horizontal">
 
@@ -297,6 +306,7 @@
           </LinearLayout>
 
         </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
           style="@style/text"

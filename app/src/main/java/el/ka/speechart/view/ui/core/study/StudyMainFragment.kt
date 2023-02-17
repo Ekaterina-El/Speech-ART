@@ -8,6 +8,7 @@ import com.google.android.material.navigation.NavigationBarView
 import el.ka.speechart.R
 import el.ka.speechart.databinding.StudyMainFragmentBinding
 import el.ka.speechart.view.ui.BaseFragment
+import el.ka.speechart.view.ui.viewer.ViewerSpecialistProfileFragment
 
 class StudyMainFragment : BaseFragment() {
   private lateinit var binding: StudyMainFragmentBinding
@@ -20,8 +21,16 @@ class StudyMainFragment : BaseFragment() {
     StudyExerciseFragment { navigateTo(listOfExercisesFragment) }
   }
 
+  private val viewerSpecialistProfileFragment: ViewerSpecialistProfileFragment by lazy {
+    ViewerSpecialistProfileFragment { navigateTo(performedExerciseFragment) }
+  }
+
   private val performedExerciseFragment: StudyPerformedExerciseFragment by lazy {
-    StudyPerformedExerciseFragment { navigateTo(profile) }
+    StudyPerformedExerciseFragment(
+      openSpecialist = {
+        navigateTo(viewerSpecialistProfileFragment)
+      }
+    ) { navigateTo(profile) }
   }
 
   private val profile by lazy {
@@ -46,6 +55,9 @@ class StudyMainFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
 
+    fm.beginTransaction()
+      .add(R.id.study_container, viewerSpecialistProfileFragment, "viewerSpecialistProfile")
+      .hide(viewerSpecialistProfileFragment).commit()
     fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
       .hide(listOfExercisesFragment).commit()
     fm.beginTransaction().add(R.id.study_container, exerciseFragment, "exercise")

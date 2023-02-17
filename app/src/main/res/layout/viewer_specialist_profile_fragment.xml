@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+      name="reviewsAdapter"
+      type="el.ka.speechart.view.adapter.list.reviews.ReviewsAdapter" />
+
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.viewer.ViewerSpecialistProfileFragment" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.speechart.viewModel.ViewerSpecialistProfileViewModel" />
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="56dp"
+      android:background="@color/primary_color"
+      android:paddingHorizontal="@dimen/app_padding">
+
+      <ImageView
+        android:id="@+id/icon_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:contentDescription="@string/exit"
+        android:onClick="@{() -> master.goBack()}"
+        android:padding="3dp"
+        android:src="@drawable/ic_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/on_secondary_color" />
+
+
+      <TextView
+        style="@style/text.header2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@{viewModel.profile.fullName}"
+        android:textColor="@color/on_secondary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Курчагин Юрий Дмитриевич" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="5dp" />
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1">
+
+      <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical">
+
+          <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="@{viewModel.profile.rating}"
+            android:theme="@style/ratingBar"
+            app:hideIfEmpty="@{viewModel.profile.fullName}"
+            tools:rating="3.7" />
+
+          <TextView
+            style="@style/text.header3"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            app:text="@{viewModel.profile.fullName}"
+            tools:text="Курчагин Юрий Дмитриевич" />
+
+          <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:hideIfEmpty="@{viewModel.profile.fullName}"
+            app:imageUrl="@{viewModel.profile.profileUrl}"
+            tools:src="@drawable/placeholder_image" />
+
+          <TextView
+            style="@style/text"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:layout_marginTop="25dp"
+            app:text="@{viewModel.profile.description.isEmpty() ? @string/description_no_set : viewModel.profile.description}"
+            tools:text="Коррекционно-логопедическая деятельность:\n\n – Диагностика речевых нарушений\n – Коррекция фонетико-фонематического недоразвития речи\n – Коррекция общего недоразвития речи\n – Коррекция мелодико-интонационной стороны речи\n –   Коррекционно-логопедическая работа со взрослыми (нарушения звукопроизношения, дизартрия)" />
+
+
+          <TextView
+            style="@style/text.header3"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:layout_marginTop="15dp"
+            android:text="@string/reviews" />
+
+          <include
+            android:id="@+id/no_found"
+            layout="@layout/users_no_found"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:layout_marginTop="10dp"
+            android:visibility="@{viewModel.profile.reviews.size() == 0 ? View.VISIBLE : View.GONE}" />
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewReviews"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:adapter="@{reviewsAdapter}"
+            android:visibility="@{viewModel.profile.reviews.size() == 0 ? View.GONE : View.VISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_review" />
+
+        </LinearLayout>
+      </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+  </LinearLayout>
+</layout>
