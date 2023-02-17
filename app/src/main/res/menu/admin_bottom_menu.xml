@@ -3,13 +3,13 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@id/adminSpecialistsFragment"
+    android:id="@+id/adminSpecialists"
     android:icon="@drawable/ic_group"
     app:showAsAction="always"
     android:title="@string/specialists" />
 
   <item
-    android:id="@id/adminRequestsFragment"
+    android:id="@+id/adminRequests"
     app:showAsAction="always"
     android:icon="@drawable/ic_request"
     android:title="@string/requests" />

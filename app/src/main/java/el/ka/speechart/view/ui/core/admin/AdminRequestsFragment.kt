@@ -41,7 +41,6 @@ class AdminRequestsFragment : UserBaseFragment() {
       override fun disagree(request: RequestToRegSpecialist) {
         adminViewModel.disagreeRequest(request)
       }
-
     }
   }
 
@@ -87,9 +86,6 @@ class AdminRequestsFragment : UserBaseFragment() {
 
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
     binding.swipeRefreshLayout2.setOnRefreshListener { adminViewModel.loadRequestsToRegSpecialist() }
-
-//    val helper = ItemTouchHelper(requestsAdapterCallback)
-//    helper.attachToRecyclerView(binding.recyclerViewRequests)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewRequests.addItemDecoration(decorator)
