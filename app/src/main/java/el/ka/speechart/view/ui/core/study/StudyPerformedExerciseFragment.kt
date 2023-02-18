@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.speechart.databinding.StudyPerfomedExerciseFragmentBinding
 import el.ka.speechart.other.Action
+import el.ka.speechart.other.Field
+import el.ka.speechart.other.FieldError
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 import el.ka.speechart.viewModel.ViewerSpecialistProfileViewModel
 
@@ -23,6 +25,14 @@ class StudyPerformedExerciseFragment(
 
   private val viewerSpecialistProfileViewModel by activityViewModels<ViewerSpecialistProfileViewModel>()
 
+  private val fieldErrorsObserver = Observer<List<FieldError>> {
+    it.forEach { fieldError ->
+      if (fieldError.field == Field.REVIEW_TEXT) {
+        binding.layoutText.error = getString(fieldError.errorType!!.messageRes)
+      }
+    }
+  }
+
   fun openSpecialistProfile() {
     val specialist = exerciseViewModel.performedExercise.value?.specialistLocal
     if (specialist != null) {
@@ -30,7 +40,6 @@ class StudyPerformedExerciseFragment(
       openSpecialist()
     }
   }
-
 
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.GO_BACK) onCloseItem()
@@ -89,11 +98,13 @@ class StudyPerformedExerciseFragment(
     super.onResume()
     exerciseViewModel.work.observe(viewLifecycleOwner, workObserver)
     exerciseViewModel.externalAction.observe(viewLifecycleOwner, externalActionObserver)
+    exerciseViewModel.fieldError.observe(viewLifecycleOwner, fieldErrorsObserver)
   }
 
   override fun onStop() {
     super.onStop()
     exerciseViewModel.work.removeObserver(workObserver)
     exerciseViewModel.externalAction.removeObserver(externalActionObserver)
+    exerciseViewModel.fieldError.removeObserver(fieldErrorsObserver)
   }
 }

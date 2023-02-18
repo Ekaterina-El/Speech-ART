@@ -180,6 +180,13 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   val reviewText = MutableLiveData("")
 
   fun sendReview() {
+    if (reviewText.value!! == "") {
+      _fieldErrors.value = listOf(
+        FieldError(field = Field.REVIEW_TEXT, FieldErrorType.IS_REQUIRE)
+      )
+      return
+    }
+
     val work = Work.SEND_REVIEW
     addWork(work)
 

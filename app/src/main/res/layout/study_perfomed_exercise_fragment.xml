@@ -356,7 +356,7 @@
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:visibility="@{viewModel.performedExercise.specialistAnswer == null|| viewModel.performedExercise.reviewId != null ? View.GONE : View.VISIBLE}"
-          tools:visibility="gone">
+          tools:visibility="visible">
 
           <RatingBar
             android:id="@+id/reviewRating"
