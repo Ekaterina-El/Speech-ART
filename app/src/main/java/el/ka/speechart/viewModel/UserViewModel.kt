@@ -2,6 +2,7 @@ package el.ka.speechart.viewModel
 
 import android.app.Application
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -28,14 +29,16 @@ class UserViewModel(application: Application) : BaseViewModel(application) {
 
     viewModelScope.launch {
       val uid = AuthRepository.currentUid
+      Log.d("loadCurrentUser", "uid: $uid")
       if (uid != null) {
         _error.value = UsersRepository.loadUser(uid) {
+          Log.d("loadCurrentUser", "loaded")
           _userLoaded = true
           _user.value = it
         }
       } else {
         _userLoaded = true
-        _user.postValue(null)
+        _user.value = null
       }
       removeWork(work)
     }

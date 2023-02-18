@@ -32,7 +32,7 @@ open class BaseFragment : Fragment() {
     if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
   }
 
-  val errorObserver = Observer<ErrorApp?> {
+  open val errorObserver = Observer<ErrorApp?> {
     if (it != null) showErrorDialog(it)
   }
 
@@ -69,14 +69,14 @@ open class BaseFragment : Fragment() {
   // region Inform dialog
   private val informDialog by lazy { InformDialog(requireContext()) }
 
-  private fun showErrorDialog(error: ErrorApp) {
+  fun showErrorDialog(error: ErrorApp) {
     val title = getString(R.string.error_dialog_title)
     val message = getString(error.messageRes)
     informDialog.open(title, message)
   }
 
-  fun showInformDialog(title: String, message: String, warningText: String? = null, onClickText: () -> Unit = {}) {
-    informDialog.open(title, message, warningText, onClickText)
+  fun showInformDialog(title: String, message: String, warningText: String? = null, onClickOk: () -> Unit = {}, onClickText: () -> Unit = {}) {
+    informDialog.open(title, message, warningText, onClickOk, onClickText)
   }
   // endregion
 
@@ -101,8 +101,10 @@ open class BaseFragment : Fragment() {
     val i = requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
       ?: return
     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    requireActivity().finish()
     startActivity(i)
-    ActivityCompat.finishAfterTransition(requireActivity())
+//    ActivityCompat.finishAfterTransition(requireActivity())
   }
 
   // region Credentials

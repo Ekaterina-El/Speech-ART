@@ -5,6 +5,7 @@ import el.ka.speechart.R
 data class ErrorApp(val messageRes: Int)
 
 object Errors {
+  val documentNoFound = ErrorApp(R.string.document_no_found)
   val requestToCreateSpecialist = ErrorApp(R.string.error_requests_to_specialist_added)
   val invalidEmailPassword = ErrorApp(R.string.invalid_email_password)
   val unknown = ErrorApp(R.string.unknown_error)

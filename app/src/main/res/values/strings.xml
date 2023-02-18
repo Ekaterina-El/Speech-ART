@@ -96,4 +96,7 @@
   <string name="exercise_deleted">Упражнение удаленно</string>
   <string name="no_data">Данные отсутствуют</string>
   <string name="user_deleted">Пользователь удален</string>
+  <string name="document_no_found">Документ не найден</string>
+  <string name="user_document_not_found">Данные о пользователе не найдены.</string>
+  <string name="user_document_not_found_message">Вероятно запись о вашем аккаунте была уничтожена, то есть пользователь был удален.</string>
 </resources>

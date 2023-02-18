@@ -29,6 +29,7 @@ class InformDialog(context: Context) : Dialog(context) {
     title: String,
     message: String,
     warning: String? = null,
+    onClickOk: (() -> Unit)? = null,
     onTextClicked: (() -> Unit)? = null
   ) {
     binding.title.text = title
@@ -36,6 +37,11 @@ class InformDialog(context: Context) : Dialog(context) {
     binding.textWarning.text = warning ?: ""
     binding.textWarning.visibility = if (warning != null) View.VISIBLE else View.INVISIBLE
     binding.textMessage.setOnClickListener { onTextClicked?.let { it() } }
+    binding.buttonOk.setOnClickListener {
+      onClickOk?.let { f -> f() }
+      dismiss()
+    }
+
     show()
   }
 }

@@ -2,13 +2,12 @@ package el.ka.speechart.service.repository
 
 import android.accounts.NetworkErrorException
 import android.net.Uri
-import android.widget.RatingBar
+import android.util.Log
 import com.google.firebase.FirebaseNetworkException
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.ErrorApp
 import el.ka.speechart.other.Errors
 import el.ka.speechart.other.UserRole
-import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.model.User
 import kotlinx.coroutines.tasks.await
 
@@ -42,14 +41,21 @@ object UsersRepository {
   suspend fun loadUser(currentUid: String? = null, onSuccess: (User) -> Unit): ErrorApp? = try {
     val uid = currentUid ?: AuthRepository.currentUid!!
     val doc = FirebaseService.usersCollection.document(uid).get().await()
-    val user = doc.toObject(User::class.java)!!
-    user.uid = doc.id
-    onSuccess(user)
+    val user = doc.toObject(User::class.java)
 
-    null
+    val error = if (user == null) {
+      Errors.documentNoFound
+    } else {
+      user.uid = doc.id
+      onSuccess(user)
+      null
+    }
+
+    error
   } catch (e: NetworkErrorException) {
     Errors.network
   } catch (e: Exception) {
+    Log.d("loadCurrentUser", "error")
     Errors.unknown
   }
 
@@ -79,7 +85,11 @@ object UsersRepository {
     Errors.unknown
   }
 
-  suspend fun updateProfileImage(oldProfileUrl: String, uri: Uri, onSuccess: (String) -> Unit): ErrorApp? = try {
+  suspend fun updateProfileImage(
+    oldProfileUrl: String,
+    uri: Uri,
+    onSuccess: (String) -> Unit
+  ): ErrorApp? = try {
     val uid = AuthRepository.currentUid!!
 
     if (oldProfileUrl != "") FirebaseService.deleteByUrl(oldProfileUrl)
@@ -95,15 +105,20 @@ object UsersRepository {
     Errors.unknown
   }
 
-  suspend fun updateUserDescription(newDescription: String, onSuccess: () -> Unit): ErrorApp? = try {
-    FirebaseService.updateUsersField(AuthRepository.currentUid!!, Constants.FIELD_DESCRIPTION, newDescription)
-    onSuccess()
-    null
-  } catch (e: FirebaseNetworkException) {
-    Errors.network
-  } catch (e: Exception) {
-    Errors.unknown
-  }
+  suspend fun updateUserDescription(newDescription: String, onSuccess: () -> Unit): ErrorApp? =
+    try {
+      FirebaseService.updateUsersField(
+        AuthRepository.currentUid!!,
+        Constants.FIELD_DESCRIPTION,
+        newDescription
+      )
+      onSuccess()
+      null
+    } catch (e: FirebaseNetworkException) {
+      Errors.network
+    } catch (e: Exception) {
+      Errors.unknown
+    }
 
   suspend fun getUserById(id: String): User? {
     val doc = FirebaseService.usersCollection.document(id).get().await()

@@ -12,14 +12,31 @@ import androidx.navigation.fragment.findNavController
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SplashFragmentBinding
 import el.ka.speechart.other.Constants
+import el.ka.speechart.other.ErrorApp
+import el.ka.speechart.other.Errors
 import el.ka.speechart.other.actionFromSplash
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.ui.BaseFragment
+import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.UserViewModel
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : UserBaseFragment() {
   private lateinit var binding: SplashFragmentBinding
-  private val userViewModel by activityViewModels<UserViewModel>()
+  override val userViewModel by activityViewModels<UserViewModel>()
+
+  override val errorObserver = Observer<ErrorApp?> {
+    if (it == null) return@Observer
+
+    if (it == Errors.documentNoFound) {
+      val title = getString(R.string.user_document_not_found)
+      val message = getString(R.string.user_document_not_found_message)
+      showInformDialog(title, message, onClickOk = {
+        userViewModel.logout()
+      })
+    } else {
+      showErrorDialog(it)
+    }
+  }
 
   private val userObserver = Observer<User?> {
     if (userViewModel.userLoaded) {
@@ -52,11 +69,13 @@ class SplashFragment : BaseFragment() {
     }, Constants.LOAD_DELAY)
 
     userViewModel.user.observe(viewLifecycleOwner, userObserver)
+    userViewModel.error.observe(viewLifecycleOwner, errorObserver)
   }
 
   override fun onStop() {
     super.onStop()
     userViewModel.user.removeObserver(userObserver)
+    userViewModel.error.removeObserver(errorObserver)
   }
 
   private fun loadCurrentUser() {
