@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.WindowManager.BadTokenException
 import el.ka.speechart.R
 import el.ka.speechart.databinding.ConfirmDialogBinding
 
@@ -27,7 +28,9 @@ class ConfirmDialog(context: Context) : Dialog(context) {
     binding.buttonYes.setOnClickListener { confirmListener.onAgree(value) }
     binding.buttonCancel.setOnClickListener { confirmListener.onDisagree() }
     binding.textViewMessage.text = message
-    show()
+    try {
+      show()
+    } catch (_: BadTokenException) {}
   }
 
   fun closeConfirmDialog() {
