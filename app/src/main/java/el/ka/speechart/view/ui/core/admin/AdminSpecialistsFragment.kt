@@ -16,6 +16,7 @@ import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
 import el.ka.speechart.view.adapter.list.specialist.SpecialistsAdapter
+import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.AdminViewModel
 import el.ka.speechart.viewModel.UserViewModel
@@ -35,22 +36,28 @@ class AdminSpecialistsFragment(private val openSpecialist: () -> Unit) : UserBas
     binding.swipeRefreshLayout2.isRefreshing = false
   }
 
-  private val specialistsAdapterCallback = AdapterDeleter(
-    onLeft = {
-      val user = (it as SpecialistViewHolder).binding.user
-      if (user != null) adminViewModel.deleteUser(user)
+  private val specialistsAdapterListener = object: SpecialistViewHolder.Companion.Listener {
+    override fun delete(user: User) {
+      val message = getString(R.string.delete_specialist_message, user.fullName)
+      openConfirmDialog(message, object: ConfirmDialog.Companion.ConfirmListener {
+        override fun onAgree(value: Any?) {
+          adminViewModel.deleteUser(user)
+          closeConfirmDialog()
+        }
+
+        override fun onDisagree() {
+          closeConfirmDialog()
+        }
+      })
     }
-  )
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    specialistsAdapter = SpecialistsAdapter { specialist ->
-      viewerSpecialistProfileViewModel.setProfile(specialist)
-      openSpecialist()
-    }
+    specialistsAdapter = SpecialistsAdapter(requireContext(), specialistsAdapterListener)
 
     binding = AdminSpecialistsFragmentBinding.inflate(
       LayoutInflater.from(requireContext()),
@@ -75,9 +82,6 @@ class AdminSpecialistsFragment(private val openSpecialist: () -> Unit) : UserBas
 
     binding.swipeRefreshLayout2.setColorSchemeColors(requireContext().getColor(R.color.primary_color))
     binding.swipeRefreshLayout2.setOnRefreshListener { loadSpecialists() }
-
-    val helper = ItemTouchHelper(specialistsAdapterCallback)
-    helper.attachToRecyclerView(binding.recyclerViewSpecialists)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewSpecialists.addItemDecoration(decorator)
