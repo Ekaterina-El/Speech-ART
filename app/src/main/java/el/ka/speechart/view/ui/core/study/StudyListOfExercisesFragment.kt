@@ -43,7 +43,7 @@ class StudyListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFragmen
   }
 
   private val exercisesAdapter by lazy {
-    ExercisesAdapter { exercise ->
+    ExercisesAdapter(requireContext(), null) { exercise ->
       exerciseViewModel.setExercise(exercise)
       onItemSelected()
     }

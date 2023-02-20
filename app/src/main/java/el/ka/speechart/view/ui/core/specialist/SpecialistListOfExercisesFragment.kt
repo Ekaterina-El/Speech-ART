@@ -22,6 +22,7 @@ import el.ka.speechart.view.adapter.list.exercises.ExerciseViewHolder
 import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
 import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
 import el.ka.speechart.view.dialog.AddExerciseDialog
+import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.SpecialistViewModel
@@ -34,12 +35,21 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
   private val exerciseViewModel: ExerciseViewModel by activityViewModels()
   private val specialistViewModel: SpecialistViewModel by activityViewModels()
 
-  private val exercisesAdapterCallback = AdapterDeleter(
-    onLeft = {
-      val exercise = (it as ExerciseViewHolder).binding.exercise
-      if (exercise != null) specialistViewModel.deleteExercise(exercise)
+  private val exerciseAdapterListener = object : ExerciseViewHolder.Companion.Listener {
+    override fun delete(exercise: Exercise) {
+      val message = getString(R.string.delete_exercise_message, exercise.name)
+      openConfirmDialog(message, object : ConfirmDialog.Companion.ConfirmListener {
+        override fun onAgree(value: Any?) {
+          specialistViewModel.deleteExercise(exercise)
+          closeConfirmDialog()
+        }
+
+        override fun onDisagree() {
+          closeConfirmDialog()
+        }
+      })
     }
-  )
+  }
 
   val list = listOf(Work.LOAD_EXERCISES, Work.ADD_EXERCISE, Work.DELETE_EXERCISE)
   private val List<Work>.hasLoad: Boolean
@@ -59,7 +69,7 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
   }
 
   private val exercisesAdapter by lazy {
-    ExercisesAdapter { exercise ->
+    ExercisesAdapter(requireContext(), exerciseAdapterListener) { exercise ->
       exerciseViewModel.setExercise(exercise)
       onItemSelected()
     }
@@ -96,9 +106,6 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
 
     binding.swipeRefreshLayout2.setColorSchemeColors(color)
     binding.swipeRefreshLayout2.setOnRefreshListener { specialistViewModel.loadExercises() }
-
-    val helper = ItemTouchHelper(exercisesAdapterCallback)
-    helper.attachToRecyclerView(binding.recyclerViewExercises)
 
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewExercises.addItemDecoration(decorator)

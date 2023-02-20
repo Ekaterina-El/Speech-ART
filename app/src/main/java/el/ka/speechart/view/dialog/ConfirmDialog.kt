@@ -25,12 +25,13 @@ class ConfirmDialog(context: Context) : Dialog(context) {
   }
 
   fun openConfirmDialog(message: String, confirmListener: ConfirmListener, value: Any? = null) {
-    binding.buttonYes.setOnClickListener { confirmListener.onAgree(value) }
-    binding.buttonCancel.setOnClickListener { confirmListener.onDisagree() }
-    binding.textViewMessage.text = message
     try {
+      binding.buttonYes.setOnClickListener { confirmListener.onAgree(value) }
+      binding.buttonCancel.setOnClickListener { confirmListener.onDisagree() }
+      binding.textViewMessage.text = message
       show()
-    } catch (_: BadTokenException) {}
+    } catch (_: BadTokenException) {
+    }
   }
 
   fun closeConfirmDialog() {

@@ -29,6 +29,7 @@
   <string name="exit">exit</string>
   <string name="are_you_sure">Вы уверены?</string>
   <string name="exit_message">Вы уверены, что хотите выйти из аккаунта?</string>
+  <string name="delete_exercise_message">Вы уверены, что хотите удалить упражнение "%1$s"?</string>
   <string name="cancel">Отмена</string>
   <string name="yes">Да</string>
   <string name="add_admin">Добавление администратора</string>
@@ -99,4 +100,5 @@
   <string name="document_no_found">Документ не найден</string>
   <string name="user_document_not_found">Данные о пользователе не найдены.</string>
   <string name="user_document_not_found_message">Вероятно запись о вашем аккаунте была уничтожена, то есть пользователь был удален.</string>
+  <string name="delete">Удалить</string>
 </resources>
