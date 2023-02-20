@@ -20,6 +20,7 @@ import el.ka.speechart.service.model.User
 import el.ka.speechart.view.adapter.list.admin.AdminAdapter
 import el.ka.speechart.view.adapter.list.admin.AdminViewHolder
 import el.ka.speechart.view.dialog.AddAdminDialog
+import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.OwnerViewModel
 import el.ka.speechart.viewModel.UserViewModel
@@ -76,17 +77,28 @@ class OwnerMainFragment : UserBaseFragment() {
     binding.swipeRefreshLayout2.isRefreshing = false
   }
 
-  private val adminAdapterCallback = AdapterDeleter(onLeft = {
-    val admin = (it as AdminViewHolder).binding.user
-    if (admin != null) ownerViewModel.deleteUser(admin)
-  })
+  private val adminAdapterListener = object: AdminViewHolder.Companion.Listener {
+    override fun delete(user: User) {
+      val message = getString(R.string.delete_admin_message, user.fullName)
+      openConfirmDialog(message, object : ConfirmDialog.Companion.ConfirmListener {
+        override fun onAgree(value: Any?) {
+          ownerViewModel.deleteUser(user)
+          closeConfirmDialog()
+        }
+
+        override fun onDisagree() {
+          closeConfirmDialog()
+        }
+      })
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    adminAdapter = AdminAdapter()
+    adminAdapter = AdminAdapter(requireContext(), adminAdapterListener)
 
     binding = OwnerMainFragmentBinding.inflate(layoutInflater)
     binding.apply {
@@ -105,9 +117,6 @@ class OwnerMainFragment : UserBaseFragment() {
   }
 
   private fun initUI() {
-    val helper = ItemTouchHelper(adminAdapterCallback)
-    helper.attachToRecyclerView(binding.recyclerViewAdmin)
-
     val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
     binding.recyclerViewAdmin.addItemDecoration(decorator)
 

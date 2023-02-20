@@ -15,7 +15,10 @@ class SpecialistViewHolder(val context: Context, val binding: ItemSpecialistBind
     this.user = user
     binding.user = user
 
-    binding.wrapper.setOnClickListener { menu.show() }
+    binding.wrapper.setOnLongClickListener {
+      menu.show()
+      return@setOnLongClickListener true
+    }
   }
 
   private val menu by lazy {
@@ -40,7 +43,4 @@ class SpecialistViewHolder(val context: Context, val binding: ItemSpecialistBind
       fun delete(user: User)
     }
   }
-
-
-
 }
