@@ -30,7 +30,7 @@ class ConfirmDialog(context: Context) : Dialog(context) {
       binding.buttonCancel.setOnClickListener { confirmListener.onDisagree() }
       binding.textViewMessage.text = message
       show()
-    } catch (_: BadTokenException) {
+    } catch (_: Exception) {
     }
   }
 
