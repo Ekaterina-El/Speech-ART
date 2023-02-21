@@ -44,8 +44,8 @@ fun setLevelRating(ratingBar: RatingBar, level: LevelOfDifficulty?) {
 }
 
 @BindingAdapter("app:wave")
-fun showAudioWave(waveFormView: WaveFormView, amplitude: List<Int>) {
-  waveFormView.showAmplitude(amplitude)
+fun showAudioWave(waveFormView: WaveFormView, amplitude: List<Int>?) {
+  waveFormView.showAmplitude(amplitude ?: listOf())
 }
 
 @BindingAdapter("app:userRecordTranspanrencyLevel")

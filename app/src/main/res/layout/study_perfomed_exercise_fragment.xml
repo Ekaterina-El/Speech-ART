@@ -256,6 +256,27 @@
             tools:text="3:04" />
         </LinearLayout>
 
+        <el.ka.speechart.view.customView.WaveFormView
+          android:layout_marginTop="10dp"
+          app:wave="@{viewModel.performedExercise.userAmplitude}"
+          android:alpha="@{viewModel.userRecordTransparencyLevel}"
+          app:waveColor="@color/primary_color_dark"
+          android:layout_width="match_parent"
+          android:layout_height="100dp" />
+
+        <TextView
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="5dp"
+          style="@style/text.hint"
+          android:text="@string/user_record_transparency_level" />
+
+        <SeekBar
+          android:id="@+id/seekBarUserRecordTransparencyLevel"
+          android:layout_width="match_parent"
+          android:max="100"
+          app:userRecordTranspanrencyLevel="@{viewModel.userRecordTransparencyLevel}"
+          android:layout_height="wrap_content" />
+\
         <TextView
           style="@style/text.header3"
           android:layout_marginTop="30dp"
