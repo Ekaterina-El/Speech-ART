@@ -185,6 +185,11 @@
 
         </LinearLayout>
 
+        <el.ka.speechart.view.customView.WaveFormView
+          app:wave="@{viewModel.exercise.referencePronunciationAmplitude}"
+          app:waveColor="@color/secondary_color"
+          android:layout_width="match_parent"
+          android:layout_height="100dp" />
 
       </LinearLayout>
 
