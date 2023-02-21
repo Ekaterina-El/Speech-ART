@@ -5,14 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.rpc.context.AttributeContext.Auth
 import el.ka.speechart.other.*
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.PerformedExercise
 import el.ka.speechart.service.repository.AuthRepository
 import el.ka.speechart.service.repository.ExercisesRepository
 import el.ka.speechart.service.repository.ReviewRepository
-import el.ka.speechart.service.repository.UsersRepository
 import kotlinx.coroutines.launch
 
 class ExerciseViewModel(application: Application) : BaseViewModel(application) {
@@ -65,6 +63,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _currentUserRecordTime.value = 0
     _userWave.value = listOf()
     _userMusicDuration.value = 0
+    _userRecordTransparencyLevel.value = 1f
     _currentMusicTime.value = 0
     conclusion.value = ""
     _fieldErrors.value = listOf()
@@ -133,6 +132,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     user = AuthRepository.currentUid ?: "",
     userAudioFileUrl = _userFileUrl.value!!,
     exerciseId = _exercise.value!!.id,
+    userAmplitude = _userWave.value
   )
 
   fun sendToCheck() {
