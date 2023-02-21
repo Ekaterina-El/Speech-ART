@@ -31,6 +31,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   val exerciseViewModel: ExerciseViewModel by activityViewModels()
 
   private fun updateSeekBar() {
+    if (mediaPlayer == null) return
+
     seekBar.progress = mediaPlayer!!.progress
     if (mediaPlayer!!.isPlaying) {
       handler.postDelayed(updater, 1000)
@@ -39,6 +41,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   private val updater by lazy {
     Runnable {
+      if (mediaPlayer == null) return@Runnable
+
       updateSeekBar()
       exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.timeInSeconds)
     }
@@ -131,6 +135,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   fun goBack() {
+    if (mediaRecorder != null) cancelRecord()
     destroyMediaPlayer()
     exerciseViewModel.clearUserData()
     exerciseViewModel.setMusicStatus(Status.NO_LOADED)
@@ -184,6 +189,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   private fun updateUserSeekBar() {
+    if (userMediaPlayer == null) return
+
     userSeekBar!!.progress = userMediaPlayer!!.progress
     if (userMediaPlayer!!.isPlaying) {
       handler.postDelayed(userUpdater, 1000)
@@ -192,13 +199,15 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   private val userUpdater by lazy {
     Runnable {
+      if (userMediaPlayer == null) return@Runnable
+
       updateUserSeekBar()
       exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.currentPosition / 1000)
     }
   }
 
   // region Recorder
-  private lateinit var mediaRecorder: MediaRecorder
+  private var mediaRecorder: MediaRecorder? = null
 
   private val recorderUpdate: Runnable by lazy {
     Runnable {
@@ -207,6 +216,10 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
         handler.postDelayed(recorderUpdate, 1000)
       }
     }
+  }
+
+  private fun cancelRecord() {
+    deleteRecord(withStopRecord = true)
   }
 
   private val recordAudioPermission = android.Manifest.permission.RECORD_AUDIO
@@ -258,13 +271,13 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     } else {
       MediaRecorder()
     }
-    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-    mediaRecorder.setOutputFile(output)
+    mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
+    mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+    mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+    mediaRecorder!!.setOutputFile(output)
 
-    mediaRecorder.prepare()
-    mediaRecorder.start()
+    mediaRecorder!!.prepare()
+    mediaRecorder!!.start()
 
     exerciseViewModel.setUserMusicStatus(Status.RECORDING)
     handler.post(recorderUpdate)
@@ -272,23 +285,32 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   fun stopRecord() {
     exerciseViewModel.setUserMusicStatus(Status.RECORDED)
-    mediaRecorder.stop()
-    mediaRecorder.release()
+    mediaRecorder!!.stop()
+    mediaRecorder!!.release()
     exerciseViewModel.uploadAudioFile()
   }
 
   fun togglePauseRecord() {
     if (exerciseViewModel.userMusicStatus.value == Status.PAUSED_RECORDING) {
-      mediaRecorder.resume()
+      mediaRecorder!!.resume()
       exerciseViewModel.setUserMusicStatus(Status.RECORDING)
       handler.post(recorderUpdate)
     } else {
-      mediaRecorder.pause()
+      mediaRecorder!!.pause()
       exerciseViewModel.setUserMusicStatus(Status.PAUSED_RECORDING)
     }
   }
 
-  fun deleteRecord() {
+  fun deleteRecord(withStopRecord: Boolean = false) {
+    if (withStopRecord) {
+     try {
+       mediaRecorder?.stop()
+       mediaRecorder?.release()
+     } catch (_: java.lang.IllegalStateException) {
+
+     }
+    }
+
     if (userMediaPlayer != null) {
       userMediaPlayer!!.pause()
       userMediaPlayer!!.release()

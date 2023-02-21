@@ -60,6 +60,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   }
 
   fun clearUserData() {
+    _musicStatus.value = Status.NO_LOADED
     _userMusicStatus.value = Status.NO_RECORDED
     _currentUserRecordTime.value = 0
     _userMusicDuration.value = 0

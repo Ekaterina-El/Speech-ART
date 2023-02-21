@@ -1,6 +1,7 @@
 package el.ka.speechart.view.ui.core.study
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,5 +78,10 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
     super.onStop()
     exerciseViewModel.work.removeObserver(workObserver)
     exerciseViewModel.externalAction.removeObserver(externalActionObserver)
+  }
+
+  override fun onHiddenChanged(hidden: Boolean) {
+    super.onHiddenChanged(hidden)
+    if (hidden) goBack()
   }
 }

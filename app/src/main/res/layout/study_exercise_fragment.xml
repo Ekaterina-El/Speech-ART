@@ -269,7 +269,7 @@
 
             <Button
               android:id="@+id/buttonCancel"
-              android:onClick="@{() -> master.deleteRecord()}"
+              android:onClick="@{() -> master.deleteRecord(false)}"
               style="?android:attr/buttonBarButtonStyle"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
