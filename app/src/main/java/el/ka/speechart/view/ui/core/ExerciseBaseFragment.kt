@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -21,14 +22,51 @@ import java.util.*
 
 
 abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment() {
-  abstract var seekBar: SeekBar
-  abstract var userSeekBar: SeekBar?
-
-  private var mediaPlayer: MediaPlayer? = null
-  private var userMediaPlayer: MediaPlayer? = null
   private val handler by lazy { Handler() }
-
   val exerciseViewModel: ExerciseViewModel by activityViewModels()
+
+  private fun destroyMediaPlayer() {
+    destroyMediaReferencePronunciationPlayer()
+    destroyMediaUserPlayer()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    if (exerciseViewModel.musicStatus.value == Status.PLAYING) mediaPlayer!!.start()
+    if (exerciseViewModel.userMusicStatus.value == Status.PLAYING) userMediaPlayer!!.start()
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    destroyMediaPlayer()
+  }
+
+  override fun onStop() {
+    super.onStop()
+    if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
+    if (userMediaPlayer?.isPlaying == true) userMediaPlayer?.pause()
+  }
+
+  fun goBack() {
+    if (mediaRecorder != null) cancelRecord()
+    destroyMediaPlayer()
+    exerciseViewModel.clearUserData()
+    exerciseViewModel.setMusicStatus(Status.NO_LOADED)
+    onCloseItem()
+  }
+
+  fun sendToCheck() {
+    if (userMediaPlayer != null) {
+      userMediaPlayer!!.pause()
+      userMediaPlayer!!.release()
+      userMediaPlayer = null
+    }
+    exerciseViewModel.sendToCheck()
+  }
+
+  // region Music Player 1
+  private var mediaPlayer: MediaPlayer? = null
+  abstract var seekBar: SeekBar
 
   private fun updateSeekBar() {
     if (mediaPlayer == null) return
@@ -90,10 +128,15 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) return
 
     val musicStatus = exerciseViewModel.musicStatus.value!!
+    Log.d(
+      "playPauseMusic",
+      "musicStatus: $musicStatus | mediaPlayer is null: ${mediaPlayer == null}"
+    )
+
     if (musicStatus == Status.PAUSED || musicStatus == Status.NO_LOADED) {
       if (userMediaPlayer?.isPlaying == true) playPauseUserMusic()
 
-      if (mediaPlayer == null) {
+      if (mediaPlayer == null || musicStatus == Status.NO_LOADED) {
         val url = getAudioFileUrl() ?: return
         if (exerciseViewModel.preparedFileUrl.value == url) return
         prepareMusicPlayer(url)
@@ -109,38 +152,16 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.setMusicStatus(if (musicStatus == Status.PLAYING) Status.PAUSED else Status.PLAYING)
   }
 
-  private fun destroyMediaPlayer() {
+  private fun destroyMediaReferencePronunciationPlayer() {
     mediaPlayer?.release()
     mediaPlayer = null
-
-    userMediaPlayer?.release()
-    userMediaPlayer = null
+    exerciseViewModel.setPrepareFileUrl(null)
   }
+  // endregion
 
-  override fun onDestroy() {
-    super.onDestroy()
-    destroyMediaPlayer()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    if (exerciseViewModel.musicStatus.value == Status.PLAYING) mediaPlayer!!.start()
-    if (exerciseViewModel.userMusicStatus.value == Status.PLAYING) userMediaPlayer!!.start()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
-    if (userMediaPlayer?.isPlaying == true) userMediaPlayer?.pause()
-  }
-
-  fun goBack() {
-    if (mediaRecorder != null) cancelRecord()
-    destroyMediaPlayer()
-    exerciseViewModel.clearUserData()
-    exerciseViewModel.setMusicStatus(Status.NO_LOADED)
-    onCloseItem()
-  }
+  // region Media User Player
+  abstract var userSeekBar: SeekBar?
+  private var userMediaPlayer: MediaPlayer? = null
 
   fun playPauseUserMusic() {
     if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) return
@@ -206,6 +227,13 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     }
   }
 
+  private fun destroyMediaUserPlayer() {
+    userMediaPlayer?.release()
+    userMediaPlayer = null
+    exerciseViewModel.setPrepareUserFileUrl(null)
+  }
+  // endregion
+
   // region Recorder
   private var mediaRecorder: MediaRecorder? = null
 
@@ -230,27 +258,28 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
         recordAudioPermission
       ) == PackageManager.PERMISSION_GRANTED
 
-   private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-     for (permission in permissions) {
-       if (permission.key == recordAudioPermission) {
-         when (permission.value) {
-           true -> startRecord()
-           false -> {
-             showInformDialog(
-               getString(R.string.permission_for_record_title),
-               getString(R.string.permission_for_record_description),
-               getString(R.string.permission_for_record_warning)
-             ) {
-               val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-               val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
-               intent.data = uri
-               startActivity(intent)
-             }
-           }
-         }
-       }
-     }
-   }
+  private val requestPermissionLauncher =
+    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+      for (permission in permissions) {
+        if (permission.key == recordAudioPermission) {
+          when (permission.value) {
+            true -> startRecord()
+            false -> {
+              showInformDialog(
+                getString(R.string.permission_for_record_title),
+                getString(R.string.permission_for_record_description),
+                getString(R.string.permission_for_record_warning)
+              ) {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
+                intent.data = uri
+                startActivity(intent)
+              }
+            }
+          }
+        }
+      }
+    }
 
   fun startRecord() {
     // check permission
@@ -303,12 +332,12 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   fun deleteRecord(withStopRecord: Boolean = false) {
     if (withStopRecord) {
-     try {
-       mediaRecorder?.stop()
-       mediaRecorder?.release()
-     } catch (_: java.lang.IllegalStateException) {
+      try {
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+      } catch (_: java.lang.IllegalStateException) {
 
-     }
+      }
     }
 
     if (userMediaPlayer != null) {
@@ -320,13 +349,4 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.clearUserData()
   }
   // endregion
-
-  fun sendToCheck() {
-    if (userMediaPlayer != null) {
-      userMediaPlayer!!.pause()
-      userMediaPlayer!!.release()
-      userMediaPlayer = null
-    }
-    exerciseViewModel.sendToCheck()
-  }
 }

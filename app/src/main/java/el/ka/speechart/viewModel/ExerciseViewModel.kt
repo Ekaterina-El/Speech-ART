@@ -103,7 +103,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
 
   private val _preparedUserFileUrl = MutableLiveData<String?>(null)
   val preparedUserFileUrl: LiveData<String?> get() = _preparedUserFileUrl
-  fun setPrepareUserFileUrl(url: String) {
+  fun setPrepareUserFileUrl(url: String?) {
     _preparedUserFileUrl.value = url
   }
 
