@@ -3,21 +3,14 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-
-    android:id="@+id/profile"
-    android:icon="@drawable/ic_profile"
-    app:showAsAction="always"
-    android:title="@string/profile" />
-
-  <item
-    android:id="@+id/listOfExercises"
+    android:id="@+id/listOfExercises_study"
     android:icon="@drawable/ic_brain"
     app:showAsAction="always"
     android:title="@string/exercises" />
 
-  <!--<item
-    android:id="@id/specialistRequestsToCheckFragment"
+  <item
+    android:id="@+id/profile_study"
+    android:icon="@drawable/ic_profile"
     app:showAsAction="always"
-    android:icon="@drawable/ic_request"
-    android:title="@string/requests_to_check" />-->
+    android:title="@string/profile" />
 </menu>

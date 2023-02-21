@@ -55,8 +55,7 @@ class StudyMainFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
 
-    fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
-      .hide(listOfExercisesFragment).commit()
+    fm.beginTransaction().add(R.id.study_container, profile, "profile").hide(profile).commit()
     fm.beginTransaction().add(R.id.study_container, performedExerciseFragment, "performedExercises")
       .hide(performedExerciseFragment).commit()
     fm.beginTransaction()
@@ -64,14 +63,15 @@ class StudyMainFragment : BaseFragment() {
       .hide(viewerSpecialistProfileFragment).commit()
     fm.beginTransaction().add(R.id.study_container, exerciseFragment, "exercise")
       .hide(exerciseFragment).commit()
-    fm.beginTransaction().add(R.id.study_container, profile, "profile").commit()
-    active = profile
+    fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
+      .commit()
+    active = listOfExercisesFragment
   }
 
   private val mOnNavigationSelectedListener = NavigationBarView.OnItemSelectedListener {
     val newActive = when (it.itemId) {
-      R.id.profile -> profile
-      R.id.listOfExercises -> listOfExercisesFragment
+      R.id.profile_study -> profile
+      R.id.listOfExercises_study -> listOfExercisesFragment
       else -> null
     }
     return@OnItemSelectedListener if (newActive != null) {
