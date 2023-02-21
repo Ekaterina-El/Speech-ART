@@ -259,14 +259,14 @@
         <RelativeLayout
           android:layout_width="match_parent"
           android:layout_marginTop="10dp"
-          android:layout_height="100dp">
+          android:layout_height="wrap_content">
           <el.ka.speechart.view.customView.WaveFormView
             app:wave="@{viewModel.performedExercise.exerciseLocal.referencePronunciationAmplitude}"
             app:waveColor="@color/secondary_color"
             android:layout_width="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_height="100dp" />
+            android:layout_height="200dp" />
 
           <el.ka.speechart.view.customView.WaveFormView
             app:wave="@{viewModel.performedExercise.userAmplitude}"

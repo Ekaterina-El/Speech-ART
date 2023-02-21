@@ -43,10 +43,16 @@ class StudyProfileFragment(val openItem: (PerformedExercise) -> Unit) : UserBase
 
   val list = listOf(Work.LOAD_USER, Work.LOAD_PERFORMED_EXERCISE, Work.UPDATE_USER)
   override val workObserver = Observer<List<Work>> {
+
+    val w1 = userViewModel.work.value!!
+    val works = studyViewModel.work.value!!.toMutableList()
+    works.addAll(w1)
+    Log.d("workdsObserver", "works: $works")
+
     val isLoad =
       when {
-        it.isEmpty() -> false
-        else -> it.map { item -> if (list.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
+        works.isEmpty() -> false
+        else -> works.map { item -> if (list.contains(item)) 1 else 0 }.reduce { a, b -> a + b } > 0
       }
     binding.swipeRefreshLayout.isRefreshing = isLoad
   }
