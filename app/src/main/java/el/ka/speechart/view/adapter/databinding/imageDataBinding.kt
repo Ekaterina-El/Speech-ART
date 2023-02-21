@@ -8,6 +8,7 @@ import el.ka.speechart.R
 import el.ka.speechart.other.ImageLoader
 import el.ka.speechart.other.LevelOfDifficulty
 import el.ka.speechart.other.Status
+import el.ka.speechart.view.customView.WaveFormView
 
 @BindingAdapter("app:imageUrl")
 fun setImageByUrl(image: ImageView, url: String?) {
@@ -39,4 +40,9 @@ fun setLevelRating(ratingBar: RatingBar, level: LevelOfDifficulty?) {
     null -> 0f
   }
   ratingBar.rating = rating
+}
+
+@BindingAdapter("app:wave")
+fun showAudioWave(waveFormView: WaveFormView, amplitude: List<Int>) {
+  waveFormView.showAmplitude(amplitude)
 }

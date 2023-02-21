@@ -13,6 +13,7 @@ import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
   ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: SpecialistExerciseFragmentBinding
+
   override lateinit var seekBar: SeekBar
   override var userSeekBar: SeekBar? = null
 

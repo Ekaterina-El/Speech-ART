@@ -12,12 +12,15 @@ import el.ka.speechart.databinding.SpecialistExerciseFragmentBinding
 import el.ka.speechart.databinding.StudyExerciseFragmentBinding
 import el.ka.speechart.other.Action
 import el.ka.speechart.service.model.Exercise
+import el.ka.speechart.view.customView.WaveFormView
 import el.ka.speechart.view.ui.core.ExerciseBaseFragment
 
 class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCloseItem) {
   private lateinit var binding: StudyExerciseFragmentBinding
   override lateinit var seekBar: SeekBar
+
   override var userSeekBar: SeekBar? = null
+  override var userRecordVisualizer: WaveFormView? = null
 
   private val externalActionObserver = Observer<Action?> {
     if (it == Action.GO_BACK) onCloseItem()
@@ -31,7 +34,6 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
     binding = StudyExerciseFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
     )
-
     seekBar = binding.seekBarProgress
     seekBar.max = 100
     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -44,6 +46,7 @@ class StudyExerciseFragment(onCloseItem: () -> Unit) : ExerciseBaseFragment(onCl
       override fun onStopTrackingTouch(p0: SeekBar?) {}
     })
 
+    userRecordVisualizer = binding.studyWaveForm
     userSeekBar = binding.seekBarProgressUser
     userSeekBar!!.max = 100
     userSeekBar!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

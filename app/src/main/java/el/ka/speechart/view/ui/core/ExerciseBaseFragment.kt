@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import el.ka.speechart.R
 import el.ka.speechart.other.*
+import el.ka.speechart.view.customView.WaveFormView
 import el.ka.speechart.view.ui.BaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import java.util.*
@@ -236,17 +237,22 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   // region Recorder
   private var mediaRecorder: MediaRecorder? = null
+  open var userRecordVisualizer: WaveFormView? = null
+
+  private val recordDelta = 40L
 
   private val recorderUpdate: Runnable by lazy {
     Runnable {
-      if (exerciseViewModel.userMusicStatus.value == Status.RECORDING) {
-        exerciseViewModel.setCurrentUserRecordTime(exerciseViewModel.currentUserRecordTime.value!! + 1)
-        handler.postDelayed(recorderUpdate, 1000)
+      if (exerciseViewModel.userMusicStatus.value == Status.RECORDING && mediaRecorder != null) {
+        userRecordVisualizer?.addAmplitude(mediaRecorder!!.maxAmplitude)
+        exerciseViewModel.setCurrentUserRecordTime(exerciseViewModel.currentUserRecordTime.value!! + recordDelta.toInt())
+        handler.postDelayed(recorderUpdate, recordDelta)
       }
     }
   }
 
   private fun cancelRecord() {
+    userRecordVisualizer?.release()
     deleteRecord(withStopRecord = true)
   }
 
@@ -305,6 +311,8 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
     mediaRecorder!!.setOutputFile(output)
 
+    userRecordVisualizer!!.prepare()
+
     mediaRecorder!!.prepare()
     mediaRecorder!!.start()
 
@@ -316,6 +324,9 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     exerciseViewModel.setUserMusicStatus(Status.RECORDED)
     mediaRecorder!!.stop()
     mediaRecorder!!.release()
+    if (userRecordVisualizer != null) {
+      exerciseViewModel.setUserWave(userRecordVisualizer!!.getWave())
+    }
     exerciseViewModel.uploadAudioFile()
   }
 

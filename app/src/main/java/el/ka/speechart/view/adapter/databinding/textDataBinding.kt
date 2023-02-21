@@ -22,7 +22,11 @@ fun hideView(view: View, value: Any?) {
 
 @BindingAdapter("app:time")
 fun showTime(textView: TextView, time: Int?) {
-  textView.text = time?.toMinutesAndSeconds() ?: ""
+  if (time == null) {
+    textView.text = ""
+    return
+  }
+  textView.text = (time / 1000).toMinutesAndSeconds()
 }
 
 @BindingAdapter("app:levelExercise")

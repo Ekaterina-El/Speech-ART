@@ -63,6 +63,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     _musicStatus.value = Status.NO_LOADED
     _userMusicStatus.value = Status.NO_RECORDED
     _currentUserRecordTime.value = 0
+    _userWave.value = listOf()
     _userMusicDuration.value = 0
     _currentMusicTime.value = 0
     conclusion.value = ""
@@ -79,7 +80,6 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   private val _currentUserRecordTime = MutableLiveData(0)
   val currentUserRecordTime: LiveData<Int> get() = _currentUserRecordTime
   fun setCurrentUserRecordTime(time: Int) {
-    Log.d("setCurrentUserRecordTime", "Time: $time")
     _currentUserRecordTime.value = time
   }
 
@@ -200,6 +200,12 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
       }
       removeWork(work)
     }
+  }
+
+  private val _userWave = MutableLiveData(listOf<Int>())
+  val userWave: LiveData<List<Int>> get() = _userWave
+  fun setUserWave(wave: List<Int>) {
+    _userWave.value = wave
   }
   // endregion
 }
