@@ -224,7 +224,7 @@
             app:wave="@{addExerciseViewModel.wave}"
             app:waveColor="@color/primary_color_dark"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="200dp" />
 
           <LinearLayout
             android:layout_marginBottom="20dp"
