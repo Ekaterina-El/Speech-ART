@@ -4,7 +4,13 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <variable
+      name="master"
+      type="el.ka.speechart.view.ui.core.specialist.AddExerciseFragment" />
 
+    <variable
+      name="addExerciseViewModel"
+      type="el.ka.speechart.viewModel.AddExerciseViewModel" />
   </data>
 
   <LinearLayout
@@ -12,32 +18,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="56dp"
       android:background="@color/primary_color"
-      android:gravity="center"
-      android:paddingHorizontal="15dp"
-      android:paddingVertical="10dp">
+      android:paddingHorizontal="@dimen/app_padding">
 
       <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_add"
+        android:id="@+id/icon_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:contentDescription="@string/exit"
+        android:onClick="@{() -> master.goBack()}"
+        android:padding="3dp"
+        android:src="@drawable/ic_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/on_secondary_color" />
 
       <TextView
-        android:id="@+id/textTitle"
-        style="text"
-        android:layout_width="0dp"
+        style="@style/text.header2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_weight="1"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
         android:text="@string/add_exercise"
         android:textColor="@color/on_secondary_color"
-        android:textSize="16sp" />
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
@@ -55,7 +70,6 @@
           style="@style/text"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
           android:text="@string/add_exercise_description"
           android:textColor="@color/text_color" />
 
@@ -69,6 +83,7 @@
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
+            android:text="@={addExerciseViewModel.name}"
             style="@style/FieldContent.contrast"
             android:imeOptions="actionNext"
             android:inputType="text"
@@ -86,6 +101,7 @@
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description"
             style="@style/FieldContent.contrast"
+            android:text="@={addExerciseViewModel.description}"
             android:gravity="top"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
@@ -120,6 +136,7 @@
             android:gravity="top"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
+            android:text="@={addExerciseViewModel.text}"
             android:lines="10"
             android:maxLines="15" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -136,8 +153,9 @@
             style="@style/text"
             android:layout_width="match_parent"
             android:paddingHorizontal="15dp"
+            app:fileName="@{addExerciseViewModel.mediaFileInfo}"
             android:paddingVertical="10dp"
-            android:text="@string/file_no_picked" />
+            tools:text="@string/file_no_picked" />
         </LinearLayout>
 
         <TextView
@@ -155,6 +173,7 @@
           android:layout_height="0dp"
           android:layout_gravity="end"
           android:layout_marginTop="10dp"
+          android:onClick="@{() -> addExerciseViewModel.addExercise()}"
           android:layout_weight="1"
           android:background="@drawable/button_selector"
           android:fontFamily="@font/montserrat_regular"

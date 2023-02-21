@@ -9,11 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import el.ka.speechart.R
 import el.ka.speechart.databinding.OwnerMainFragmentBinding
-import el.ka.speechart.other.Action
-import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.other.Credentials
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.User

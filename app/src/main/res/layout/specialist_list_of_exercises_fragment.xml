@@ -113,7 +113,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> master.showDialogForAddExercises()}"
+        android:onClick="@{() -> master.addExercise()}"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp">
 

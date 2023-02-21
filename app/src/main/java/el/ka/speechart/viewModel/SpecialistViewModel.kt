@@ -76,4 +76,5 @@ class SpecialistViewModel(application: Application) : ViewModelWithSearchExercis
       removeWork(work)
     }
   }
+
 }

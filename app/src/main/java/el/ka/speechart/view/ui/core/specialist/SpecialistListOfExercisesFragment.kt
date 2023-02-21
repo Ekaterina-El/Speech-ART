@@ -6,29 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import el.ka.speechart.R
 import el.ka.speechart.databinding.SpecialistListOfExercisesFragmentBinding
-import el.ka.speechart.other.AdapterDeleter
 import el.ka.speechart.other.Constants
 import el.ka.speechart.other.FilePicker
 import el.ka.speechart.other.Work
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.view.adapter.list.exercises.ExerciseViewHolder
 import el.ka.speechart.view.adapter.list.exercises.ExercisesAdapter
-import el.ka.speechart.view.adapter.list.specialist.SpecialistViewHolder
-import el.ka.speechart.view.dialog.AddExerciseDialog
 import el.ka.speechart.view.dialog.ConfirmDialog
 import el.ka.speechart.view.ui.UserBaseFragment
 import el.ka.speechart.viewModel.ExerciseViewModel
 import el.ka.speechart.viewModel.SpecialistViewModel
 import el.ka.speechart.viewModel.UserViewModel
 
-class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFragment() {
+class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit, val openAddExerciseFragment: () -> Unit) : UserBaseFragment() {
   private lateinit var binding: SpecialistListOfExercisesFragmentBinding
 
   override val userViewModel: UserViewModel by activityViewModels()
@@ -80,7 +75,6 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    initFilePicker()
     specialistViewModel.setContext(requireContext())
     binding = SpecialistListOfExercisesFragmentBinding.inflate(
       LayoutInflater.from(requireContext()), container, false
@@ -125,31 +119,8 @@ class SpecialistListOfExercisesFragment(onItemSelected: () -> Unit) : UserBaseFr
     specialistViewModel.filteredExercises.removeObserver(exercisesObserver)
     specialistViewModel.work.removeObserver(workObserver)
   }
-
-  private val addExerciseDialogListener by lazy {
-    object : AddExerciseDialog.Companion.Listener {
-      override fun onSave(exercise: Exercise) {
-        specialistViewModel.addExercise(exercise)
-      }
-    }
-  }
-
-  private lateinit var filePicker: FilePicker
-  private fun initFilePicker() {
-    val listener = object : FilePicker.Companion.Listener {
-      override fun onPicked(uri: Uri?) {
-        addExerciseDialog.setPickedFile(uri)
-      }
-    }
-    filePicker = FilePicker(this, listener, Constants.pickUpAudioType)
-  }
-
-  private val addExerciseDialog by lazy {
-    AddExerciseDialog(requireContext(), this, filePicker, addExerciseDialogListener)
-  }
-
-  fun showDialogForAddExercises() {
+  fun addExercise() {
     if (userViewModel.work.value!!.hasLoad || specialistViewModel.work.value!!.hasLoad) return
-    addExerciseDialog.open()
+    openAddExerciseFragment()
   }
 }

@@ -50,6 +50,7 @@ object ExercisesRepository {
   } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
+    val a = e
     Errors.unknown
   }
 

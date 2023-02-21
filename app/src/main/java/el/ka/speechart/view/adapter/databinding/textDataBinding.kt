@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import el.ka.speechart.R
 import el.ka.speechart.other.LevelOfDifficulty
+import el.ka.speechart.other.MediaFileInfo
 import el.ka.speechart.other.toMinutesAndSeconds
 import el.ka.speechart.service.model.Exercise
 import el.ka.speechart.service.model.User
@@ -96,4 +97,12 @@ fun showUserNameAndScore(textView: TextView, user: User?) {
     else -> textView.context.getString(R.string.performed_exercises_user_info, user.fullName, user.score)
   }
   textView.text = str
+}
+
+@BindingAdapter("app:fileName")
+fun showFileName(textView: TextView, file: MediaFileInfo?) {
+  textView.text = when (file) {
+    null -> textView.context.getString(R.string.file_no_picked)
+    else -> "${file.title} | ${file.duration.toMinutesAndSeconds()}"
+  }
 }

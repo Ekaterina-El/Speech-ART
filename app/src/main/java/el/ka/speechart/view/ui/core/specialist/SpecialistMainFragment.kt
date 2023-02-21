@@ -20,7 +20,17 @@ class SpecialistMainFragment : UserBaseFragment() {
 
   private val profileFragment: SpecialistProfileFragment by lazy { SpecialistProfileFragment() }
   private val listOfExerciseFragment: SpecialistListOfExercisesFragment by lazy {
-    SpecialistListOfExercisesFragment(onItemSelected = { navigateTo(exerciseFragment) })
+    SpecialistListOfExercisesFragment(
+      onItemSelected = { navigateTo(exerciseFragment) },
+      openAddExerciseFragment = {
+        navigateTo(addExerciseFragment)
+      })
+  }
+
+  private val addExerciseFragment: AddExerciseFragment by lazy {
+    AddExerciseFragment(onGoBack = {
+      navigateTo(listOfExerciseFragment)
+    })
   }
   private val listOfRequestsFragment: SpecialistRequestsToCheckFragment by lazy {
     SpecialistRequestsToCheckFragment {
@@ -53,7 +63,11 @@ class SpecialistMainFragment : UserBaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     fm.beginTransaction()
-      .add(R.id.fragmentContainerViewSpecialist, performedExerciseFragment, "performedExerciseFragment")
+      .add(
+        R.id.fragmentContainerViewSpecialist,
+        performedExerciseFragment,
+        "performedExerciseFragment"
+      )
       .hide(performedExerciseFragment).commit()
     fm.beginTransaction()
       .add(R.id.fragmentContainerViewSpecialist, listOfRequestsFragment, "listOfRequests")
@@ -64,6 +78,9 @@ class SpecialistMainFragment : UserBaseFragment() {
     fm.beginTransaction()
       .add(R.id.fragmentContainerViewSpecialist, exerciseFragment, "exerciseFragment")
       .hide(exerciseFragment).commit()
+    fm.beginTransaction()
+      .add(R.id.fragmentContainerViewSpecialist, addExerciseFragment, "addExerciseFragment")
+      .hide(addExerciseFragment).commit()
 
     fm.beginTransaction().add(R.id.fragmentContainerViewSpecialist, profileFragment, "profile")
       .commit()

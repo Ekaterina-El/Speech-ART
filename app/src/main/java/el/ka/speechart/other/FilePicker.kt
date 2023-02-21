@@ -7,7 +7,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import el.ka.speechart.view.dialog.AddExerciseDialog
 
 class FilePicker(val fragment: Fragment, val listener: Listener, val type: String) {
 
