@@ -55,15 +55,15 @@ class StudyMainFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     binding.bottomNavigationView.setOnItemSelectedListener(mOnNavigationSelectedListener)
 
+    fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
+      .hide(listOfExercisesFragment).commit()
+    fm.beginTransaction().add(R.id.study_container, performedExerciseFragment, "performedExercises")
+      .hide(performedExerciseFragment).commit()
     fm.beginTransaction()
       .add(R.id.study_container, viewerSpecialistProfileFragment, "viewerSpecialistProfile")
       .hide(viewerSpecialistProfileFragment).commit()
-    fm.beginTransaction().add(R.id.study_container, listOfExercisesFragment, "listOfExercises")
-      .hide(listOfExercisesFragment).commit()
     fm.beginTransaction().add(R.id.study_container, exerciseFragment, "exercise")
       .hide(exerciseFragment).commit()
-    fm.beginTransaction().add(R.id.study_container, performedExerciseFragment, "performedExercises")
-      .hide(performedExerciseFragment).commit()
     fm.beginTransaction().add(R.id.study_container, profile, "profile").commit()
     active = profile
   }
