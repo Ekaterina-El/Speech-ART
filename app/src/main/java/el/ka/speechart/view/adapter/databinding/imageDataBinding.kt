@@ -3,6 +3,7 @@ package el.ka.speechart.view.adapter.databinding
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
+import android.widget.SeekBar
 import androidx.databinding.BindingAdapter
 import el.ka.speechart.R
 import el.ka.speechart.other.ImageLoader
@@ -45,4 +46,9 @@ fun setLevelRating(ratingBar: RatingBar, level: LevelOfDifficulty?) {
 @BindingAdapter("app:wave")
 fun showAudioWave(waveFormView: WaveFormView, amplitude: List<Int>) {
   waveFormView.showAmplitude(amplitude)
+}
+
+@BindingAdapter("app:userRecordTranspanrencyLevel")
+fun showUserRecordTranspanrencyLevel(seekBar: SeekBar, level: Float) {
+  seekBar.progress = (level * 100).toInt()
 }

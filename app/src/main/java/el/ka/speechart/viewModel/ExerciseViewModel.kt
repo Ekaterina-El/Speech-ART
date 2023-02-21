@@ -207,5 +207,11 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
   fun setUserWave(wave: List<Int>) {
     _userWave.value = wave
   }
+
+  private val _userRecordTransparencyLevel = MutableLiveData(1f)
+  val userRecordTransparencyLevel: LiveData<Float> get() = _userRecordTransparencyLevel
+  fun setUserRecordTransparencyLevel(value: Float) {
+    _userRecordTransparencyLevel.value = value
+  }
   // endregion
 }

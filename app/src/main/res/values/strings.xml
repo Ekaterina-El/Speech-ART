@@ -103,4 +103,5 @@
   <string name="user_document_not_found">Данные о пользователе не найдены.</string>
   <string name="user_document_not_found_message">Вероятно запись о вашем аккаунте была уничтожена, то есть пользователь был удален.</string>
   <string name="delete">Удалить</string>
+  <string name="user_record_transparency_level">Уровень прозрачности записи пользователя</string>
 </resources>
