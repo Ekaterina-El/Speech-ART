@@ -76,6 +76,16 @@ class SpecialistPerformedExerciseFragment(onCloseItem: () -> Unit) : ExerciseBas
       override fun onStopTrackingTouch(p0: SeekBar?) {}
     })
 
+    binding.seekBarUserRecordTransparencyLevel.setOnSeekBarChangeListener(object :
+      SeekBar.OnSeekBarChangeListener {
+      override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+        exerciseViewModel.setUserRecordTransparencyLevel(p1.toFloat() / 100)
+      }
+
+      override fun onStartTrackingTouch(p0: SeekBar?) {}
+      override fun onStopTrackingTouch(p0: SeekBar?) {}
+    })
+
     requireActivity().onBackPressedDispatcher.addCallback(this) {
       goBack()
     }
