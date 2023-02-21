@@ -4,6 +4,9 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
+    <import type="el.ka.speechart.other.Status" />
+
     <variable
       name="master"
       type="el.ka.speechart.view.ui.core.specialist.AddExerciseFragment" />
@@ -142,48 +145,221 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-          android:id="@+id/layoutFile"
-          android:layout_marginTop="5dp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@drawable/field_wrapper">
+          android:orientation="vertical"
+          android:visibility="@{addExerciseViewModel.musicStatus == Status.RECORDED || addExerciseViewModel.musicStatus == Status.PAUSED || addExerciseViewModel.musicStatus == Status.PLAYING || addExerciseViewModel.musicStatus == Status.LOADING  ? View.VISIBLE : View.GONE}"
+          tools:visibility="visible">
 
-          <TextView
-            android:id="@+id/fileName"
-            style="@style/text"
+          <LinearLayout
             android:layout_width="match_parent"
-            android:paddingHorizontal="15dp"
-            app:fileName="@{addExerciseViewModel.mediaFileInfo}"
-            android:paddingVertical="10dp"
-            tools:text="@string/file_no_picked" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center">
+
+            <androidx.cardview.widget.CardView
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginEnd="5dp"
+              android:backgroundTint="@color/primary_color"
+              android:clickable="true"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:onClick="@{() -> master.playPauseMusic()}"
+              app:cardCornerRadius="40dp"
+              app:cardElevation="0dp">
+
+              <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:padding="10dp"
+                  android:src="@drawable/ic_play"
+                  app:musicStatus="@{addExerciseViewModel.musicStatus}"
+                  app:tint="@color/on_primary_color" />
+
+                <ProgressBar
+                  android:layout_width="30dp"
+                  android:layout_height="30dp"
+                  android:indeterminateTint="@color/on_primary_color"
+                  android:padding="3dp"
+                  android:visibility="@{addExerciseViewModel.musicStatus == Status.LOADING ? View.VISIBLE : View.GONE}"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toTopOf="parent" />
+
+
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+              style="@style/text.hint.small"
+              android:layout_width="40dp"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              app:time="@{addExerciseViewModel.currentMusicTime}"
+              tools:text="0:04" />
+
+            <SeekBar
+              android:id="@+id/refSeekBar"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1" />
+
+            <TextView
+              style="@style/text.hint.small"
+              android:layout_width="40dp"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              app:time="@{addExerciseViewModel.musicDuration}"
+              tools:text="3:04" />
+          </LinearLayout>
+
+          <el.ka.speechart.view.customView.WaveFormView
+            android:layout_marginTop="10dp"
+            app:wave="@{addExerciseViewModel.wave}"
+            app:waveColor="@color/primary_color_dark"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+          <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/buttonCancel"
+              android:onClick="@{() -> master.deleteRecord(false)}"
+              style="?android:attr/buttonBarButtonStyle"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end"
+              android:layout_marginEnd="10dp"
+              android:layout_weight="1"
+              android:background="@drawable/button_selector_natural"
+              android:fontFamily="@font/montserrat_regular"
+              android:text="@string/delete_record"
+              android:textAllCaps="false"
+              android:textColor="@color/primary_color"
+              app:backgroundTint="@null"
+              app:tint="@null" />
+
+            <Button
+              android:id="@+id/buttonYes"
+              style="?android:attr/buttonBarButtonStyle"
+              android:onClick="@{() -> addExerciseViewModel.addExercise()}"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end"
+              android:layout_weight="1"
+              android:background="@drawable/button_selector"
+              android:fontFamily="@font/montserrat_regular"
+              android:text="@string/continue_text"
+              android:textAllCaps="false"
+              android:textColor="@color/on_secondary_color"
+              app:backgroundTint="@null"
+              app:tint="@null" />
+
+          </LinearLayout>
         </LinearLayout>
 
-        <TextView
-          android:id="@+id/fileError"
-          style="@style/text.clickable"
-          android:layout_marginTop="2dp"
-          android:layout_marginStart="15dp"
-          android:textSize="12sp"
-          tools:text="@string/is_require" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          tools:visibility="visible"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:orientation="vertical"
+          android:visibility="@{addExerciseViewModel.musicStatus == Status.RECORDING || addExerciseViewModel.musicStatus == Status.PAUSED_RECORDING  ? View.VISIBLE : View.GONE}">
+
+          <TextView
+            style="@style/text.hint.small"
+            android:layout_gravity="center"
+            tools:text="@string/recording"
+            android:text="@{addExerciseViewModel.musicStatus == Status.RECORDING ? @string/recording : @string/pause}" />
+
+          <TextView
+            style="@style/text.header1"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            app:time="@{addExerciseViewModel.currentRecordTime}"
+            tools:text="00:18" />
+
+          <el.ka.speechart.view.customView.WaveFormView
+            android:id="@+id/recordVisualizer"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            app:waveColor="@color/primary_color_dark"
+            android:layout_height="100dp" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Button
+              style="?android:attr/buttonBarButtonStyle"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end"
+              android:layout_marginEnd="10dp"
+              android:layout_weight="1"
+              android:background="@drawable/button_selector_natural"
+              android:fontFamily="@font/montserrat_regular"
+              tools:text="@string/pause"
+              android:text="@{addExerciseViewModel.musicStatus == Status.PAUSED_RECORDING ? @string/play : @string/pause}"
+              android:onClick="@{() -> master.togglePauseRecord()}"
+              android:textAllCaps="false"
+              android:textColor="@color/primary_color"
+              app:backgroundTint="@null"
+              app:tint="@null" />
+
+            <Button
+              style="?android:attr/buttonBarButtonStyle"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end"
+              android:layout_weight="1"
+              android:onClick="@{() -> master.stopRecord()}"
+              android:background="@drawable/button_selector"
+              android:fontFamily="@font/montserrat_regular"
+              android:text="@string/stop"
+              android:textAllCaps="false"
+              android:textColor="@color/on_secondary_color"
+              app:backgroundTint="@null"
+              app:tint="@null" />
+
+          </LinearLayout>
+
+
+        </LinearLayout>
 
         <Button
-          android:id="@+id/buttonContinue"
+          android:visibility="@{addExerciseViewModel.musicStatus == Status.NO_RECORDED ? View.VISIBLE : View.GONE}"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="20dp"
+          tools:visibility="visible"
+          android:onClick="@{() -> master.startRecord()}"
           style="?android:attr/buttonBarButtonStyle"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:layout_gravity="end"
-          android:layout_marginTop="10dp"
-          android:onClick="@{() -> addExerciseViewModel.addExercise()}"
           android:layout_weight="1"
           android:background="@drawable/button_selector"
           android:fontFamily="@font/montserrat_regular"
-          android:text="@string/continue_text"
+          android:text="@string/start_recording"
           android:textAllCaps="false"
           android:textColor="@color/on_secondary_color"
           app:backgroundTint="@null"
           app:tint="@null" />
-
-
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

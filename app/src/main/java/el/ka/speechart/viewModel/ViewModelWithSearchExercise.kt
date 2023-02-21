@@ -48,18 +48,6 @@ abstract class ViewModelWithSearchExercise(application: Application) :
     filterExercises()
   }
 
-  fun addExercise(exercise: Exercise) {
-    val work = Work.ADD_EXERCISE
-    addWork(work)
-
-    viewModelScope.launch {
-      _error.value = ExercisesRepository.addExercise(exercise) { exercise ->
-        addLocalExercise(exercise)
-      }
-      removeWork(work)
-    }
-  }
-
   fun addLocalExercise(exercise: Exercise) {
     val exercises = exercises.value!!.toMutableList()
     exercises.add(exercise)

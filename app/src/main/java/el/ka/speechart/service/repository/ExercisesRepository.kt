@@ -32,14 +32,17 @@ object ExercisesRepository {
     Errors.unknown
   }
 
-  suspend fun addExercise(exercise: Exercise, onSuccess: (Exercise) -> Unit): ErrorApp? = try {
+  suspend fun addExercise(exercise: Exercise, loadMediaToStorage: Boolean = true, onSuccess: (Exercise) -> Unit): ErrorApp? = try {
     exercise.createdByASpecialist = AuthRepository.currentUid!!
 
-    // Load media file to store
-    val uri = Uri.parse(exercise.referencePronunciationFile!!.url)
-    val fileUrl = FirebaseService.uploadToStorage(uri, "exercises/referencePronunciationFileUrls/")
+    if (loadMediaToStorage) {
+      // Load media file to store
+      val uri = Uri.parse(exercise.referencePronunciationUrl)
+      val fileUrl =
+        FirebaseService.uploadToStorage(uri, "exercises/referencePronunciationFileUrls/")
+      exercise.referencePronunciationUrl = fileUrl
+    }
 
-    exercise.referencePronunciationFile!!.url = fileUrl
 
     // Add note to database
     val doc = FirebaseService.exercisesCollection.add(exercise).await()
@@ -50,7 +53,6 @@ object ExercisesRepository {
   } catch (e: FirebaseNetworkException) {
     Errors.network
   } catch (e: Exception) {
-    val a = e
     Errors.unknown
   }
 
@@ -188,7 +190,7 @@ object ExercisesRepository {
   }
 
   suspend fun deleteExercise(exercise: Exercise, onSuccess: () -> Unit): ErrorApp? = try {
-    FirebaseService.deleteByUrl(exercise.referencePronunciationFile!!.url!!)
+    FirebaseService.deleteByUrl(exercise.referencePronunciationUrl!!)
     FirebaseService.exercisesCollection.document(exercise.id).delete().await()
     onSuccess()
     null

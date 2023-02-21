@@ -98,7 +98,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   }
 
   private fun getAudioFileUrl(): String? =
-    exerciseViewModel.exercise.value?.referencePronunciationFile?.url
+    exerciseViewModel.exercise.value?.referencePronunciationUrl
 
 
   private fun prepareMusicPlayer(url: String) {
@@ -255,14 +255,6 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
     userRecordVisualizer?.release()
     deleteRecord(withStopRecord = true)
   }
-
-  private val recordAudioPermission = android.Manifest.permission.RECORD_AUDIO
-  private val isRecordAudioPermissionGranted: Boolean
-    get() =
-      ContextCompat.checkSelfPermission(
-        requireContext(),
-        recordAudioPermission
-      ) == PackageManager.PERMISSION_GRANTED
 
   private val requestPermissionLauncher =
     registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->

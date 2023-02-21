@@ -128,7 +128,7 @@ class ExerciseViewModel(application: Application) : BaseViewModel(application) {
     }
   }
 
-  val newPerformedExercise: PerformedExercise get() = PerformedExercise(
+  private val newPerformedExercise: PerformedExercise get() = PerformedExercise(
     user = AuthRepository.currentUid ?: "",
     userAudioFileUrl = _userFileUrl.value!!,
     exerciseId = _exercise.value!!.id,

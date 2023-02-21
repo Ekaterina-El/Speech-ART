@@ -5,10 +5,12 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import el.ka.speechart.MainActivity
@@ -26,7 +28,6 @@ open class BaseFragment : Fragment() {
     fm.beginTransaction().hide(active).show(newActive).commit()
     active = newActive
   }
-
 
   open val workObserver = Observer<List<Work>> {
     if (it.isEmpty()) hideLoadingDialog() else showLoadingDialog()
@@ -157,4 +158,12 @@ open class BaseFragment : Fragment() {
 
   private fun getSpinnerItems(arrayId: Int, types: List<Any>) =
     resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
+
+  val recordAudioPermission = android.Manifest.permission.RECORD_AUDIO
+  val isRecordAudioPermissionGranted: Boolean
+    get() =
+      ContextCompat.checkSelfPermission(
+        requireContext(),
+        recordAudioPermission
+      ) == PackageManager.PERMISSION_GRANTED
 }
