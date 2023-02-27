@@ -83,6 +83,7 @@ class AddExerciseViewModel(application: Application) : BaseViewModel(application
   }
 
   fun clearFields() {
+    setCurrentRecordTime(0)
     _musicStatus.value = Status.NO_RECORDED
     name.value = ""
     description.value = ""
