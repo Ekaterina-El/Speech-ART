@@ -25,7 +25,6 @@ fun Int.toMinutesAndSeconds(): String {
 fun Int.addZero(): String = if (this < 10) "0$this" else "$this"
 
 val MediaPlayer.progress: Int get() = (this.currentPosition.toFloat() / this.duration.toFloat() * 100).toInt()
-val MediaPlayer.timeInSeconds: Int get() = this.currentPosition / 1000
 fun MediaPlayer.playAt(progress: Int) {
   val playPosition = (this.duration / 100) * progress
   this.seekTo(playPosition)

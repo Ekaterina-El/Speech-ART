@@ -223,7 +223,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
   private fun updateUserSeekBar() {
     if (userMediaPlayer == null) return
 
-    userSeekBar!!.progress = userMediaPlayer!!.progress
+    userSeekBar!!.progress = userMediaPlayer?.progress ?: 0
     if (userMediaPlayer!!.isPlaying) {
       handler.postDelayed(userUpdater, 1000)
     }

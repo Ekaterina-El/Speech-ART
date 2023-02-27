@@ -261,7 +261,7 @@ class AddExerciseFragment(val onGoBack: () -> Unit) : UserBaseFragment() {
   private fun updateRefSeekBar() {
     if (mediaRefPlayer == null) return
 
-    binding.refSeekBar.progress = mediaRefPlayer!!.progress
+    binding.refSeekBar.progress = mediaRefPlayer?.progress ?: 0
     if (mediaRefPlayer!!.isPlaying) {
       handler.postDelayed(refUpdater, 1000)
     }
