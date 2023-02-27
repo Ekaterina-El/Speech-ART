@@ -50,11 +50,19 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
 
   fun goBack() {
     if (mediaRecorder != null) cancelRecord()
+    rewindAudio(0, true)
+    rewindUserAudio(0, true)
     destroyMediaPlayer()
     exerciseViewModel.clearUserData()
     exerciseViewModel.setMusicStatus(Status.NO_LOADED)
     onCloseItem()
   }
+
+  override fun onHiddenChanged(hidden: Boolean) {
+    super.onHiddenChanged(hidden)
+    if (hidden) goBack()
+  }
+
 
   fun sendToCheck() {
     if (userMediaPlayer != null) {
@@ -83,18 +91,20 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
       if (mediaPlayer == null) return@Runnable
 
       updateSeekBar()
-      exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.timeInSeconds)
+      exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.currentPosition)
     }
   }
 
-  fun rewindAudio(progress: Int) {
-    mediaPlayer!!.playAt(progress)
-    exerciseViewModel.setCurrentMusicTime(mediaPlayer!!.timeInSeconds)
+  fun rewindAudio(progress: Int, setNull: Boolean = false) {
+    mediaPlayer?.playAt(progress)
+    exerciseViewModel.setCurrentMusicTime(mediaPlayer?.currentPosition ?: 0)
+    if (setNull) seekBar.progress = 0
   }
 
-  fun rewindUserAudio(progress: Int) {
-    userMediaPlayer!!.playAt(progress)
-    exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.timeInSeconds)
+  fun rewindUserAudio(progress: Int, setNull: Boolean = false) {
+    userMediaPlayer?.playAt(progress)
+    exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer?.currentPosition ?: 0)
+    if (setNull) userSeekBar?.progress = 0
   }
 
   private fun getAudioFileUrl(): String? =
@@ -109,7 +119,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
       mediaPlayer!!.setDataSource(url)
       exerciseViewModel.setMusicStatus(Status.LOADING)
       mediaPlayer!!.setOnPreparedListener {
-        exerciseViewModel.setMusicDuration(mediaPlayer!!.duration / 1000)
+        exerciseViewModel.setMusicDuration(mediaPlayer!!.duration)
         exerciseViewModel.setMusicStatus(Status.PLAYING)
         mediaPlayer!!.start()
         updateSeekBar()
@@ -194,7 +204,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
       exerciseViewModel.setUserMusicStatus(Status.LOADING)
 
       userMediaPlayer!!.setOnPreparedListener {
-        exerciseViewModel.setUserMusicDuration(userMediaPlayer!!.duration / 1000)
+        exerciseViewModel.setUserMusicDuration(userMediaPlayer!!.duration)
         exerciseViewModel.setUserMusicStatus(Status.PLAYING)
         userMediaPlayer!!.start()
         updateUserSeekBar()
@@ -224,7 +234,7 @@ abstract class ExerciseBaseFragment(val onCloseItem: () -> Unit) : BaseFragment(
       if (userMediaPlayer == null) return@Runnable
 
       updateUserSeekBar()
-      exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.currentPosition / 1000)
+      exerciseViewModel.setCurrentUserMusicTime(userMediaPlayer!!.currentPosition)
     }
   }
 

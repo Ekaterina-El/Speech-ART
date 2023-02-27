@@ -26,6 +26,12 @@ class SpecialistExerciseFragment(onCloseItem: () -> Unit) :
       LayoutInflater.from(requireContext()), container, false
     )
 
+    binding.apply {
+      lifecycleOwner = viewLifecycleOwner
+      master = this@SpecialistExerciseFragment
+      viewModel = this@SpecialistExerciseFragment.exerciseViewModel
+    }
+
     seekBar = binding.seekBarProgress
     seekBar.max = 100
     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

@@ -272,11 +272,12 @@ class AddExerciseFragment(val onGoBack: () -> Unit) : UserBaseFragment() {
       if (mediaRefPlayer == null) return@Runnable
 
       updateRefSeekBar()
-      addExerciseViewModel.setCurrentMusicTime(mediaRefPlayer!!.currentPosition / 1000)
+      addExerciseViewModel.setCurrentMusicTime(mediaRefPlayer!!.currentPosition)
     }
   }
 
   private fun destroyRefMediaPlayer() {
+    mediaRefPlayer?.pause()
     mediaRefPlayer?.release()
     mediaRefPlayer = null
     addExerciseViewModel.setPreparedRefFileUrl(null)
