@@ -121,6 +121,11 @@ class AddExerciseFragment(val onGoBack: () -> Unit) : UserBaseFragment() {
     deleteRecord(withStopRecord = true)
   }
 
+  override fun onHiddenChanged(hidden: Boolean) {
+    super.onHiddenChanged(hidden)
+    if (hidden) goBack()
+  }
+
   private val requestPermissionLauncher =
     registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
       for (permission in permissions) {
